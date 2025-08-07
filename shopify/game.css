@@ -1,0 +1,55 @@
+/* Mini Golf Game Styles */
+.game-container {
+  background: #fff1d4;
+  padding: 40px;
+  text-align: center;
+  font-family: "General Sans", sans-serif;
+  position: relative;
+}
+
+.game-title {
+  color: #02210a;
+  margin-bottom: 8px;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.game-subtitle {
+  color: #420d00;
+  margin-bottom: 24px;
+  font-size: 1rem;
+}
+
+.game-canvas-container {
+  position: relative;
+  display: inline-block;
+}
+
+.game-canvas {
+  max-width: 100%;
+  border-radius: 12px;
+}
+
+.putty-character {
+  position: absolute;
+  left: 15px;
+  top: 10px;
+  height: 90px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .game-container {
+    padding: 20px;
+  }
+
+  .game-title {
+    font-size: 1.2rem;
+  }
+
+  .putty-character {
+    height: 60px;
+    left: 10px;
+    top: 15px;
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "mini-golf-shopify",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Interactive mini golf game for Shopify stores built with TypeScript and Vite",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "build:shopify": "npm run build && tsx src/build.ts",
+    "preview": "vite preview",
+    "type-check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "tsx": "^4.19.2",
+    "typescript": "~5.8.3",
+    "vite": "^7.0.4"
+  }
+}

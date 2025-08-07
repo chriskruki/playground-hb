@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mini Golf Game - Shopify</title>
+    <meta
+      name="description"
+      content="Interactive mini golf game for Shopify stores. Play and win discounts!"
+    />
+  </head>
+  <body>
+    <div id="app">
+      <div class="game-container">
+        <h2 id="game-title" class="game-title">
+          Play Mini Golf with Putty & Win Prizes!
+        </h2>
+        <p id="game-subtitle" class="game-subtitle">
+          Enter your email, aim carefully, and win amazing rewards!
+        </p>
+
+        <!-- Email Form Section -->
+        <div id="email-section" class="email-section">
+          <form id="email-form" class="email-form" action="" method="POST">
+            <input
+              type="email"
+              id="email-input"
+              name="email"
+              required
+              placeholder="you@domain.com"
+              class="email-input"
+            />
+            <button
+              type="submit"
+              id="email-submit-button"
+              class="email-submit-button"
+            >
+              Let's Putt!
+            </button>
+          </form>
+        </div>
+
+        <!-- Game Section -->
+        <div id="game-section" class="game-section" style="display: none">
+          <div class="game-canvas-container">
+            <canvas
+              id="golfPreview"
+              width="700"
+              height="160"
+              class="game-canvas"
+            ></canvas>
+
+            <img
+              id="putty-character"
+              src=""
+              alt="Putty"
+              class="putty-character"
+            />
+          </div>
+
+          <div class="game-controls">
+            <div id="game-stats" class="game-stats">
+              <span id="shots-taken">Shots: 0</span>
+              <span id="distance-remaining">Distance to go: 10</span>
+            </div>
+
+            <div id="game-state" class="game-state email-required">
+              Enter your email to start playing!
+            </div>
+
+            <button id="putt-button" class="putt-button" style="display: none">
+              🏌️ PUTT!
+            </button>
+
+            <button id="aim-button" class="aim-button" style="display: none">
+              🎯 Start Aiming
+            </button>
+          </div>
+        </div>
+
+        <!-- Prize Section -->
+        <div id="prize-section" class="prize-section" style="display: none">
+          <div class="prize-content">
+            <h3 id="prize-title" class="prize-title"></h3>
+            <p id="prize-description" class="prize-description"></p>
+            <div class="prize-code">
+              <span>Your Code: </span>
+              <code id="prize-code" class="code-display"></code>
+            </div>
+            <button id="claim-prize-button" class="claim-prize-button">
+              🎉 Claim Prize
+            </button>
+            <button id="play-again-button" class="play-again-button">
+              Play Again
+            </button>
+          </div>
+        </div>
+
+        <!-- Lose Section -->
+        <div id="lose-section" class="lose-section" style="display: none">
+          <div class="lose-content">
+            <h3 id="lose-title" class="lose-title">
+              Oops! You overshot the hole!
+            </h3>
+            <p id="lose-description" class="lose-description">
+              Don't worry, you can try again!
+            </p>
+            <button id="try-again-button" class="try-again-button">
+              🔄 Try Again
+            </button>
+          </div>
+        </div>
+
+        <p id="game-instructions" class="game-instructions">
+          Aim for exactly 10 units total distance to win! Don't overshoot or
+          you'll have to start over.
+        </p>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
