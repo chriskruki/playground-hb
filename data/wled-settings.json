@@ -1,0 +1,10 @@
+{
+  "devices": [
+    {
+      "id": "1755846936388",
+      "name": "hole1",
+      "ip": "wled-hole1.local",
+      "status": "offline"
+    }
+  ]
+}

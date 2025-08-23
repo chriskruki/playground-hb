@@ -1,4 +1,5 @@
 import { BaseApiClient } from "./BaseApiClient";
+import { deviceConnectionManager } from "./DeviceConnectionManager";
 
 /**
  * WLED API Response Types
@@ -62,27 +63,77 @@ export interface WledFullStatus {
 
 /**
  * WLED API Client
- * Interfaces with WLED devices using the JSON API
+ * Interfaces with WLED devices using the JSON API with connection optimization
  */
 export class WledClient extends BaseApiClient {
+  private readonly ip: string;
+
   constructor(
     baseUrl: string = process.env.NEXT_PUBLIC_WLED_API_URL ||
       "http://wled.local"
   ) {
     super(baseUrl);
+    // Extract IP from baseUrl for connection management
+    try {
+      const url = new URL(baseUrl);
+      this.ip = url.hostname;
+    } catch {
+      this.ip = baseUrl.replace(/^https?:\/\//, "").split(":")[0];
+    }
   }
 
   /**
-   * Health check - ping the WLED device
+   * Override request method to use device connection manager
+   */
+  protected async request<T>(
+    endpoint: string,
+    options: RequestInit = {}
+  ): Promise<T> {
+    const url = `${this.baseUrl}${endpoint}`;
+    return deviceConnectionManager.queueRequest<T>(this.ip, url, {
+      ...options,
+      headers: {
+        ...this.defaultHeaders,
+        ...options.headers,
+      },
+    });
+  }
+
+  /**
+   * Health check - ping the WLED device with retry logic
    */
   async ping(): Promise<boolean> {
-    try {
-      await this.get<WledInfo>("/json/info");
-      return true;
-    } catch (error) {
-      console.error("WLED ping failed:", error);
-      return false;
+    const maxRetries = 2;
+    const retryDelay = 1000; // 1 second between retries
+
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        await this.get<WledInfo>("/json/info");
+        return true;
+      } catch (error) {
+        const isTimeout =
+          error instanceof Error && error.message.includes("timeout");
+        const isLastAttempt = attempt === maxRetries;
+
+        if (isTimeout && !isLastAttempt) {
+          console.warn(`WLED ping attempt ${attempt} timed out, retrying...`);
+          await new Promise((resolve) => setTimeout(resolve, retryDelay));
+          continue;
+        }
+
+        if (isLastAttempt) {
+          console.error(
+            "WLED ping failed after",
+            maxRetries,
+            "attempts:",
+            error
+          );
+        }
+        return false;
+      }
     }
+
+    return false;
   }
 
   /**

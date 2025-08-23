@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { LogProvider } from "@/contexts/LogContext";
+import LogModal from "@/components/LogModal";
+import LogToggle from "@/components/LogToggle";
+import ConnectionMonitor from "@/components/ConnectionMonitor";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,7 +31,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <LogProvider>
+          {children}
+          <LogModal />
+          <LogToggle />
+          <ConnectionMonitor />
+        </LogProvider>
       </body>
     </html>
   );

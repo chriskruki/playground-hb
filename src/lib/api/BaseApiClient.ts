@@ -1,5 +1,7 @@
+import { httpClient } from "./HttpClient";
+
 /**
- * Base API client class with shared functionality
+ * Base API client class with shared functionality and connection pooling
  */
 export abstract class BaseApiClient {
   protected readonly baseUrl: string;
@@ -14,27 +16,27 @@ export abstract class BaseApiClient {
   }
 
   /**
-   * Make HTTP request with error handling
+   * Make HTTP request with error handling and connection pooling
    */
   protected async request<T>(
     endpoint: string,
     options: RequestInit = {}
   ): Promise<T> {
     const url = `${this.baseUrl}${endpoint}`;
+    const headers = {
+      ...this.defaultHeaders,
+      ...options.headers,
+    };
 
-    const response = await fetch(url, {
-      ...options,
-      headers: {
-        ...this.defaultHeaders,
-        ...options.headers,
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    // Use optimized HTTP client with connection pooling
+    if (options.method === "POST" || options.method === "PUT") {
+      const data = options.body
+        ? JSON.parse(options.body as string)
+        : undefined;
+      return httpClient.post<T>(url, data, headers);
+    } else {
+      return httpClient.get<T>(url, headers);
     }
-
-    return response.json();
   }
 
   /**
