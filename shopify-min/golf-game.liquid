@@ -320,14 +320,8 @@
         <!-- Email Signup Form for Mini Golf -->
         <form
           id="email-form-{{ section.id }}"
-          style="
-            margin-top: 30px;
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
-          "
-          onsubmit="GolfGameHandleFormSubmit(event)"
+          style="margin-top: 30px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap"
+          onsubmit="window.GolfGameHandleFormSubmit(event)"
         >
           <input
             type="email"
@@ -386,18 +380,9 @@
           </div>
         </div>
 
-        <div id="status-{{ section.id }}" class="status aiming">
-          Watch the power meter and click PUTT when ready!
-        </div>
+        <div id="status-{{ section.id }}" class="status aiming">Watch the power meter and click PUTT when ready!</div>
 
-        <button
-          id="puttBtn-{{ section.id }}"
-          class="game-btn putt-btn"
-          onclick="GolfGamePutt()"
-          style="display: none"
-        >
-          🏌️ PUTT!
-        </button>
+        <button id="puttBtn-{{ section.id }}" class="game-btn putt-btn" onclick="GolfGamePutt()" style="display: none">🏌️ PUTT!</button>
       </div>
 
       <!-- Prize -->
@@ -536,7 +521,6 @@
 
       // Handle form submission with preventDefault
       window.GolfGameHandleFormSubmit = function (event) {
-        console.log("handleFormSubmit");
         event.preventDefault();
         event.stopPropagation();
 
@@ -549,17 +533,11 @@
           return;
         }
 
-        // Submit to your email service
-        {% if section.settings.marketing_url != blank %}
-        fetch("{{ section.settings.marketing_url }}", {
+        fetch(MARKETING_URL, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email: email }),
-          mode: "no-cors"
-        }).catch(error => console.log("Email service error:", error));
-        {% endif %}
+          body: formData,
+          mode: "no-cors",
+        }).catch((error) => console.log("Email service error:", error));
 
         // Start the game immediately
         GolfGameStartGame();
@@ -578,8 +556,7 @@
 
       // Start aiming phase
       function startAiming() {
-        document.getElementById("status-{{ section.id }}").textContent =
-          "Watch the power meter and click PUTT when ready!";
+        document.getElementById("status-{{ section.id }}").textContent = "Watch the power meter and click PUTT when ready!";
         document.getElementById("status-{{ section.id }}").className = "status aiming";
 
         // Start power meter animation
@@ -617,9 +594,7 @@
         ballAnimStart = performance.now();
         distance += power;
 
-        document.getElementById(
-          "status"
-        ).textContent = `Shot ${power} units! Ball at distance ${distance}`;
+        document.getElementById("status-{{ section.id }}").textContent = `Shot ${power} units! Ball at distance ${distance}`;
         document.getElementById("status-{{ section.id }}").className = "status shooting";
         updateStats();
 
@@ -647,9 +622,7 @@
           const prize = prizes[shots] || prizes[4];
           document.getElementById("game-{{ section.id }}").style.display = "none";
           document.getElementById("prize-{{ section.id }}").style.display = "flex";
-          document.getElementById(
-            "prizeTitle"
-          ).textContent = `🎉 ${prize.name}`;
+          document.getElementById("prizeTitle-{{ section.id }}").textContent = `🎉 ${prize.name}`;
           document.getElementById("prizeDesc-{{ section.id }}").textContent = prize.desc;
           document.getElementById("prizeCode-{{ section.id }}").textContent = prize.code;
         } else if (distance > target) {
@@ -660,8 +633,7 @@
         } else {
           // Continue - auto-start aiming again
           state = "aiming";
-          document.getElementById("status-{{ section.id }}").textContent =
-            "Watch the power meter and click PUTT when ready!";
+          document.getElementById("status-{{ section.id }}").textContent = "Watch the power meter and click PUTT when ready!";
           document.getElementById("status-{{ section.id }}").className = "status aiming";
           startAiming();
         }
@@ -693,9 +665,7 @@
       // Update stats display
       function updateStats() {
         document.getElementById("shots-{{ section.id }}").textContent = `Shots: ${shots}`;
-        document.getElementById("distance-{{ section.id }}").textContent = `Distance to go: ${
-          target - distance
-        }`;
+        document.getElementById("distance-{{ section.id }}").textContent = `Distance to go: ${target - distance}`;
       }
 
       // Draw game
@@ -771,12 +741,7 @@
           ctx.strokeRect(meterX, meterY, meterW, meterH);
 
           // Static gradient fill from left (low) to right (high)
-          const grad = ctx.createLinearGradient(
-            meterX,
-            meterY,
-            meterX + meterW,
-            meterY
-          );
+          const grad = ctx.createLinearGradient(meterX, meterY, meterX + meterW, meterY);
           grad.addColorStop(0, "#ffffff");
           grad.addColorStop(1, "#ec3c28");
           ctx.fillStyle = grad;
@@ -796,11 +761,7 @@
           ctx.font = "bold 16px Arial";
           ctx.textAlign = "left";
           ctx.textBaseline = "middle";
-          ctx.fillText(
-            String(power),
-            meterX + meterW + 10,
-            meterY + meterH / 2
-          );
+          ctx.fillText(String(power), meterX + meterW + 10, meterY + meterH / 2);
 
           // Canvas PUTT button to the left of the bar
           const btnW = 90,

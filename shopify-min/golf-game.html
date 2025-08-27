@@ -39,7 +39,7 @@
         flex-wrap: wrap;
       }
 
-      input[type='email'] {
+      input[type="email"] {
         padding: 12px 16px;
         font-size: 16px;
         border: 1px solid #ccc;
@@ -246,7 +246,7 @@
           align-items: center;
         }
 
-        input[type='email'] {
+        input[type="email"] {
           min-width: 200px;
           margin-bottom: 10px;
         }
@@ -270,7 +270,7 @@
         <form
           id="email-form"
           style="margin-top: 30px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap"
-          onsubmit="GolfGameHandleFormSubmit(event)"
+          onsubmit="window.GolfGameHandleFormSubmit(event)"
         >
           <input
             type="email"
@@ -331,7 +331,7 @@
 
         <div id="status" class="status aiming">Watch the power meter and click PUTT when ready!</div>
 
-        <button id="puttBtn" class="game-btn putt-btn" onclick="putt()" style="display: none">🏌️ PUTT!</button>
+        <button id="puttBtn" class="game-btn putt-btn" onclick="GolfGamePutt()" style="display: none">🏌️ PUTT!</button>
       </div>
 
       <!-- Prize -->
@@ -363,27 +363,27 @@
     </div>
 
     <script>
-      const GAME_TITLE = 'GAME_TITLE';
-      const GAME_SUBTITLE = 'GAME_SUBTITLE';
-      const EMAIL_PLACEHOLDER = 'EMAIL_PLACEHOLDER';
-      const SUBMIT_BUTTON_TEXT = 'SUBMIT_BUTTON_TEXT';
-      const MARKETING_URL = 'https://manage.kmail-lists.com/subscriptions/subscribe?a=Sg8ErC&g=VR7JgL';
-      const PUTTY_IMAGE_URL = 'PUTTY_IMAGE_URL';
-      const PRIZE_1_NAME = 'PRIZE_1_NAME';
-      const PRIZE_1_CODE = 'PRIZE_1_CODE';
-      const PRIZE_1_DESC = 'PRIZE_1_DESC';
-      const PRIZE_2_NAME = 'PRIZE_2_NAME';
-      const PRIZE_2_CODE = 'PRIZE_2_CODE';
-      const PRIZE_2_DESC = 'PRIZE_2_DESC';
-      const PRIZE_3_NAME = 'PRIZE_3_NAME';
-      const PRIZE_3_CODE = 'PRIZE_3_CODE';
-      const PRIZE_3_DESC = 'PRIZE_3_DESC';
-      const PRIZE_4_NAME = 'PRIZE_4_NAME';
-      const PRIZE_4_CODE = 'PRIZE_4_CODE';
-      const PRIZE_4_DESC = 'PRIZE_4_DESC';
-      const PRIZE_5_NAME = 'PRIZE_5_NAME';
-      const PRIZE_5_CODE = 'PRIZE_5_CODE';
-      const PRIZE_5_DESC = 'PRIZE_5_DESC';
+      const GAME_TITLE = "GAME_TITLE";
+      const GAME_SUBTITLE = "GAME_SUBTITLE";
+      const EMAIL_PLACEHOLDER = "EMAIL_PLACEHOLDER";
+      const SUBMIT_BUTTON_TEXT = "SUBMIT_BUTTON_TEXT";
+      const MARKETING_URL = "https://manage.kmail-lists.com/subscriptions/subscribe?a=Sg8ErC&g=VR7JgL";
+      const PUTTY_IMAGE_URL = "PUTTY_IMAGE_URL";
+      const PRIZE_1_NAME = "PRIZE_1_NAME";
+      const PRIZE_1_CODE = "PRIZE_1_CODE";
+      const PRIZE_1_DESC = "PRIZE_1_DESC";
+      const PRIZE_2_NAME = "PRIZE_2_NAME";
+      const PRIZE_2_CODE = "PRIZE_2_CODE";
+      const PRIZE_2_DESC = "PRIZE_2_DESC";
+      const PRIZE_3_NAME = "PRIZE_3_NAME";
+      const PRIZE_3_CODE = "PRIZE_3_CODE";
+      const PRIZE_3_DESC = "PRIZE_3_DESC";
+      const PRIZE_4_NAME = "PRIZE_4_NAME";
+      const PRIZE_4_CODE = "PRIZE_4_CODE";
+      const PRIZE_4_DESC = "PRIZE_4_DESC";
+      const PRIZE_5_NAME = "PRIZE_5_NAME";
+      const PRIZE_5_CODE = "PRIZE_5_CODE";
+      const PRIZE_5_DESC = "PRIZE_5_DESC";
 
       // Game state
       let shots = 0,
@@ -397,11 +397,11 @@
       let ballStart = 0,
         ballTarget = 0,
         ballAnimStart = 0;
-      let state = 'email'; // email, ready, aiming, shooting, won, lost
+      let state = "email"; // email, ready, aiming, shooting, won, lost
 
       // Canvas and context
-      const canvas = document.getElementById('canvas');
-      const ctx = canvas.getContext('2d');
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
 
       // Putty image
       const puttyImg = new Image();
@@ -415,8 +415,8 @@
       // Canvas button hit area
       let puttBtnRect = { x: 0, y: 0, w: 0, h: 0 };
 
-      canvas.addEventListener('click', (e) => {
-        if (state !== 'aiming') return;
+      canvas.addEventListener("click", (e) => {
+        if (state !== "aiming") return;
         const rect = canvas.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
@@ -426,14 +426,14 @@
           y >= puttBtnRect.y &&
           y <= puttBtnRect.y + puttBtnRect.h
         ) {
-          putt();
+          GolfGamePutt();
         }
       });
 
       // Add cursor pointer when hovering over putt button
-      canvas.addEventListener('mousemove', (e) => {
-        if (state !== 'aiming') {
-          canvas.style.cursor = 'default';
+      canvas.addEventListener("mousemove", (e) => {
+        if (state !== "aiming") {
+          canvas.style.cursor = "default";
           return;
         }
         const rect = canvas.getBoundingClientRect();
@@ -445,9 +445,9 @@
           y >= puttBtnRect.y &&
           y <= puttBtnRect.y + puttBtnRect.h
         ) {
-          canvas.style.cursor = 'pointer';
+          canvas.style.cursor = "pointer";
         } else {
-          canvas.style.cursor = 'default';
+          canvas.style.cursor = "default";
         }
       });
 
@@ -467,22 +467,18 @@
 
         const form = event.target;
         const formData = new FormData(form);
-        const email = formData.get('email');
+        const email = formData.get("email");
 
-        if (!email || !email.includes('@')) {
-          alert('Please enter a valid email address');
+        if (!email || !email.includes("@")) {
+          alert("Please enter a valid email address");
           return;
         }
 
-        // submitToEmailService(email);
         fetch(MARKETING_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email: email }),
-          mode: 'no-cors',
-        }).catch((error) => console.log('Email service error:', error));
+          method: "POST",
+          body: formData,
+          mode: "no-cors",
+        }).catch((error) => console.log("Email service error:", error));
 
         // Start the game immediately
         GolfGameStartGame();
@@ -490,23 +486,23 @@
 
       // Start game after email (called by form submission)
       window.GolfGameStartGame = function () {
-        document.getElementById('emailSection').style.display = 'none';
-        document.getElementById('game').style.display = 'block';
+        document.getElementById("emailSection").style.display = "none";
+        document.getElementById("game").style.display = "block";
 
         // Auto-start aiming instead of requiring button click
-        state = 'aiming';
+        state = "aiming";
         startAiming();
         draw();
       };
 
       // Start aiming phase
       function startAiming() {
-        document.getElementById('status').textContent = 'Watch the power meter and click PUTT when ready!';
-        document.getElementById('status').className = 'status aiming';
+        document.getElementById("status").textContent = "Watch the power meter and click PUTT when ready!";
+        document.getElementById("status").className = "status aiming";
 
         // Start power meter animation
         function animate() {
-          if (state !== 'aiming') return;
+          if (state !== "aiming") return;
 
           powerTick += 2 * tickDir;
           if (powerTick <= 0) {
@@ -528,10 +524,10 @@
 
       // Take shot
       window.GolfGamePutt = function () {
-        if (state !== 'aiming') return;
+        if (state !== "aiming") return;
 
         cancelAnimationFrame(animId);
-        state = 'shooting';
+        state = "shooting";
         shots++;
 
         ballStart = distance;
@@ -539,8 +535,8 @@
         ballAnimStart = performance.now();
         distance += power;
 
-        document.getElementById('status').textContent = `Shot ${power} units! Ball at distance ${distance}`;
-        document.getElementById('status').className = 'status shooting';
+        document.getElementById("status").textContent = `Shot ${power} units! Ball at distance ${distance}`;
+        document.getElementById("status").className = "status shooting";
         updateStats();
 
         // Animate ball
@@ -563,23 +559,23 @@
       function checkEnd() {
         if (distance === target) {
           // Win!
-          state = 'won';
+          state = "won";
           const prize = prizes[shots] || prizes[4];
-          document.getElementById('game').style.display = 'none';
-          document.getElementById('prize').style.display = 'flex';
-          document.getElementById('prizeTitle').textContent = `🎉 ${prize.name}`;
-          document.getElementById('prizeDesc').textContent = prize.desc;
-          document.getElementById('prizeCode').textContent = prize.code;
+          document.getElementById("game").style.display = "none";
+          document.getElementById("prize").style.display = "flex";
+          document.getElementById("prizeTitle").textContent = `🎉 ${prize.name}`;
+          document.getElementById("prizeDesc").textContent = prize.desc;
+          document.getElementById("prizeCode").textContent = prize.code;
         } else if (distance > target) {
           // Lose!
-          state = 'lost';
-          document.getElementById('game').style.display = 'none';
-          document.getElementById('lose').style.display = 'block';
+          state = "lost";
+          document.getElementById("game").style.display = "none";
+          document.getElementById("lose").style.display = "block";
         } else {
           // Continue - auto-start aiming again
-          state = 'aiming';
-          document.getElementById('status').textContent = 'Watch the power meter and click PUTT when ready!';
-          document.getElementById('status').className = 'status aiming';
+          state = "aiming";
+          document.getElementById("status").textContent = "Watch the power meter and click PUTT when ready!";
+          document.getElementById("status").className = "status aiming";
           startAiming();
         }
       }
@@ -594,23 +590,23 @@
         ballStart = 0;
         ballTarget = 0;
         ballAnimStart = 0;
-        state = 'email';
+        state = "email";
 
         if (animId) cancelAnimationFrame(animId);
         if (ballAnimId) cancelAnimationFrame(ballAnimId);
 
-        document.getElementById('emailSection').style.display = 'block';
-        document.getElementById('game').style.display = 'none';
-        document.getElementById('prize').style.display = 'none';
-        document.getElementById('lose').style.display = 'none';
-        document.getElementById('email').value = '';
+        document.getElementById("emailSection").style.display = "block";
+        document.getElementById("game").style.display = "none";
+        document.getElementById("prize").style.display = "none";
+        document.getElementById("lose").style.display = "none";
+        document.getElementById("email").value = "";
         updateStats();
       };
 
       // Update stats display
       function updateStats() {
-        document.getElementById('shots').textContent = `Shots: ${shots}`;
-        document.getElementById('distance').textContent = `Distance to go: ${target - distance}`;
+        document.getElementById("shots").textContent = `Shots: ${shots}`;
+        document.getElementById("distance").textContent = `Distance to go: ${target - distance}`;
       }
 
       // Draw game
@@ -618,9 +614,9 @@
         ctx.clearRect(0, 0, 700, 120);
 
         // Lane (golf course)
-        ctx.fillStyle = '#314027';
+        ctx.fillStyle = "#314027";
         ctx.fillRect(70, 40, 560, 30);
-        ctx.strokeStyle = '#000';
+        ctx.strokeStyle = "#000";
         ctx.lineWidth = 4;
         ctx.strokeRect(70, 40, 560, 30);
 
@@ -634,19 +630,19 @@
         }
 
         // Hole
-        ctx.fillStyle = '#000';
+        ctx.fillStyle = "#000";
         ctx.beginPath();
         ctx.arc(620, 55, 6, 0, Math.PI * 2);
         ctx.fill();
 
         // Flag
-        ctx.strokeStyle = '#000';
+        ctx.strokeStyle = "#000";
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.moveTo(620, 55);
         ctx.lineTo(620, 25);
         ctx.stroke();
-        ctx.fillStyle = '#EC3C28';
+        ctx.fillStyle = "#EC3C28";
         ctx.beginPath();
         ctx.moveTo(620, 25);
         ctx.lineTo(640, 30);
@@ -655,7 +651,7 @@
 
         // Ball
         let ballDist = distance;
-        if (state === 'shooting' && ballAnimStart > 0) {
+        if (state === "shooting" && ballAnimStart > 0) {
           const elapsed = performance.now() - ballAnimStart;
           const progress = Math.min(elapsed / 1000, 1);
           const eased = 1 - Math.pow(1 - progress, 3);
@@ -663,37 +659,37 @@
         }
 
         const ballX = 70 + (ballDist / target) * 560;
-        ctx.fillStyle = '#fff';
+        ctx.fillStyle = "#fff";
         ctx.beginPath();
         ctx.arc(ballX, 55, 6, 0, Math.PI * 2);
         ctx.fill();
-        ctx.strokeStyle = '#ccc';
+        ctx.strokeStyle = "#ccc";
         ctx.lineWidth = 1;
         ctx.stroke();
 
         // Power meter + button below the grass (only when aiming)
-        if (state === 'aiming') {
+        if (state === "aiming") {
           const meterX = 320; // shifted right to make room for button
           const meterY = 90; // moved down with grass
           const meterW = 160; // 60% reduction from 400
           const meterH = 20;
 
           // Background & border
-          ctx.fillStyle = '#f0f0f0';
+          ctx.fillStyle = "#f0f0f0";
           ctx.fillRect(meterX, meterY, meterW, meterH);
-          ctx.strokeStyle = '#333';
+          ctx.strokeStyle = "#333";
           ctx.lineWidth = 2;
           ctx.strokeRect(meterX, meterY, meterW, meterH);
 
           // Static gradient fill from left (low) to right (high)
           const grad = ctx.createLinearGradient(meterX, meterY, meterX + meterW, meterY);
-          grad.addColorStop(0, '#ffffff');
-          grad.addColorStop(1, '#ec3c28');
+          grad.addColorStop(0, "#ffffff");
+          grad.addColorStop(1, "#ec3c28");
           ctx.fillStyle = grad;
           ctx.fillRect(meterX, meterY, meterW, meterH);
 
           // Tick
-          ctx.strokeStyle = '#000';
+          ctx.strokeStyle = "#000";
           ctx.lineWidth = 4;
           ctx.beginPath();
           const tickX = meterX + (powerTick / meterW) * meterW;
@@ -702,10 +698,10 @@
           ctx.stroke();
 
           // Current power number to the right of the bar
-          ctx.fillStyle = '#02210a';
-          ctx.font = 'bold 16px Arial';
-          ctx.textAlign = 'left';
-          ctx.textBaseline = 'middle';
+          ctx.fillStyle = "#02210a";
+          ctx.font = "bold 16px Arial";
+          ctx.textAlign = "left";
+          ctx.textBaseline = "middle";
           ctx.fillText(String(power), meterX + meterW + 10, meterY + meterH / 2);
 
           // Canvas PUTT button to the left of the bar
@@ -714,16 +710,16 @@
             btnX = meterX - (btnW + 15),
             btnY = meterY - 2;
           puttBtnRect = { x: btnX, y: btnY, w: btnW, h: btnH };
-          ctx.fillStyle = '#ec3c28';
+          ctx.fillStyle = "#ec3c28";
           ctx.fillRect(btnX, btnY, btnW, btnH);
-          ctx.strokeStyle = '#a12a1a';
+          ctx.strokeStyle = "#a12a1a";
           ctx.lineWidth = 2;
           ctx.strokeRect(btnX, btnY, btnW, btnH);
-          ctx.fillStyle = '#fff';
-          ctx.font = 'bold 14px Arial';
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
-          ctx.fillText('PUTT!', btnX + btnW / 2, btnY + btnH / 2);
+          ctx.fillStyle = "#fff";
+          ctx.font = "bold 14px Arial";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText("PUTT!", btnX + btnW / 2, btnY + btnH / 2);
         }
       }
 

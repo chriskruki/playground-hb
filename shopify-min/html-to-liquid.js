@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
 // Configuration for HTML to Liquid conversion
 const CONVERSION_MAP = {
@@ -33,21 +33,21 @@ const CONVERSION_MAP = {
   PRIZE_5_DESC: '{{ section.settings.prize_5_desc | default: "$2 Off Your Order" }}',
 
   // Image URLs
-  PUTTY_IMAGE_URL: '{{ section.settings.putty_image | image_url }}',
+  PUTTY_IMAGE_URL: "{{ section.settings.putty_image | image_url }}",
 };
 
 // File paths
-const HTML_FILE = path.join(__dirname, 'golf-game.html');
-const LIQUID_OUTPUT = path.join(__dirname, 'golf-game.liquid');
+const HTML_FILE = path.join(__dirname, "golf-game.html");
+const LIQUID_OUTPUT = path.join(__dirname, "golf-game.liquid");
 
 function convertHtmlToLiquid() {
   try {
     // Read the HTML file
-    console.log('Reading HTML file...');
-    const htmlContent = fs.readFileSync(HTML_FILE, 'utf8');
+    console.log("Reading HTML file...");
+    const htmlContent = fs.readFileSync(HTML_FILE, "utf8");
 
     // Start building the Liquid template
-    let liquidContent = '';
+    let liquidContent = "";
 
     // Add Liquid header comment
     liquidContent += `{% comment %}
@@ -59,7 +59,7 @@ function convertHtmlToLiquid() {
 `;
 
     // Extract and convert CSS
-    console.log('Processing CSS...');
+    console.log("Processing CSS...");
     const cssMatch = htmlContent.match(/<style>([\s\S]*?)<\/style>/);
     if (cssMatch) {
       let css = cssMatch[1];
@@ -109,13 +109,13 @@ ${css}
     }
 
     // Extract and convert HTML body content
-    console.log('Processing HTML...');
+    console.log("Processing HTML...");
     const bodyMatch = htmlContent.match(/<body>([\s\S]*?)<\/body>/);
     if (bodyMatch) {
       let bodyContent = bodyMatch[1];
 
       // Remove the inline <script>...</script> from body HTML; JS will be inlined separately later
-      bodyContent = bodyContent.replace(/<script>[\s\S]*?<\/script>/, '');
+      bodyContent = bodyContent.replace(/<script>[\s\S]*?<\/script>/, "");
 
       // Remove the outer container div and replace with mini-golf-container
       bodyContent = bodyContent.replace(/<div class="container">/, '<div class="mini-golf-container">');
@@ -123,18 +123,10 @@ ${css}
       // Add section ID suffixes to all IDs to prevent conflicts
       bodyContent = bodyContent.replace(/id="([^"]+)"/g, 'id="$1-{{ section.id }}"');
       bodyContent = bodyContent.replace(/getElementById\("([^"]+)"\)/g, 'getElementById("$1-{{ section.id }}")');
-      // Update inline handlers to call prefixed functions instead of section.id variants
-      bodyContent = bodyContent.replace(/onclick="putt\(\)"/g, 'onclick="GolfGamePutt()"');
-      bodyContent = bodyContent.replace(/onclick="startGame\(\)"/g, 'onclick="GolfGameStartGame()"');
-      bodyContent = bodyContent.replace(/onclick="reset\(\)"/g, 'onclick="GolfGameReset()"');
-      bodyContent = bodyContent.replace(
-        /onsubmit="handleFormSubmit\(event\)"/g,
-        'onsubmit="GolfGameHandleFormSubmit(event)"',
-      );
 
       // Replace static text with Liquid variables
       Object.entries(CONVERSION_MAP).forEach(([htmlText, liquidText]) => {
-        const regex = new RegExp(`\\b${htmlText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'g');
+        const regex = new RegExp(`\\b${htmlText.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "g");
         bodyContent = bodyContent.replace(regex, liquidText);
       });
 
@@ -202,7 +194,7 @@ ${bodyContent}
     }
 
     // Process and inline the JavaScript
-    console.log('Processing and inlining JavaScript...');
+    console.log("Processing and inlining JavaScript...");
 
     // Find and extract the JavaScript from the HTML
     const scriptMatch = htmlContent.match(/<script>([\s\S]*?)<\/script>/);
@@ -212,111 +204,96 @@ ${bodyContent}
       // Replace const declarations with Liquid values using | json so no extra escaping is needed
       const constReplacements = [
         {
-          key: 'GAME_TITLE',
+          key: "GAME_TITLE",
           value: '{{ section.settings.game_title | default: "Mini Golf with Putty" | json }}',
         },
         {
-          key: 'GAME_SUBTITLE',
+          key: "GAME_SUBTITLE",
           value: '{{ section.settings.game_subtitle | default: "Enter your email and win prizes!" | json }}',
         },
         {
-          key: 'EMAIL_PLACEHOLDER',
+          key: "EMAIL_PLACEHOLDER",
           value: '{{ section.settings.email_placeholder | default: "you@domain.com" | json }}',
         },
         {
-          key: 'SUBMIT_BUTTON_TEXT',
+          key: "SUBMIT_BUTTON_TEXT",
           value: '{{ section.settings.submit_button_text | default: "Let\'s Putt!" | json }}',
         },
         {
-          key: 'MARKETING_URL',
-          value: '{{ section.settings.marketing_url | json }}',
+          key: "MARKETING_URL",
+          value: "{{ section.settings.marketing_url | json }}",
         },
         {
-          key: 'PUTTY_IMAGE_URL',
-          value: '{{ section.settings.putty_image | image_url | json }}',
+          key: "PUTTY_IMAGE_URL",
+          value: "{{ section.settings.putty_image | image_url | json }}",
         },
         {
-          key: 'PRIZE_1_NAME',
+          key: "PRIZE_1_NAME",
           value: '{{ section.settings.prize_1_name | default: "Hole in One!" | json }}',
         },
         {
-          key: 'PRIZE_1_CODE',
+          key: "PRIZE_1_CODE",
           value: '{{ section.settings.prize_1_code | default: "HOLEINONE" | json }}',
         },
         {
-          key: 'PRIZE_1_DESC',
+          key: "PRIZE_1_DESC",
           value: '{{ section.settings.prize_1_desc | default: "Free Round" | json }}',
         },
         {
-          key: 'PRIZE_2_NAME',
+          key: "PRIZE_2_NAME",
           value: '{{ section.settings.prize_2_name | default: "Eagle!" | json }}',
         },
         {
-          key: 'PRIZE_2_CODE',
+          key: "PRIZE_2_CODE",
           value: '{{ section.settings.prize_2_code | default: "EAGLE2023" | json }}',
         },
         {
-          key: 'PRIZE_2_DESC',
+          key: "PRIZE_2_DESC",
           value: '{{ section.settings.prize_2_desc | default: "Free Appetizer" | json }}',
         },
         {
-          key: 'PRIZE_3_NAME',
+          key: "PRIZE_3_NAME",
           value: '{{ section.settings.prize_3_name | default: "Birdie!" | json }}',
         },
         {
-          key: 'PRIZE_3_CODE',
+          key: "PRIZE_3_CODE",
           value: '{{ section.settings.prize_3_code | default: "BIRDIE10" | json }}',
         },
         {
-          key: 'PRIZE_3_DESC',
+          key: "PRIZE_3_DESC",
           value: '{{ section.settings.prize_3_desc | default: "10% Off Your Order" | json }}',
         },
         {
-          key: 'PRIZE_4_NAME',
+          key: "PRIZE_4_NAME",
           value: '{{ section.settings.prize_4_name | default: "Par" | json }}',
         },
         {
-          key: 'PRIZE_4_CODE',
+          key: "PRIZE_4_CODE",
           value: '{{ section.settings.prize_4_code | default: "PAR5OFF" | json }}',
         },
         {
-          key: 'PRIZE_4_DESC',
+          key: "PRIZE_4_DESC",
           value: '{{ section.settings.prize_4_desc | default: "5% Off Your Order" | json }}',
         },
         {
-          key: 'PRIZE_5_NAME',
+          key: "PRIZE_5_NAME",
           value: '{{ section.settings.prize_5_name | default: "Bogey" | json }}',
         },
         {
-          key: 'PRIZE_5_CODE',
+          key: "PRIZE_5_CODE",
           value: '{{ section.settings.prize_5_code | default: "BOGEY2" | json }}',
         },
         {
-          key: 'PRIZE_5_DESC',
+          key: "PRIZE_5_DESC",
           value: '{{ section.settings.prize_5_desc | default: "$2 Off Your Order" | json }}',
         },
       ];
 
       constReplacements.forEach(({ key, value }) => {
-        const regex = new RegExp(`const\\s+${key}\\s*=\\s*"${key}";`);
+        // Replace only the const declaration's assigned value (single or double quoted)
+        const regex = new RegExp(`const\\s+${key}\\s*=\\s*['\"]([\\s\\S]*?)['\"];`);
         jsContent = jsContent.replace(regex, `const ${key} = ${value};`);
       });
-
-      // Replace email service URL with Liquid template variable
-      // jsContent = jsContent.replace(
-      //   /\/\/ submitToEmailService\(email\);/g,
-      //   `// Submit to your email service
-      //   {% if section.settings.marketing_url != blank %}
-      //   fetch("{{ section.settings.marketing_url }}", {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //     body: JSON.stringify({ email: email }),
-      //     mode: "no-cors"
-      //   }).catch(error => console.log("Email service error:", error));
-      //   {% endif %}`
-      // );
 
       // Replace prize placeholders with Liquid template variables
       jsContent = jsContent.replace(
@@ -341,19 +318,10 @@ ${bodyContent}
       );
 
       // Add section ID namespacing for Shopify
-      const sectionId = '{{ section.id }}';
+      const sectionId = "{{ section.id }}";
 
       // Namespace all DOM element IDs
       jsContent = jsContent.replace(/getElementById\("([^"]+)"\)/g, `getElementById("$1-${sectionId}")`);
-
-      // Prefix global functions with GolfGame to avoid section.id in function names
-      jsContent = jsContent.replace(/window\.putt = function/g, `window.GolfGamePutt = function`);
-      jsContent = jsContent.replace(/window\.reset = function/g, `window.GolfGameReset = function`);
-
-      // Fix internal function calls to use prefixed versions
-      jsContent = jsContent.replace(/\bstartGame\(\)/g, `GolfGameStartGame()`);
-      jsContent = jsContent.replace(/\bputt\(\)/g, `GolfGamePutt()`);
-      jsContent = jsContent.replace(/\breset\(\)/g, `GolfGameReset()`);
 
       liquidContent += `
 
@@ -368,7 +336,7 @@ ${jsContent}
     }
 
     // Add the Liquid schema
-    console.log('Adding Liquid schema...');
+    console.log("Adding Liquid schema...");
     liquidContent += `
 {% schema %}
 {
@@ -590,14 +558,14 @@ ${jsContent}
 {% endschema %}`;
 
     // Write the Liquid file
-    console.log('Writing Liquid file...');
-    fs.writeFileSync(LIQUID_OUTPUT, liquidContent, 'utf8');
+    console.log("Writing Liquid file...");
+    fs.writeFileSync(LIQUID_OUTPUT, liquidContent, "utf8");
 
-    console.log('✅ Successfully converted HTML to Liquid!');
+    console.log("✅ Successfully converted HTML to Liquid!");
     console.log(`📄 Input: ${HTML_FILE}`);
     console.log(`📄 Output: ${LIQUID_OUTPUT}`);
   } catch (error) {
-    console.error('❌ Error converting HTML to Liquid:', error.message);
+    console.error("❌ Error converting HTML to Liquid:", error.message);
     process.exit(1);
   }
 }
