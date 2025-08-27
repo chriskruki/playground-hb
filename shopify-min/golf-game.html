@@ -90,11 +90,11 @@
 
       .game-area {
         display: flex;
-        align-items: flex-start;
+        flex-direction: column;
+        align-items: center;
         justify-content: center;
         gap: 20px;
         margin: 20px 0;
-        flex-wrap: wrap;
       }
 
       .canvas-container {
@@ -184,6 +184,7 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        width: 100%;
         gap: 10px;
       }
 
@@ -365,6 +366,7 @@
       const GAME_SUBTITLE = "GAME_SUBTITLE";
       const EMAIL_PLACEHOLDER = "EMAIL_PLACEHOLDER";
       const SUBMIT_BUTTON_TEXT = "SUBMIT_BUTTON_TEXT";
+      const AIM_BANNER_TEXT = "Click PUTT to shoot at the displayed power level!";
       const MARKETING_URL = "https://manage.kmail-lists.com/subscriptions/subscribe?a=Sg8ErC&g=VR7JgL";
       const PUTTY_IMAGE_URL = "putty.png";
       const PRIZE_1_NAME = "PRIZE_1_NAME";
@@ -385,6 +387,8 @@
 
       const PUTTY_X_OFFSET = 25;
       const PUTTY_Y_OFFSET = -5;
+
+      const TICK_SPEED = 2;
 
       // Game state
       let shots = 0,
@@ -475,11 +479,13 @@
           return;
         }
 
-        fetch(MARKETING_URL, {
-          method: "POST",
-          body: formData,
-          mode: "no-cors",
-        }).catch((error) => console.log("Email service error:", error));
+        if (MARKETING_URL) {
+          fetch(MARKETING_URL, {
+            method: "POST",
+            body: formData,
+            mode: "no-cors",
+          }).catch((error) => console.log("Email service error:", error));
+        }
 
         // Start the game immediately
         GolfGameStartGame();
@@ -489,6 +495,7 @@
       window.GolfGameStartGame = function () {
         showEmail(false);
         showGame(true);
+        showAimBanner(true);
 
         // Auto-start aiming instead of requiring button click
         state = "aiming";
@@ -501,6 +508,7 @@
         if (state !== "aiming") return;
 
         cancelAnimationFrame(animId);
+        animId = null;
         state = "shooting";
         shots++;
 
@@ -543,6 +551,8 @@
 
         if (animId) cancelAnimationFrame(animId);
         if (ballAnimId) cancelAnimationFrame(ballAnimId);
+        animId = null;
+        ballAnimId = null;
 
         showPrizeBanner(false);
         showLoseBanner(false);
@@ -552,11 +562,16 @@
 
       // Start aiming phase
       function startAiming() {
+        // Ensure only one aim animation loop is running
+        if (animId) {
+          cancelAnimationFrame(animId);
+          animId = null;
+        }
         // Start power meter animation
         function animate() {
-          if (state !== "aiming") return;
+          if (state !== "aiming" && state !== "email") return;
 
-          powerTick += 2 * tickDir;
+          powerTick += TICK_SPEED * tickDir;
           if (powerTick <= 0) {
             powerTick = 0;
             tickDir = 1;
@@ -588,7 +603,7 @@
         } else {
           // Continue - auto-start aiming again
           state = "aiming";
-          showAimBanner(true, "Watch the power meter and click PUTT when ready!", "aiming");
+          showAimBanner(true);
           startAiming();
         }
       }
@@ -615,8 +630,8 @@
         }
       }
 
-      function showAimBanner(show = true, text, state) {
-        showStatusBanner(show, text, state);
+      function showAimBanner(show = true) {
+        showStatusBanner(show, AIM_BANNER_TEXT, "aiming");
       }
 
       function showPrizeBanner(show = true, prize = null) {
@@ -694,8 +709,8 @@
         ctx.lineWidth = 1;
         ctx.stroke();
 
-        // Power meter + button below the grass (only when aiming)
-        if (state === "aiming") {
+        // Power meter + button below the grass (show during aiming and email preview)
+        if (state === "aiming" || state === "email") {
           const meterX = 320; // shifted right to make room for button
           const meterY = 90; // moved down with grass
           const meterW = 160; // 60% reduction from 400
@@ -736,13 +751,16 @@
             btnH = 24,
             btnX = meterX - (btnW + 15),
             btnY = meterY - 2;
+
+          const preview = state === "email";
+          // Active (clickable) button
           puttBtnRect = { x: btnX, y: btnY, w: btnW, h: btnH };
-          ctx.fillStyle = "#ec3c28";
+          ctx.fillStyle = preview ? "#bdbdbd" : "#ec3c28";
           ctx.fillRect(btnX, btnY, btnW, btnH);
-          ctx.strokeStyle = "#a12a1a";
+          ctx.strokeStyle = preview ? "#9e9e9e" : "#a12a1a";
           ctx.lineWidth = 2;
           ctx.strokeRect(btnX, btnY, btnW, btnH);
-          ctx.fillStyle = "#fff";
+          ctx.fillStyle = preview ? "#eeeeee" : "#fff";
           ctx.font = "bold 14px Arial";
           ctx.textAlign = "center";
           ctx.textBaseline = "middle";
@@ -752,6 +770,10 @@
 
       // Initial draw
       draw();
+      // Show preview of the game and start aiming animation while in email state
+      showGame(true);
+      showAimBanner(false);
+      startAiming();
     </script>
   </body>
 </html>

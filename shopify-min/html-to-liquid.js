@@ -10,6 +10,8 @@ const CONVERSION_MAP = {
   GAME_SUBTITLE: '{{ section.settings.game_subtitle | default: "Enter your email and win prizes!" }}',
   EMAIL_PLACEHOLDER: '{{ section.settings.email_placeholder | default: "you@domain.com" }}',
   SUBMIT_BUTTON_TEXT: '{{ section.settings.submit_button_text | default: "Let\'s Putt!" }}',
+  AIM_BANNER_TEXT:
+    '{{ section.settings.aim_banner_text | default: "Watch the power meter and click PUTT when ready!" }}',
 
   // Prize data
   PRIZE_1_NAME: '{{ section.settings.prize_1_name | default: "Hole in One!" }}',
@@ -220,6 +222,11 @@ ${bodyContent}
           value: '{{ section.settings.submit_button_text | default: "Let\'s Putt!" | json }}',
         },
         {
+          key: "AIM_BANNER_TEXT",
+          value:
+            '{{ section.settings.aim_banner_text | default: "Watch the power meter and click PUTT when ready!" | json }}',
+        },
+        {
           key: "MARKETING_URL",
           value: "{{ section.settings.marketing_url | json }}",
         },
@@ -347,6 +354,12 @@ ${jsContent}
     {
       "type": "header",
       "content": "Game Content"
+    },
+    {
+      "type": "text",
+      "id": "aim_banner_text",
+      "label": "Aim Banner Text",
+      "default": "Watch the power meter and click PUTT when ready!"
     },
     {
       "type": "text",
