@@ -358,6 +358,7 @@
 
       <!-- Game -->
       <div id="game-{{ section.id }}">
+        <div id="status-{{ section.id }}" class="status aiming">Watch the power meter and click PUTT to shoot!</div>
         <div class="game-area">
           <div class="canvas-container">
             <canvas id="canvas-{{ section.id }}" width="700" height="120"></canvas>
@@ -379,9 +380,6 @@
             </div>
           </div>
         </div>
-
-        <div id="status-{{ section.id }}" class="status aiming">Watch the power meter and click PUTT when ready!</div>
-
         <button id="puttBtn-{{ section.id }}" class="game-btn putt-btn" onclick="GolfGamePutt()" style="display: none">🏌️ PUTT!</button>
       </div>
 
@@ -392,7 +390,7 @@
         <div>Your Code: <span id="prizeCode-{{ section.id }}" class="code">CODE123</span></div>
         <button
           class="game-btn"
-          onclick="GolfGameStartGame()"
+          onclick="GolfGameReset()"
           style="background: rgba(255, 255, 255, 0.2); border: 2px solid white"
         >
           Play Again
@@ -405,7 +403,7 @@
         <p>Don't worry, try again!</p>
         <button
           class="game-btn"
-          onclick="GolfGameStartGame()"
+          onclick="GolfGameReset()"
           style="background: rgba(255, 255, 255, 0.2); border: 2px solid white"
         >
           🔄 Try Again
@@ -554,33 +552,6 @@
         draw();
       };
 
-      // Start aiming phase
-      function startAiming() {
-        document.getElementById("status-{{ section.id }}").textContent = "Watch the power meter and click PUTT when ready!";
-        document.getElementById("status-{{ section.id }}").className = "status aiming";
-
-        // Start power meter animation
-        function animate() {
-          if (state !== "aiming") return;
-
-          powerTick += 2 * tickDir;
-          if (powerTick <= 0) {
-            powerTick = 0;
-            tickDir = 1;
-          }
-          // meter width is 160, use that as max
-          if (powerTick >= 160) {
-            powerTick = 160;
-            tickDir = -1;
-          }
-
-          power = Math.round(1 + (powerTick / 160) * 9);
-          draw();
-          animId = requestAnimationFrame(animate);
-        }
-        animate();
-      }
-
       // Take shot
       window.GolfGamePutt = function () {
         if (state !== "aiming") return;
@@ -614,6 +585,56 @@
         animateBall();
       };
 
+      // Reset game
+      window.GolfGameReset = function () {
+        shots = 0;
+        distance = 0;
+        power = 1;
+        powerTick = 0;
+        tickDir = 1;
+        ballStart = 0;
+        ballTarget = 0;
+        ballAnimStart = 0;
+        state = "email";
+
+        if (animId) cancelAnimationFrame(animId);
+        if (ballAnimId) cancelAnimationFrame(ballAnimId);
+
+        document.getElementById("emailSection-{{ section.id }}").style.display = "block";
+        document.getElementById("game-{{ section.id }}").style.display = "none";
+        document.getElementById("prize-{{ section.id }}").style.display = "none";
+        document.getElementById("lose-{{ section.id }}").style.display = "none";
+        document.getElementById("email-{{ section.id }}").value = "";
+        updateStats();
+      };
+
+      // Start aiming phase
+      function startAiming() {
+        document.getElementById("status-{{ section.id }}").textContent = "Watch the power meter and click PUTT when ready!";
+        document.getElementById("status-{{ section.id }}").className = "status aiming";
+
+        // Start power meter animation
+        function animate() {
+          if (state !== "aiming") return;
+
+          powerTick += 2 * tickDir;
+          if (powerTick <= 0) {
+            powerTick = 0;
+            tickDir = 1;
+          }
+          // meter width is 160, use that as max
+          if (powerTick >= 160) {
+            powerTick = 160;
+            tickDir = -1;
+          }
+
+          power = Math.round(1 + (powerTick / 160) * 9);
+          draw();
+          animId = requestAnimationFrame(animate);
+        }
+        animate();
+      }
+
       // Check win/lose
       function checkEnd() {
         if (distance === target) {
@@ -638,29 +659,6 @@
           startAiming();
         }
       }
-
-      // Reset game
-      window.GolfGameReset = function () {
-        shots = 0;
-        distance = 0;
-        power = 1;
-        powerTick = 0;
-        tickDir = 1;
-        ballStart = 0;
-        ballTarget = 0;
-        ballAnimStart = 0;
-        state = "email";
-
-        if (animId) cancelAnimationFrame(animId);
-        if (ballAnimId) cancelAnimationFrame(ballAnimId);
-
-        document.getElementById("emailSection-{{ section.id }}").style.display = "block";
-        document.getElementById("game-{{ section.id }}").style.display = "none";
-        document.getElementById("prize-{{ section.id }}").style.display = "none";
-        document.getElementById("lose-{{ section.id }}").style.display = "none";
-        document.getElementById("email-{{ section.id }}").value = "";
-        updateStats();
-      };
 
       // Update stats display
       function updateStats() {
@@ -717,7 +715,11 @@
           ballDist = ballStart + (ballTarget - ballStart) * eased;
         }
 
-        const ballX = 70 + (ballDist / target) * 560;
+        // Map distance [0..target] to lane X range [laneStartX..holeCenterX]
+        const laneStartX = 70;
+        const holeCenterX = 620; // matches hole draw position
+        const mappingWidth = holeCenterX - laneStartX; // 550
+        const ballX = laneStartX + (ballDist / target) * mappingWidth;
         ctx.fillStyle = "#fff";
         ctx.beginPath();
         ctx.arc(ballX, 55, 6, 0, Math.PI * 2);

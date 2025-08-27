@@ -366,7 +366,7 @@
       const EMAIL_PLACEHOLDER = "EMAIL_PLACEHOLDER";
       const SUBMIT_BUTTON_TEXT = "SUBMIT_BUTTON_TEXT";
       const MARKETING_URL = "https://manage.kmail-lists.com/subscriptions/subscribe?a=Sg8ErC&g=VR7JgL";
-      const PUTTY_IMAGE_URL = "PUTTY_IMAGE_URL";
+      const PUTTY_IMAGE_URL = "putty.png";
       const PRIZE_1_NAME = "PRIZE_1_NAME";
       const PRIZE_1_CODE = "PRIZE_1_CODE";
       const PRIZE_1_DESC = "PRIZE_1_DESC";
@@ -382,6 +382,9 @@
       const PRIZE_5_NAME = "PRIZE_5_NAME";
       const PRIZE_5_CODE = "PRIZE_5_CODE";
       const PRIZE_5_DESC = "PRIZE_5_DESC";
+
+      const PUTTY_X_OFFSET = 25;
+      const PUTTY_Y_OFFSET = -5;
 
       // Game state
       let shots = 0,
@@ -484,8 +487,8 @@
 
       // Start game after email (called by form submission)
       window.GolfGameStartGame = function () {
-        document.getElementById("emailSection").style.display = "none";
-        document.getElementById("game").style.display = "block";
+        showEmail(false);
+        showGame(true);
 
         // Auto-start aiming instead of requiring button click
         state = "aiming";
@@ -541,19 +544,14 @@
         if (animId) cancelAnimationFrame(animId);
         if (ballAnimId) cancelAnimationFrame(ballAnimId);
 
-        document.getElementById("emailSection").style.display = "block";
-        document.getElementById("game").style.display = "none";
-        document.getElementById("prize").style.display = "none";
-        document.getElementById("lose").style.display = "none";
-        document.getElementById("email").value = "";
+        showPrizeBanner(false);
+        showLoseBanner(false);
+        GolfGameStartGame();
         updateStats();
       };
 
       // Start aiming phase
       function startAiming() {
-        document.getElementById("status").textContent = "Watch the power meter and click PUTT when ready!";
-        document.getElementById("status").className = "status aiming";
-
         // Start power meter animation
         function animate() {
           if (state !== "aiming") return;
@@ -582,21 +580,15 @@
           // Win!
           state = "won";
           const prize = prizes[shots] || prizes[4];
-          document.getElementById("game").style.display = "none";
-          document.getElementById("prize").style.display = "flex";
-          document.getElementById("prizeTitle").textContent = `🎉 ${prize.name}`;
-          document.getElementById("prizeDesc").textContent = prize.desc;
-          document.getElementById("prizeCode").textContent = prize.code;
+          showPrizeBanner(true, prize);
         } else if (distance > target) {
           // Lose!
           state = "lost";
-          document.getElementById("game").style.display = "none";
-          document.getElementById("lose").style.display = "block";
+          showLoseBanner(true);
         } else {
           // Continue - auto-start aiming again
           state = "aiming";
-          document.getElementById("status").textContent = "Watch the power meter and click PUTT when ready!";
-          document.getElementById("status").className = "status aiming";
+          showAimBanner(true, "Watch the power meter and click PUTT when ready!", "aiming");
           startAiming();
         }
       }
@@ -605,6 +597,39 @@
       function updateStats() {
         document.getElementById("shots").textContent = `Shots: ${shots}`;
         document.getElementById("distance").textContent = `Distance to go: ${target - distance}`;
+      }
+
+      function showEmail(show = true) {
+        document.getElementById("emailSection").style.display = show ? "block" : "none";
+      }
+
+      function showGame(show = true) {
+        document.getElementById("game").style.display = show ? "block" : "none";
+      }
+
+      function showStatusBanner(show = true, text, state) {
+        document.getElementById("status").style.display = show ? "block" : "none";
+        if (show) {
+          document.getElementById("status").textContent = text;
+          document.getElementById("status").className = `status ${state}`;
+        }
+      }
+
+      function showAimBanner(show = true, text, state) {
+        showStatusBanner(show, text, state);
+      }
+
+      function showPrizeBanner(show = true, prize = null) {
+        document.getElementById("prize").style.display = show ? "flex" : "none";
+        if (prize) {
+          document.getElementById("prizeTitle").textContent = `🎉 ${prize.name}`;
+          document.getElementById("prizeDesc").textContent = prize.desc;
+          document.getElementById("prizeCode").textContent = prize.code;
+        }
+      }
+
+      function showLoseBanner(show = true) {
+        document.getElementById("lose").style.display = show ? "block" : "none";
       }
 
       // Draw game
@@ -622,8 +647,8 @@
         if (puttyLoaded) {
           const grassBottom = 40 + 30;
           const puttyHeight = 60; // Reduced to fit better in canvas
-          const puttyY = grassBottom - puttyHeight;
-          const puttyX = 35;
+          const puttyY = grassBottom - puttyHeight + PUTTY_Y_OFFSET;
+          const puttyX = PUTTY_X_OFFSET;
           ctx.drawImage(puttyImg, puttyX, puttyY, puttyHeight, puttyHeight);
         }
 
@@ -656,7 +681,11 @@
           ballDist = ballStart + (ballTarget - ballStart) * eased;
         }
 
-        const ballX = 70 + (ballDist / target) * 560;
+        // Map distance [0..target] to lane X range [laneStartX..holeCenterX]
+        const laneStartX = 70;
+        const holeCenterX = 620; // matches hole draw position
+        const mappingWidth = holeCenterX - laneStartX; // 550
+        const ballX = laneStartX + (ballDist / target) * mappingWidth;
         ctx.fillStyle = "#fff";
         ctx.beginPath();
         ctx.arc(ballX, 55, 6, 0, Math.PI * 2);
