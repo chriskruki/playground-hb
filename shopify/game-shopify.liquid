@@ -5,71 +5,11 @@ Usage: Include this in your product page or anywhere in your theme
 
 <style>
 
-/* Mini Golf Game Styles */
-.game-container {
-  background: #fff1d4;
-  padding: 40px;
-  text-align: center;
-  font-family: 'General Sans', sans-serif;
-  position: relative;
-}
-
-.game-title {
-  color: #02210a;
-  margin-bottom: 8px;
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-
-.game-subtitle {
-  color: #420d00;
-  margin-bottom: 24px;
-  font-size: 1rem;
-}
-
-.game-canvas-container {
-  position: relative;
-  display: inline-block;
-}
-
-.game-canvas {
-  max-width: 100%;
-  border-radius: 12px;
-}
-
-.putty-character {
-  position: absolute;
-  left: 15px;
-  top: 10px;
-  height: 90px;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-  .game-container {
-    padding: 20px;
-  }
-  
-  .game-title {
-    font-size: 1.2rem;
-  }
-  
-  .putty-character {
-    height: 60px;
-    left: 10px;
-    top: 15px;
-  }
-}
-
 </style>
 
 <div class="game-container">
-      <h2 class="game-title">
-        Play Mini Golf with Putty & Win 10% Off
-      </h2>
-      <p class="game-subtitle">
-        Sink the shot. Win the reward.
-      </p>
+      <h2 class="game-title">Play Mini Golf with Putty & Win 10% Off</h2>
+      <p class="game-subtitle">Sink the shot. Win the reward.</p>
 
       <div class="game-canvas-container">
         <!-- Canvas -->
@@ -98,7 +38,7 @@ class MiniGolfGame {
     this.ballPosition = { x: 100, y: 60 };
     this.holePosition = { x: 620, y: 60 };
     this.isAnimating = false;
-    
+
     this.init();
   }
 
@@ -131,7 +71,7 @@ class MiniGolfGame {
     this.ctx.strokeStyle = "#000";
     this.ctx.lineWidth = 2;
     this.ctx.stroke();
-    
+
     this.ctx.fillStyle = "#EC3C28";
     this.ctx.beginPath();
     this.ctx.moveTo(this.holePosition.x, 30);
@@ -151,7 +91,7 @@ class MiniGolfGame {
   }
 
   setupEventListeners() {
-    this.canvas.addEventListener('click', (e) => {
+    this.canvas.addEventListener("click", (e) => {
       if (!this.isAnimating) {
         this.shootBall();
       }
@@ -160,7 +100,7 @@ class MiniGolfGame {
 
   shootBall() {
     if (this.isAnimating) return;
-    
+
     this.isAnimating = true;
     const startX = this.ballPosition.x;
     const targetX = this.holePosition.x - 6; // Stop just before the hole
@@ -170,10 +110,10 @@ class MiniGolfGame {
     const animate = () => {
       const elapsed = Date.now() - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      
+
       // Easing function for more realistic movement
       const easeOut = 1 - Math.pow(1 - progress, 3);
-      
+
       this.ballPosition.x = startX + (targetX - startX) * easeOut;
       this.drawGame();
 
@@ -198,7 +138,7 @@ class MiniGolfGame {
   showWinMessage() {
     // This could trigger a Shopify discount code or other reward
     alert("🎉 Hole in one! You've won 10% off your order!");
-    
+
     // Reset the game
     setTimeout(() => {
       this.ballPosition.x = 100;
@@ -208,8 +148,9 @@ class MiniGolfGame {
 }
 
 // Initialize the game when the DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-  new MiniGolfGame('golfPreview');
+document.addEventListener("DOMContentLoaded", function () {
+  new MiniGolfGame("golfPreview");
 });
+
 
 </script>

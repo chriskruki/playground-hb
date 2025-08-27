@@ -1,0 +1,1377 @@
+{% comment %}
+  Mini Golf Game Section for Shopify
+  Auto-generated from mini-golf-minimal.html
+  Customizable prizes and marketing URL
+{% endcomment %}
+
+<style>
+/* Theme integration styles */
+.mini-golf-section {
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-column: 1 / -1;
+}
+
+.mini-golf-container {
+  grid-column: 2;
+  max-width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+}
+
+/* Full width adjustments */
+.section--full-width .mini-golf-container {
+  grid-column: 1 / -1;
+  padding: 0 var(--padding-lg, 20px);
+}
+
+/* Mobile responsiveness */
+@media screen and (width < 750px) {
+  .mini-golf-container {
+    grid-column: 1 / -1;
+    padding: 0 var(--padding-md, 16px);
+  }
+}
+
+/* Game-specific styles wrapped to prevent theme conflicts */
+.mini-golf-container {
+
+      body {
+        margin: 0;
+        padding: 20px;
+        background: #fff1d4;
+        font-family: Arial, sans-serif;
+        text-align: center;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 40px 20px;
+        background: #fff1d4;
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        color: #02210a;
+        margin-bottom: 10px;
+      }
+      p {
+        color: #420d00;
+        margin-bottom: 20px;
+      }
+
+      .email-form {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-bottom: 30px;
+        flex-wrap: wrap;
+      }
+
+      input[type="email"] {
+        padding: 12px 16px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        min-width: 250px;
+      }
+
+      button {
+        padding: 12px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+      }
+
+      .email-btn {
+        background: #923c07;
+        color: white;
+      }
+
+      .game-btn {
+        background: #02210a;
+        color: #fff1d4;
+        margin: 10px 5px;
+      }
+
+      .putt-btn {
+        background: #ec3c28;
+        color: white;
+        animation: pulse 1s infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.7;
+        }
+      }
+
+      #game {
+        display: none;
+        margin-top: 20px;
+      }
+
+      .game-area {
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 20px;
+        margin: 20px 0;
+        flex-wrap: wrap;
+      }
+
+      .canvas-container {
+        position: relative;
+        text-align: center;
+      }
+
+      canvas {
+        border: 2px solid #02210a;
+        border-radius: 12px;
+        max-width: 100%;
+        display: block;
+      }
+
+      .putty-character {
+        position: absolute;
+        left: 15px;
+        top: 2px;
+        height: 90px;
+        pointer-events: none;
+      }
+
+      .game-info {
+        max-width: 200px;
+        text-align: left;
+      }
+
+      .stats {
+        margin: 10px 0;
+        font-weight: bold;
+        color: #02210a;
+        text-align: center;
+      }
+
+      .status {
+        margin: 15px 0;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-weight: 600;
+        text-align: center;
+      }
+
+      .instructions {
+        background: rgba(2, 33, 10, 0.05);
+        padding: 15px;
+        border-radius: 8px;
+        margin: 10px 0;
+        font-size: 14px;
+        line-height: 1.4;
+        color: #420d00;
+      }
+
+      .instructions h3 {
+        margin: 0 0 10px 0;
+        color: #02210a;
+        font-size: 16px;
+      }
+
+      .power-display {
+        text-align: center;
+        margin: 10px 0;
+        font-weight: bold;
+        color: #02210a;
+        font-size: 18px;
+      }
+
+      .status.ready {
+        background: rgba(2, 33, 10, 0.1);
+        color: #02210a;
+      }
+      .status.aiming {
+        background: rgba(236, 60, 40, 0.1);
+        color: #ec3c28;
+      }
+      .status.shooting {
+        background: rgba(76, 175, 80, 0.1);
+        color: #4caf50;
+      }
+
+      .prize {
+        display: none;
+        background: linear-gradient(135deg, #4caf50, #45a049);
+        color: white;
+        padding: 30px;
+        border-radius: 16px;
+        margin: 20px 0;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      .lose {
+        display: none;
+        background: linear-gradient(135deg, #f44336, #d32f2f);
+        color: white;
+        padding: 30px;
+        border-radius: 16px;
+        margin: 20px 0;
+      }
+
+      .code {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-family: monospace;
+        font-size: 1.2em;
+        font-weight: bold;
+        letter-spacing: 2px;
+        margin: 10px;
+        border: 2px dashed rgba(255, 255, 255, 0.5);
+      }
+
+      /* Responsive design */
+      @media (max-width: 768px) {
+        .game-area {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .game-info {
+          max-width: 100%;
+          text-align: center;
+        }
+
+        .instructions {
+          text-align: left;
+          max-width: 350px;
+        }
+
+        .putty-character {
+          height: 60px;
+          left: 10px;
+          top: 2px;
+        }
+
+        canvas {
+          max-width: 90vw;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .container {
+          padding: 20px 10px;
+        }
+
+        .email-form {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        input[type="email"] {
+          min-width: 200px;
+          margin-bottom: 10px;
+        }
+
+        .putty-character {
+          height: 45px;
+          left: 8px;
+          top: 0px;
+        }
+      }
+    
+}
+</style>
+
+{% liquid
+  case section.settings.content_width
+    when 'content-center-aligned'
+      assign content_width = 'page-width'
+    when 'content-full-width'
+      assign content_width = 'full-width'
+  endcase
+%}
+
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+<div
+  class="mini-golf-section section section--{{ content_width }} spacing-style color-{{ section.settings.color_scheme }} relative"
+  style="{% render 'spacing-style', settings: section.settings %}"
+>
+
+    <div class="mini-golf-container">
+      <h1>{{ section.settings.game_title | default: "Mini Golf with Putty" }}</h1>
+      <p>{{ section.settings.game_subtitle | default: "Enter your email and win prizes!" }}</p>
+
+      <!-- Email Form -->
+      <div id="emailSection-{{ section.id }}">
+        <!-- Klaviyo Signup Form for Playground -->
+        <form
+          action="https://manage.kmail-lists.com/subscriptions/subscribe?a=Sg8ErC&g=VR7JgL"
+          method="POST"
+          style="margin-top: 30px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;"
+          onsubmit="handleFormSubmit{{ section.id }}(event)"
+        >
+          <input
+            type="email"
+            name="email"
+            id="email-{{ section.id }}"
+            required
+            placeholder="{{ section.settings.email_placeholder | default: 'you@domain.com' }}"
+            style="
+              padding: 12px 16px;
+              font-size: 16px;
+              border: 1px solid #ccc;
+              border-radius: 6px;
+              min-width: 280px;
+              font-family: 'General Sans', sans-serif;
+            "
+          />
+          <button
+            type="submit"
+            style="
+              background-color: #923C07;
+              color: white;
+              padding: 12px 20px;
+              font-size: 16px;
+              border: none;
+              border-radius: 6px;
+              cursor: pointer;
+              font-family: 'General Sans', sans-serif;
+            "
+          >
+            {{ section.settings.submit_button_text | default: "Let's Putt!" }}
+          </button>
+        </form>
+      </div>
+
+      <!-- Game -->
+      <div id="game-{{ section.id }}">
+        <div class="game-area">
+          <div class="canvas-container">
+            <canvas id="canvas-{{ section.id }}" width="700" height="120"></canvas>
+            <!-- <img src="putty.png" alt="Putty" class="putty-character" /> -->
+          </div>
+
+          <div class="game-info">
+            <!-- <div class="instructions">
+              <h3>How to Play</h3>
+              <p>🎯 Watch the power meter bounce</p>
+              <p>⏱️ Click PUTT at the right moment</p>
+              <p>🏌️ Reach exactly 10 units to win!</p>
+              <p>⚠️ Don't overshoot or you lose</p>
+            </div> -->
+
+            <div class="stats">
+              <div><span id="shots-{{ section.id }}">Shots: 0</span></div>
+              <div><span id="distance-{{ section.id }}">Distance to go: 10</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="status-{{ section.id }}" class="status aiming">
+          Watch the power meter and click PUTT when ready!
+        </div>
+
+        <button
+          id="puttBtn-{{ section.id }}"
+          class="game-btn putt-btn"
+          onclick="putt{{ section.id }}()"
+          style="display: none"
+        >
+          🏌️ PUTT!
+        </button>
+      </div>
+
+      <!-- Prize -->
+      <div id="prize-{{ section.id }}" class="prize">
+        <h2 id="prizeTitle-{{ section.id }}">🎉 You Won!</h2>
+        <p id="prizeDesc-{{ section.id }}">Amazing prize!</p>
+        <div>Your Code: <span id="prizeCode-{{ section.id }}" class="code">CODE123</span></div>
+        <button
+          class="game-btn"
+          onclick="startGame{{ section.id }}()"
+          style="background: rgba(255, 255, 255, 0.2); border: 2px solid white"
+        >
+          Play Again
+        </button>
+      </div>
+
+      <!-- Lose -->
+      <div id="lose-{{ section.id }}" class="lose">
+        <h2>Oops! You overshot!</h2>
+        <p>Don't worry, try again!</p>
+        <button
+          class="game-btn"
+          onclick="startGame{{ section.id }}()"
+          style="background: rgba(255, 255, 255, 0.2); border: 2px solid white"
+        >
+          🔄 Try Again
+        </button>
+      </div>
+    </div>
+
+    <script>
+      // Game state
+      let shots = 0,
+        distance = 0,
+        target = 10;
+      let powerTick = 0,
+        tickDir = 1,
+        power = 1;
+      let animId = null,
+        ballAnimId = null;
+      let ballStart = 0,
+        ballTarget = 0,
+        ballAnimStart = 0;
+      let state = "email"; // email, ready, aiming, shooting, won, lost
+
+      // Canvas and context
+      const canvas = document.getElementById("canvas-{{ section.id }}");
+      const ctx = canvas.getContext("2d");
+
+      // Putty image
+      const puttyImg = new Image();
+      puttyImg.src = "{{ section.settings.putty_image | image_url }}";
+      let puttyLoaded = false;
+      puttyImg.onload = () => {
+        puttyLoaded = true;
+        draw();
+      };
+
+      // Canvas button hit area
+      let puttBtnRect = { x: 0, y: 0, w: 0, h: 0 };
+
+      canvas.addEventListener("click", (e) => {
+        if (state !== "aiming") return;
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        if (
+          x >= puttBtnRect.x &&
+          x <= puttBtnRect.x + puttBtnRect.w &&
+          y >= puttBtnRect.y &&
+          y <= puttBtnRect.y + puttBtnRect.h
+        ) {
+          putt();
+        }
+      });
+
+      // Add cursor pointer when hovering over putt button
+      canvas.addEventListener("mousemove", (e) => {
+        if (state !== "aiming") {
+          canvas.style.cursor = "default";
+          return;
+        }
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        if (
+          x >= puttBtnRect.x &&
+          x <= puttBtnRect.x + puttBtnRect.w &&
+          y >= puttBtnRect.y &&
+          y <= puttBtnRect.y + puttBtnRect.h
+        ) {
+          canvas.style.cursor = "pointer";
+        } else {
+          canvas.style.cursor = "default";
+        }
+      });
+
+      // Prize data
+      const prizes = [
+        { name: "{{ section.settings.prize_1_name | default: "Hole in One!" }}", code: "{{ section.settings.prize_1_code | default: "HOLEINONE" }}", desc: "{{ section.settings.prize_1_desc | default: "Free Round" }}" },
+        { name: "{{ section.settings.prize_2_name | default: "Eagle!" }}", code: "{{ section.settings.prize_2_code | default: "EAGLE2023" }}", desc: "{{ section.settings.prize_2_desc | default: "Free Appetizer" }}" },
+        { name: "{{ section.settings.prize_3_name | default: "Birdie!" }}", code: "{{ section.settings.prize_3_code | default: "BIRDIE10" }}", desc: "{{ section.settings.prize_3_desc | default: "10% Off Your Order" }}" },
+        { name: "{{ section.settings.prize_4_name | default: "Par" }}", code: "{{ section.settings.prize_4_code | default: "PAR5OFF" }}", desc: "{{ section.settings.prize_4_desc | default: "5% Off Your Order" }}" },
+        { name: "{{ section.settings.prize_5_name | default: "Bogey" }}", code: "{{ section.settings.prize_5_code | default: "BOGEY2" }}", desc: "{{ section.settings.prize_5_desc | default: "$2 Off Your Order" }}" },
+      ];
+
+      // Handle form submission with preventDefault
+      window.handleFormSubmit = function (event) {
+        event.preventDefault();
+
+        // const form = event.target;
+        // const formData = new FormData(form);
+        // const email = formData.get("email");
+        //
+        // if (!email || !email.includes("@")) {
+        //   alert("Please enter a valid email address");
+        //   return;
+        // }
+
+        // Submit to Klaviyo in the background
+        // fetch(form.action, {
+        //   method: "POST",
+        //   body: formData,
+        //   mode: "no-cors", // Required for cross-origin requests to Klaviyo
+        // }).catch((error) => {
+        //   // Ignore fetch errors since we're using no-cors mode
+        //   console.log("Email submitted (no-cors mode)");
+        // });
+
+        // Start the game immediately
+        startGame();
+      };
+
+      // Start game after email (called by form submission)
+      window.startGame = function () {
+        document.getElementById("emailSection-{{ section.id }}").style.display = "none";
+        document.getElementById("game-{{ section.id }}").style.display = "block";
+
+        // Auto-start aiming instead of requiring button click
+        state = "aiming";
+        startAiming();
+        draw();
+      };
+
+      // Start aiming phase
+      function startAiming() {
+        document.getElementById("status-{{ section.id }}").textContent =
+          "Watch the power meter and click PUTT when ready!";
+        document.getElementById("status-{{ section.id }}").className = "status aiming";
+
+        // Start power meter animation
+        function animate() {
+          if (state !== "aiming") return;
+
+          powerTick += 2 * tickDir;
+          if (powerTick <= 0) {
+            powerTick = 0;
+            tickDir = 1;
+          }
+          // meter width is 160, use that as max
+          if (powerTick >= 160) {
+            powerTick = 160;
+            tickDir = -1;
+          }
+
+          power = Math.round(1 + (powerTick / 160) * 9);
+          draw();
+          animId = requestAnimationFrame(animate);
+        }
+        animate();
+      }
+
+      // Take shot
+      window.putt = function () {
+        if (state !== "aiming") return;
+
+        cancelAnimationFrame(animId);
+        state = "shooting";
+        shots++;
+
+        ballStart = distance;
+        ballTarget = distance + power;
+        ballAnimStart = performance.now();
+        distance += power;
+
+        document.getElementById(
+          "status"
+        ).textContent = `Shot ${power} units! Ball at distance ${distance}`;
+        document.getElementById("status-{{ section.id }}").className = "status shooting";
+        updateStats();
+
+        // Animate ball
+        function animateBall() {
+          const elapsed = performance.now() - ballAnimStart;
+          const progress = Math.min(elapsed / 1000, 1);
+
+          draw();
+
+          if (progress < 1) {
+            ballAnimId = requestAnimationFrame(animateBall);
+          } else {
+            checkEnd();
+          }
+        }
+        animateBall();
+      };
+
+      // Check win/lose
+      function checkEnd() {
+        if (distance === target) {
+          // Win!
+          state = "won";
+          const prize = prizes[shots] || prizes[4];
+          document.getElementById("game-{{ section.id }}").style.display = "none";
+          document.getElementById("prize-{{ section.id }}").style.display = "flex";
+          document.getElementById(
+            "prizeTitle"
+          ).textContent = `🎉 ${prize.name}`;
+          document.getElementById("prizeDesc-{{ section.id }}").textContent = prize.desc;
+          document.getElementById("prizeCode-{{ section.id }}").textContent = prize.code;
+        } else if (distance > target) {
+          // Lose!
+          state = "lost";
+          document.getElementById("game-{{ section.id }}").style.display = "none";
+          document.getElementById("lose-{{ section.id }}").style.display = "block";
+        } else {
+          // Continue - auto-start aiming again
+          state = "aiming";
+          document.getElementById("status-{{ section.id }}").textContent =
+            "Watch the power meter and click PUTT when ready!";
+          document.getElementById("status-{{ section.id }}").className = "status aiming";
+          startAiming();
+        }
+      }
+
+      // Reset game
+      window.reset = function () {
+        shots = 0;
+        distance = 0;
+        power = 1;
+        powerTick = 0;
+        tickDir = 1;
+        ballStart = 0;
+        ballTarget = 0;
+        ballAnimStart = 0;
+        state = "email";
+
+        if (animId) cancelAnimationFrame(animId);
+        if (ballAnimId) cancelAnimationFrame(ballAnimId);
+
+        document.getElementById("emailSection-{{ section.id }}").style.display = "block";
+        document.getElementById("game-{{ section.id }}").style.display = "none";
+        document.getElementById("prize-{{ section.id }}").style.display = "none";
+        document.getElementById("lose-{{ section.id }}").style.display = "none";
+        document.getElementById("email-{{ section.id }}").value = "";
+        updateStats();
+      };
+
+      // Update stats display
+      function updateStats() {
+        document.getElementById("shots-{{ section.id }}").textContent = `Shots: ${shots}`;
+        document.getElementById("distance-{{ section.id }}").textContent = `Distance to go: ${
+          target - distance
+        }`;
+      }
+
+      // Draw game
+      function draw() {
+        ctx.clearRect(0, 0, 700, 120);
+
+        // Lane (golf course)
+        ctx.fillStyle = "#314027";
+        ctx.fillRect(70, 40, 560, 30);
+        ctx.strokeStyle = "#000";
+        ctx.lineWidth = 4;
+        ctx.strokeRect(70, 40, 560, 30);
+
+        // Putty character inside canvas, aligned bottom with grass
+        if (puttyLoaded) {
+          const grassBottom = 40 + 30;
+          const puttyHeight = 60; // Reduced to fit better in canvas
+          const puttyY = grassBottom - puttyHeight;
+          const puttyX = 35;
+          ctx.drawImage(puttyImg, puttyX, puttyY, puttyHeight, puttyHeight);
+        }
+
+        // Hole
+        ctx.fillStyle = "#000";
+        ctx.beginPath();
+        ctx.arc(620, 55, 6, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Flag
+        ctx.strokeStyle = "#000";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(620, 55);
+        ctx.lineTo(620, 25);
+        ctx.stroke();
+        ctx.fillStyle = "#EC3C28";
+        ctx.beginPath();
+        ctx.moveTo(620, 25);
+        ctx.lineTo(640, 30);
+        ctx.lineTo(620, 35);
+        ctx.fill();
+
+        // Ball
+        let ballDist = distance;
+        if (state === "shooting" && ballAnimStart > 0) {
+          const elapsed = performance.now() - ballAnimStart;
+          const progress = Math.min(elapsed / 1000, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          ballDist = ballStart + (ballTarget - ballStart) * eased;
+        }
+
+        const ballX = 70 + (ballDist / target) * 560;
+        ctx.fillStyle = "#fff";
+        ctx.beginPath();
+        ctx.arc(ballX, 55, 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = "#ccc";
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        // Power meter + button below the grass (only when aiming)
+        if (state === "aiming") {
+          const meterX = 320; // shifted right to make room for button
+          const meterY = 90; // moved down with grass
+          const meterW = 160; // 60% reduction from 400
+          const meterH = 20;
+
+          // Background & border
+          ctx.fillStyle = "#f0f0f0";
+          ctx.fillRect(meterX, meterY, meterW, meterH);
+          ctx.strokeStyle = "#333";
+          ctx.lineWidth = 2;
+          ctx.strokeRect(meterX, meterY, meterW, meterH);
+
+          // Static gradient fill from left (low) to right (high)
+          const grad = ctx.createLinearGradient(
+            meterX,
+            meterY,
+            meterX + meterW,
+            meterY
+          );
+          grad.addColorStop(0, "#ffffff");
+          grad.addColorStop(1, "#ec3c28");
+          ctx.fillStyle = grad;
+          ctx.fillRect(meterX, meterY, meterW, meterH);
+
+          // Tick
+          ctx.strokeStyle = "#000";
+          ctx.lineWidth = 4;
+          ctx.beginPath();
+          const tickX = meterX + (powerTick / meterW) * meterW;
+          ctx.moveTo(tickX, meterY);
+          ctx.lineTo(tickX, meterY + meterH);
+          ctx.stroke();
+
+          // Current power number to the right of the bar
+          ctx.fillStyle = "#02210a";
+          ctx.font = "bold 16px Arial";
+          ctx.textAlign = "left";
+          ctx.textBaseline = "middle";
+          ctx.fillText(
+            String(power),
+            meterX + meterW + 10,
+            meterY + meterH / 2
+          );
+
+          // Canvas PUTT button to the left of the bar
+          const btnW = 90,
+            btnH = 24,
+            btnX = meterX - (btnW + 15),
+            btnY = meterY - 2;
+          puttBtnRect = { x: btnX, y: btnY, w: btnW, h: btnH };
+          ctx.fillStyle = "#ec3c28";
+          ctx.fillRect(btnX, btnY, btnW, btnH);
+          ctx.strokeStyle = "#a12a1a";
+          ctx.lineWidth = 2;
+          ctx.strokeRect(btnX, btnY, btnW, btnH);
+          ctx.fillStyle = "#fff";
+          ctx.font = "bold 14px Arial";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText("PUTT!", btnX + btnW / 2, btnY + btnH / 2);
+        }
+      }
+
+      // Initial draw
+      draw();
+    </script>
+  
+</div>
+
+<script>
+  (function() {
+    const sectionId = "{{ section.id }}";
+    
+
+      // Game state
+      let shots = 0,
+        distance = 0,
+        target = 10;
+      let powerTick = 0,
+        tickDir = 1,
+        power = 1;
+      let animId = null,
+        ballAnimId = null;
+      let ballStart = 0,
+        ballTarget = 0,
+        ballAnimStart = 0;
+      let state = "email"; // email, ready, aiming, shooting, won, lost
+
+      // Canvas and context
+      const canvas = document.getElementById("canvas-{{ section.id }}");
+      const ctx = canvas.getContext("2d");
+
+      // Putty image
+      const puttyImg = new Image();
+      puttyImg.src = "{{ section.settings.putty_image | image_url }}";
+      let puttyLoaded = false;
+      puttyImg.onload = () => {
+        puttyLoaded = true;
+        draw();
+      };
+
+      // Canvas button hit area
+      let puttBtnRect = { x: 0, y: 0, w: 0, h: 0 };
+
+      canvas.addEventListener("click", (e) => {
+        if (state !== "aiming") return;
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        if (
+          x >= puttBtnRect.x &&
+          x <= puttBtnRect.x + puttBtnRect.w &&
+          y >= puttBtnRect.y &&
+          y <= puttBtnRect.y + puttBtnRect.h
+        ) {
+          putt();
+        }
+      });
+
+      // Add cursor pointer when hovering over putt button
+      canvas.addEventListener("mousemove", (e) => {
+        if (state !== "aiming") {
+          canvas.style.cursor = "default";
+          return;
+        }
+        const rect = canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        if (
+          x >= puttBtnRect.x &&
+          x <= puttBtnRect.x + puttBtnRect.w &&
+          y >= puttBtnRect.y &&
+          y <= puttBtnRect.y + puttBtnRect.h
+        ) {
+          canvas.style.cursor = "pointer";
+        } else {
+          canvas.style.cursor = "default";
+        }
+      });
+
+      // Prize data
+      const prizes = [
+        { name: "{{ section.settings.prize_1_name | default: 'Hole in One!' }}", code: "{{ section.settings.prize_1_code | default: 'HOLEINONE' }}", desc: "{{ section.settings.prize_1_desc | default: 'Free Round' }}" },
+        { name: "{{ section.settings.prize_2_name | default: 'Eagle!' }}", code: "{{ section.settings.prize_2_code | default: 'EAGLE2023' }}", desc: "{{ section.settings.prize_2_desc | default: 'Free Appetizer' }}" },
+        { name: "{{ section.settings.prize_3_name | default: 'Birdie!' }}", code: "{{ section.settings.prize_3_code | default: 'BIRDIE10' }}", desc: "{{ section.settings.prize_3_desc | default: '10% Off Your Order' }}" },
+        { name: "{{ section.settings.prize_4_name | default: 'Par' }}", code: "{{ section.settings.prize_4_code | default: 'PAR5OFF' }}", desc: "{{ section.settings.prize_4_desc | default: '5% Off Your Order' }}" },
+        { name: "{{ section.settings.prize_5_name | default: 'Bogey' }}", code: "{{ section.settings.prize_5_code | default: 'BOGEY2' }}", desc: "{{ section.settings.prize_5_desc | default: '$2 Off Your Order' }}" },
+      ];
+
+      // Handle form submission with preventDefault
+      window.handleFormSubmit{{ section.id }} = function (event) {
+        event.preventDefault();
+
+        // const form = event.target;
+        // const formData = new FormData(form);
+        // const email = formData.get("email");
+        //
+        // if (!email || !email.includes("@")) {
+        //   alert("Please enter a valid email address");
+        //   return;
+        // }
+
+        // Submit to Klaviyo in the background
+        // fetch(form.action, {
+        //   method: "POST",
+        //   body: formData,
+        //   mode: "no-cors", // Required for cross-origin requests to Klaviyo
+        // }).catch((error) => {
+        //   // Ignore fetch errors since we're using no-cors mode
+        //   console.log("Email submitted (no-cors mode)");
+        // });
+
+        // Start the game immediately
+        startGame{{ section.id }}();
+      };
+
+      // Start game after email (called by form submission)
+      window.startGame{{ section.id }} = function () {
+        document.getElementById("emailSection-{{ section.id }}").style.display = "none";
+        document.getElementById("game-{{ section.id }}").style.display = "block";
+
+        // Auto-start aiming instead of requiring button click
+        state = "aiming";
+        startAiming();
+        draw();
+      };
+
+      // Start aiming phase
+      function startAiming() {
+        document.getElementById("status-{{ section.id }}").textContent =
+          "Watch the power meter and click PUTT when ready!";
+        document.getElementById("status-{{ section.id }}").className = "status aiming";
+
+        // Start power meter animation
+        function animate() {
+          if (state !== "aiming") return;
+
+          powerTick += 2 * tickDir;
+          if (powerTick <= 0) {
+            powerTick = 0;
+            tickDir = 1;
+          }
+          // meter width is 160, use that as max
+          if (powerTick >= 160) {
+            powerTick = 160;
+            tickDir = -1;
+          }
+
+          power = Math.round(1 + (powerTick / 160) * 9);
+          draw();
+          animId = requestAnimationFrame(animate);
+        }
+        animate();
+      }
+
+      // Take shot
+      window.putt{{ section.id }} = function () {
+        if (state !== "aiming") return;
+
+        cancelAnimationFrame(animId);
+        state = "shooting";
+        shots++;
+
+        ballStart = distance;
+        ballTarget = distance + power;
+        ballAnimStart = performance.now();
+        distance += power;
+
+        document.getElementById(
+          "status"
+        ).textContent = `Shot ${power} units! Ball at distance ${distance}`;
+        document.getElementById("status-{{ section.id }}").className = "status shooting";
+        updateStats();
+
+        // Animate ball
+        function animateBall() {
+          const elapsed = performance.now() - ballAnimStart;
+          const progress = Math.min(elapsed / 1000, 1);
+
+          draw();
+
+          if (progress < 1) {
+            ballAnimId = requestAnimationFrame(animateBall);
+          } else {
+            checkEnd();
+          }
+        }
+        animateBall();
+      };
+
+      // Check win/lose
+      function checkEnd() {
+        if (distance === target) {
+          // Win!
+          state = "won";
+          const prize = prizes[shots] || prizes[4];
+          document.getElementById("game-{{ section.id }}").style.display = "none";
+          document.getElementById("prize-{{ section.id }}").style.display = "flex";
+          document.getElementById(
+            "prizeTitle"
+          ).textContent = `🎉 ${prize.name}`;
+          document.getElementById("prizeDesc-{{ section.id }}").textContent = prize.desc;
+          document.getElementById("prizeCode-{{ section.id }}").textContent = prize.code;
+        } else if (distance > target) {
+          // Lose!
+          state = "lost";
+          document.getElementById("game-{{ section.id }}").style.display = "none";
+          document.getElementById("lose-{{ section.id }}").style.display = "block";
+        } else {
+          // Continue - auto-start aiming again
+          state = "aiming";
+          document.getElementById("status-{{ section.id }}").textContent =
+            "Watch the power meter and click PUTT when ready!";
+          document.getElementById("status-{{ section.id }}").className = "status aiming";
+          startAiming();
+        }
+      }
+
+      // Reset game
+      window.reset{{ section.id }} = function () {
+        shots = 0;
+        distance = 0;
+        power = 1;
+        powerTick = 0;
+        tickDir = 1;
+        ballStart = 0;
+        ballTarget = 0;
+        ballAnimStart = 0;
+        state = "email";
+
+        if (animId) cancelAnimationFrame(animId);
+        if (ballAnimId) cancelAnimationFrame(ballAnimId);
+
+        document.getElementById("emailSection-{{ section.id }}").style.display = "block";
+        document.getElementById("game-{{ section.id }}").style.display = "none";
+        document.getElementById("prize-{{ section.id }}").style.display = "none";
+        document.getElementById("lose-{{ section.id }}").style.display = "none";
+        document.getElementById("email-{{ section.id }}").value = "";
+        updateStats();
+      };
+
+      // Update stats display
+      function updateStats() {
+        document.getElementById("shots-{{ section.id }}").textContent = `Shots: ${shots}`;
+        document.getElementById("distance-{{ section.id }}").textContent = `Distance to go: ${
+          target - distance
+        }`;
+      }
+
+      // Draw game
+      function draw() {
+        ctx.clearRect(0, 0, 700, 120);
+
+        // Lane (golf course)
+        ctx.fillStyle = "#314027";
+        ctx.fillRect(70, 40, 560, 30);
+        ctx.strokeStyle = "#000";
+        ctx.lineWidth = 4;
+        ctx.strokeRect(70, 40, 560, 30);
+
+        // Putty character inside canvas, aligned bottom with grass
+        if (puttyLoaded) {
+          const grassBottom = 40 + 30;
+          const puttyHeight = 60; // Reduced to fit better in canvas
+          const puttyY = grassBottom - puttyHeight;
+          const puttyX = 35;
+          ctx.drawImage(puttyImg, puttyX, puttyY, puttyHeight, puttyHeight);
+        }
+
+        // Hole
+        ctx.fillStyle = "#000";
+        ctx.beginPath();
+        ctx.arc(620, 55, 6, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Flag
+        ctx.strokeStyle = "#000";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(620, 55);
+        ctx.lineTo(620, 25);
+        ctx.stroke();
+        ctx.fillStyle = "#EC3C28";
+        ctx.beginPath();
+        ctx.moveTo(620, 25);
+        ctx.lineTo(640, 30);
+        ctx.lineTo(620, 35);
+        ctx.fill();
+
+        // Ball
+        let ballDist = distance;
+        if (state === "shooting" && ballAnimStart > 0) {
+          const elapsed = performance.now() - ballAnimStart;
+          const progress = Math.min(elapsed / 1000, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          ballDist = ballStart + (ballTarget - ballStart) * eased;
+        }
+
+        const ballX = 70 + (ballDist / target) * 560;
+        ctx.fillStyle = "#fff";
+        ctx.beginPath();
+        ctx.arc(ballX, 55, 6, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = "#ccc";
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        // Power meter + button below the grass (only when aiming)
+        if (state === "aiming") {
+          const meterX = 320; // shifted right to make room for button
+          const meterY = 90; // moved down with grass
+          const meterW = 160; // 60% reduction from 400
+          const meterH = 20;
+
+          // Background & border
+          ctx.fillStyle = "#f0f0f0";
+          ctx.fillRect(meterX, meterY, meterW, meterH);
+          ctx.strokeStyle = "#333";
+          ctx.lineWidth = 2;
+          ctx.strokeRect(meterX, meterY, meterW, meterH);
+
+          // Static gradient fill from left (low) to right (high)
+          const grad = ctx.createLinearGradient(
+            meterX,
+            meterY,
+            meterX + meterW,
+            meterY
+          );
+          grad.addColorStop(0, "#ffffff");
+          grad.addColorStop(1, "#ec3c28");
+          ctx.fillStyle = grad;
+          ctx.fillRect(meterX, meterY, meterW, meterH);
+
+          // Tick
+          ctx.strokeStyle = "#000";
+          ctx.lineWidth = 4;
+          ctx.beginPath();
+          const tickX = meterX + (powerTick / meterW) * meterW;
+          ctx.moveTo(tickX, meterY);
+          ctx.lineTo(tickX, meterY + meterH);
+          ctx.stroke();
+
+          // Current power number to the right of the bar
+          ctx.fillStyle = "#02210a";
+          ctx.font = "bold 16px Arial";
+          ctx.textAlign = "left";
+          ctx.textBaseline = "middle";
+          ctx.fillText(
+            String(power),
+            meterX + meterW + 10,
+            meterY + meterH / 2
+          );
+
+          // Canvas PUTT button to the left of the bar
+          const btnW = 90,
+            btnH = 24,
+            btnX = meterX - (btnW + 15),
+            btnY = meterY - 2;
+          puttBtnRect = { x: btnX, y: btnY, w: btnW, h: btnH };
+          ctx.fillStyle = "#ec3c28";
+          ctx.fillRect(btnX, btnY, btnW, btnH);
+          ctx.strokeStyle = "#a12a1a";
+          ctx.lineWidth = 2;
+          ctx.strokeRect(btnX, btnY, btnW, btnH);
+          ctx.fillStyle = "#fff";
+          ctx.font = "bold 14px Arial";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText("PUTT!", btnX + btnW / 2, btnY + btnH / 2);
+        }
+      }
+
+      // Initial draw
+      draw();
+    
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Mini Golf Game",
+  "tag": "section",
+  "class": "mini-golf-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Game Content"
+    },
+    {
+      "type": "text",
+      "id": "game_title",
+      "label": "Game Title",
+      "default": "Mini Golf with Putty"
+    },
+    {
+      "type": "text",
+      "id": "game_subtitle",
+      "label": "Game Subtitle",
+      "default": "Enter your email and win prizes!"
+    },
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Email Placeholder",
+      "default": "you@domain.com"
+    },
+    {
+      "type": "text",
+      "id": "submit_button_text",
+      "label": "Submit Button Text",
+      "default": "Let's Putt!"
+    },
+    {
+      "type": "header",
+      "content": "Marketing Integration"
+    },
+    {
+      "type": "text",
+      "id": "marketing_url",
+      "label": "Marketing URL",
+      "info": "URL to submit email addresses to (e.g., Klaviyo, Mailchimp, etc.)"
+    },
+    {
+      "type": "header",
+      "content": "Layout & Design"
+    },
+    {
+      "type": "select",
+      "id": "content_width",
+      "label": "Section Width",
+      "options": [
+        {
+          "value": "content-center-aligned",
+          "label": "Page Width"
+        },
+        {
+          "value": "content-full-width",
+          "label": "Full Width"
+        }
+      ],
+      "default": "content-center-aligned"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "header",
+      "content": "Game Assets"
+    },
+    {
+      "type": "image_picker",
+      "id": "putty_image",
+      "label": "Putty Character Image",
+      "info": "Upload a custom image for the Putty character (recommended: square image, 60-90px)"
+    },
+    {
+      "type": "header",
+      "content": "Prize 1 (1 Shot - Hole in One)"
+    },
+    {
+      "type": "text",
+      "id": "prize_1_name",
+      "label": "Prize 1 Name",
+      "default": "Hole in One!"
+    },
+    {
+      "type": "text",
+      "id": "prize_1_code",
+      "label": "Prize 1 Code",
+      "default": "HOLEINONE"
+    },
+    {
+      "type": "text",
+      "id": "prize_1_desc",
+      "label": "Prize 1 Description",
+      "default": "Free Round"
+    },
+    {
+      "type": "header",
+      "content": "Prize 2 (2 Shots - Eagle)"
+    },
+    {
+      "type": "text",
+      "id": "prize_2_name",
+      "label": "Prize 2 Name",
+      "default": "Eagle!"
+    },
+    {
+      "type": "text",
+      "id": "prize_2_code",
+      "label": "Prize 2 Code",
+      "default": "EAGLE2023"
+    },
+    {
+      "type": "text",
+      "id": "prize_2_desc",
+      "label": "Prize 2 Description",
+      "default": "Free Appetizer"
+    },
+    {
+      "type": "header",
+      "content": "Prize 3 (3 Shots - Birdie)"
+    },
+    {
+      "type": "text",
+      "id": "prize_3_name",
+      "label": "Prize 3 Name",
+      "default": "Birdie!"
+    },
+    {
+      "type": "text",
+      "id": "prize_3_code",
+      "label": "Prize 3 Code",
+      "default": "BIRDIE10"
+    },
+    {
+      "type": "text",
+      "id": "prize_3_desc",
+      "label": "Prize 3 Description",
+      "default": "10% Off Your Order"
+    },
+    {
+      "type": "header",
+      "content": "Prize 4 (4 Shots - Par)"
+    },
+    {
+      "type": "text",
+      "id": "prize_4_name",
+      "label": "Prize 4 Name",
+      "default": "Par"
+    },
+    {
+      "type": "text",
+      "id": "prize_4_code",
+      "label": "Prize 4 Code",
+      "default": "PAR5OFF"
+    },
+    {
+      "type": "text",
+      "id": "prize_4_desc",
+      "label": "Prize 4 Description",
+      "default": "5% Off Your Order"
+    },
+    {
+      "type": "header",
+      "content": "Prize 5 (5+ Shots - Bogey)"
+    },
+    {
+      "type": "text",
+      "id": "prize_5_name",
+      "label": "Prize 5 Name",
+      "default": "Bogey"
+    },
+    {
+      "type": "text",
+      "id": "prize_5_code",
+      "label": "Prize 5 Code",
+      "default": "BOGEY2"
+    },
+    {
+      "type": "text",
+      "id": "prize_5_desc",
+      "label": "Prize 5 Description",
+      "default": "$2 Off Your Order"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Mini Golf Game"
+    }
+  ]
+}
+{% endschema %}

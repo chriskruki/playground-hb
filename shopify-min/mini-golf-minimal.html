@@ -261,19 +261,57 @@
   </head>
   <body>
     <div class="container">
-      <h1>Mini Golf with Putty</h1>
-      <p>Enter your email and win prizes!</p>
+      <h1>GAME_TITLE</h1>
+      <p>GAME_SUBTITLE</p>
 
       <!-- Email Form -->
       <div id="emailSection">
-        <form class="email-form" onsubmit="startGame(event)">
+        <!-- Klaviyo Signup Form for Playground -->
+        <form
+          action="https://manage.kmail-lists.com/subscriptions/subscribe?a=Sg8ErC&g=VR7JgL"
+          method="POST"
+          style="
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+          "
+          onsubmit="handleFormSubmit(event)"
+        >
           <input
             type="email"
+            name="email"
             id="email"
-            placeholder="you@domain.com"
             required
+            placeholder="EMAIL_PLACEHOLDER"
+            style="
+              padding: 12px 16px;
+              font-size: 16px;
+              border: 1px solid #ccc;
+              border-radius: 6px;
+              min-width: 280px;
+              font-family: 'General Sans', sans-serif;
+            "
           />
-          <button type="submit" class="email-btn">Let's Putt!</button>
+          <button
+            type="submit"
+            style="
+              background-color: #923c07;
+              color: white;
+              padding: 12px 20px;
+              font-size: 16px;
+              border: none;
+              border-radius: 6px;
+              cursor: pointer;
+              font-family: 'General Sans', sans-serif;
+            "
+          >
+            SUBMIT_BUTTON_TEXT
+          </button>
+          <button class="game-btn" onclick="handleFormSubmit(event)">
+            Test Continue
+          </button>
         </form>
       </div>
 
@@ -322,7 +360,7 @@
         <div>Your Code: <span id="prizeCode" class="code">CODE123</span></div>
         <button
           class="game-btn"
-          onclick="reset()"
+          onclick="startGame()"
           style="background: rgba(255, 255, 255, 0.2); border: 2px solid white"
         >
           Play Again
@@ -335,7 +373,7 @@
         <p>Don't worry, try again!</p>
         <button
           class="game-btn"
-          onclick="reset()"
+          onclick="startGame()"
           style="background: rgba(255, 255, 255, 0.2); border: 2px solid white"
         >
           🔄 Try Again
@@ -364,7 +402,7 @@
 
       // Putty image
       const puttyImg = new Image();
-      puttyImg.src = "putty.png";
+      puttyImg.src = "PUTTY_IMAGE_URL";
       let puttyLoaded = false;
       puttyImg.onload = () => {
         puttyLoaded = true;
@@ -411,20 +449,43 @@
       });
 
       // Prize data
-      const prizes = {
-        1: { name: "Hole in One!", code: "HOLEINONE", desc: "Free Round" },
-        2: { name: "Eagle!", code: "EAGLE2023", desc: "Free Appetizer" },
-        3: { name: "Birdie!", code: "BIRDIE10", desc: "10% Off Your Order" },
-        4: { name: "Par", code: "PAR5OFF", desc: "5% Off Your Order" },
-        5: { name: "Bogey", code: "BOGEY2", desc: "$2 Off Your Order" },
+      const prizes = [
+        { name: "PRIZE_1_NAME", code: "PRIZE_1_CODE", desc: "PRIZE_1_DESC" },
+        { name: "PRIZE_2_NAME", code: "PRIZE_2_CODE", desc: "PRIZE_2_DESC" },
+        { name: "PRIZE_3_NAME", code: "PRIZE_3_CODE", desc: "PRIZE_3_DESC" },
+        { name: "PRIZE_4_NAME", code: "PRIZE_4_CODE", desc: "PRIZE_4_DESC" },
+        { name: "PRIZE_5_NAME", code: "PRIZE_5_CODE", desc: "PRIZE_5_DESC" },
+      ];
+
+      // Handle form submission with preventDefault
+      window.handleFormSubmit = function (event) {
+        event.preventDefault();
+
+        // const form = event.target;
+        // const formData = new FormData(form);
+        // const email = formData.get("email");
+        //
+        // if (!email || !email.includes("@")) {
+        //   alert("Please enter a valid email address");
+        //   return;
+        // }
+
+        // Submit to Klaviyo in the background
+        // fetch(form.action, {
+        //   method: "POST",
+        //   body: formData,
+        //   mode: "no-cors", // Required for cross-origin requests to Klaviyo
+        // }).catch((error) => {
+        //   // Ignore fetch errors since we're using no-cors mode
+        //   console.log("Email submitted (no-cors mode)");
+        // });
+
+        // Start the game immediately
+        startGame();
       };
 
-      // Start game after email
-      function startGame(e) {
-        e.preventDefault();
-        const email = document.getElementById("email").value;
-        if (!email.includes("@")) return;
-
+      // Start game after email (called by form submission)
+      window.startGame = function () {
         document.getElementById("emailSection").style.display = "none";
         document.getElementById("game").style.display = "block";
 
@@ -432,7 +493,7 @@
         state = "aiming";
         startAiming();
         draw();
-      }
+      };
 
       // Start aiming phase
       function startAiming() {
@@ -463,7 +524,7 @@
       }
 
       // Take shot
-      function putt() {
+      window.putt = function () {
         if (state !== "aiming") return;
 
         cancelAnimationFrame(animId);
@@ -495,14 +556,14 @@
           }
         }
         animateBall();
-      }
+      };
 
       // Check win/lose
       function checkEnd() {
         if (distance === target) {
           // Win!
           state = "won";
-          const prize = prizes[shots] || prizes[5];
+          const prize = prizes[shots] || prizes[4];
           document.getElementById("game").style.display = "none";
           document.getElementById("prize").style.display = "flex";
           document.getElementById(
@@ -526,7 +587,7 @@
       }
 
       // Reset game
-      function reset() {
+      window.reset = function () {
         shots = 0;
         distance = 0;
         power = 1;
@@ -546,7 +607,7 @@
         document.getElementById("lose").style.display = "none";
         document.getElementById("email").value = "";
         updateStats();
-      }
+      };
 
       // Update stats display
       function updateStats() {
