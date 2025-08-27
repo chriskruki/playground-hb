@@ -1,19 +1,15 @@
 #!/usr/bin/env node
 
-const fs = require("fs");
-const path = require("path");
+const fs = require('fs');
+const path = require('path');
 
 // Configuration for HTML to Liquid conversion
 const CONVERSION_MAP = {
   // Text content replacements
-  GAME_TITLE:
-    '{{ section.settings.game_title | default: "Mini Golf with Putty" }}',
-  GAME_SUBTITLE:
-    '{{ section.settings.game_subtitle | default: "Enter your email and win prizes!" }}',
-  EMAIL_PLACEHOLDER:
-    '{{ section.settings.email_placeholder | default: "you@domain.com" }}',
-  SUBMIT_BUTTON_TEXT:
-    '{{ section.settings.submit_button_text | default: "Let\'s Putt!" }}',
+  GAME_TITLE: '{{ section.settings.game_title | default: "Mini Golf with Putty" }}',
+  GAME_SUBTITLE: '{{ section.settings.game_subtitle | default: "Enter your email and win prizes!" }}',
+  EMAIL_PLACEHOLDER: '{{ section.settings.email_placeholder | default: "you@domain.com" }}',
+  SUBMIT_BUTTON_TEXT: '{{ section.settings.submit_button_text | default: "Let\'s Putt!" }}',
 
   // Prize data
   PRIZE_1_NAME: '{{ section.settings.prize_1_name | default: "Hole in One!" }}',
@@ -22,52 +18,48 @@ const CONVERSION_MAP = {
 
   PRIZE_2_NAME: '{{ section.settings.prize_2_name | default: "Eagle!" }}',
   PRIZE_2_CODE: '{{ section.settings.prize_2_code | default: "EAGLE2023" }}',
-  PRIZE_2_DESC:
-    '{{ section.settings.prize_2_desc | default: "Free Appetizer" }}',
+  PRIZE_2_DESC: '{{ section.settings.prize_2_desc | default: "Free Appetizer" }}',
 
   PRIZE_3_NAME: '{{ section.settings.prize_3_name | default: "Birdie!" }}',
   PRIZE_3_CODE: '{{ section.settings.prize_3_code | default: "BIRDIE10" }}',
-  PRIZE_3_DESC:
-    '{{ section.settings.prize_3_desc | default: "10% Off Your Order" }}',
+  PRIZE_3_DESC: '{{ section.settings.prize_3_desc | default: "10% Off Your Order" }}',
 
   PRIZE_4_NAME: '{{ section.settings.prize_4_name | default: "Par" }}',
   PRIZE_4_CODE: '{{ section.settings.prize_4_code | default: "PAR5OFF" }}',
-  PRIZE_4_DESC:
-    '{{ section.settings.prize_4_desc | default: "5% Off Your Order" }}',
+  PRIZE_4_DESC: '{{ section.settings.prize_4_desc | default: "5% Off Your Order" }}',
 
   PRIZE_5_NAME: '{{ section.settings.prize_5_name | default: "Bogey" }}',
   PRIZE_5_CODE: '{{ section.settings.prize_5_code | default: "BOGEY2" }}',
-  PRIZE_5_DESC:
-    '{{ section.settings.prize_5_desc | default: "$2 Off Your Order" }}',
+  PRIZE_5_DESC: '{{ section.settings.prize_5_desc | default: "$2 Off Your Order" }}',
 
   // Image URLs
-  PUTTY_IMAGE_URL: "{{ section.settings.putty_image | image_url }}",
+  PUTTY_IMAGE_URL: '{{ section.settings.putty_image | image_url }}',
 };
 
 // File paths
-const HTML_FILE = path.join(__dirname, "mini-golf-minimal.html");
-const LIQUID_OUTPUT = path.join(__dirname, "mini-golf-game.liquid");
+const HTML_FILE = path.join(__dirname, 'golf-game.html');
+const LIQUID_OUTPUT = path.join(__dirname, 'golf-game.liquid');
 
 function convertHtmlToLiquid() {
   try {
     // Read the HTML file
-    console.log("Reading HTML file...");
-    const htmlContent = fs.readFileSync(HTML_FILE, "utf8");
+    console.log('Reading HTML file...');
+    const htmlContent = fs.readFileSync(HTML_FILE, 'utf8');
 
     // Start building the Liquid template
-    let liquidContent = "";
+    let liquidContent = '';
 
     // Add Liquid header comment
     liquidContent += `{% comment %}
   Mini Golf Game Section for Shopify
-  Auto-generated from mini-golf-minimal.html
+  Auto-generated from golf-game.html
   Customizable prizes and marketing URL
 {% endcomment %}
 
 `;
 
     // Extract and convert CSS
-    console.log("Processing CSS...");
+    console.log('Processing CSS...');
     const cssMatch = htmlContent.match(/<style>([\s\S]*?)<\/style>/);
     if (cssMatch) {
       let css = cssMatch[1];
@@ -117,49 +109,43 @@ ${css}
     }
 
     // Extract and convert HTML body content
-    console.log("Processing HTML...");
+    console.log('Processing HTML...');
     const bodyMatch = htmlContent.match(/<body>([\s\S]*?)<\/body>/);
     if (bodyMatch) {
       let bodyContent = bodyMatch[1];
 
+      // Remove the inline <script>...</script> from body HTML; JS will be inlined separately later
+      bodyContent = bodyContent.replace(/<script>[\s\S]*?<\/script>/, '');
+
       // Remove the outer container div and replace with mini-golf-container
-      bodyContent = bodyContent.replace(
-        /<div class="container">/,
-        '<div class="mini-golf-container">'
-      );
+      bodyContent = bodyContent.replace(/<div class="container">/, '<div class="mini-golf-container">');
 
       // Add section ID suffixes to all IDs to prevent conflicts
+      bodyContent = bodyContent.replace(/id="([^"]+)"/g, 'id="$1-{{ section.id }}"');
+      bodyContent = bodyContent.replace(/getElementById\("([^"]+)"\)/g, 'getElementById("$1-{{ section.id }}")');
+      // Update inline handlers to call prefixed functions instead of section.id variants
+      bodyContent = bodyContent.replace(/onclick="putt\(\)"/g, 'onclick="GolfGamePutt()"');
+      bodyContent = bodyContent.replace(/onclick="startGame\(\)"/g, 'onclick="GolfGameStartGame()"');
+      bodyContent = bodyContent.replace(/onclick="reset\(\)"/g, 'onclick="GolfGameReset()"');
       bodyContent = bodyContent.replace(
-        /id="([^"]+)"/g,
-        'id="$1-{{ section.id }}"'
-      );
-      bodyContent = bodyContent.replace(
-        /getElementById\("([^"]+)"\)/g,
-        'getElementById("$1-{{ section.id }}")'
-      );
-      bodyContent = bodyContent.replace(
-        /onclick="([^"(]+)\(/g,
-        'onclick="$1{{ section.id }}('
+        /onsubmit="handleFormSubmit\(event\)"/g,
+        'onsubmit="GolfGameHandleFormSubmit(event)"',
       );
 
       // Replace static text with Liquid variables
       Object.entries(CONVERSION_MAP).forEach(([htmlText, liquidText]) => {
-        const regex = new RegExp(
-          `\\b${htmlText.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`,
-          "g"
-        );
+        const regex = new RegExp(`\\b${htmlText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'g');
         bodyContent = bodyContent.replace(regex, liquidText);
       });
 
       // Handle the Klaviyo form - ensure it uses the correct structure and replace placeholders
       bodyContent = bodyContent.replace(
         /<!-- Klaviyo Signup Form for Playground -->\s*<form[^>]*>[\s\S]*?<\/form>/,
-        `<!-- Klaviyo Signup Form for Playground -->
+        `<!-- Email Signup Form for Mini Golf -->
         <form
-          action="https://manage.kmail-lists.com/subscriptions/subscribe?a=Sg8ErC&g=VR7JgL"
-          method="POST"
+          id="email-form-{{ section.id }}"
           style="margin-top: 30px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;"
-          onsubmit="handleFormSubmit{{ section.id }}(event)"
+          onsubmit="GolfGameHandleFormSubmit(event)"
         >
           <input
             type="email"
@@ -191,7 +177,7 @@ ${css}
           >
             {{ section.settings.submit_button_text | default: "Let's Putt!" }}
           </button>
-        </form>`
+        </form>`,
       );
 
       // Wrap the game content in theme section structure
@@ -216,73 +202,158 @@ ${bodyContent}
     }
 
     // Process and inline the JavaScript
-    console.log("Processing and inlining JavaScript...");
+    console.log('Processing and inlining JavaScript...');
 
     // Find and extract the JavaScript from the HTML
     const scriptMatch = htmlContent.match(/<script>([\s\S]*?)<\/script>/);
     if (scriptMatch) {
       let jsContent = scriptMatch[1];
 
-      // Replace placeholder values with Liquid template variables
-      jsContent = jsContent.replace(
-        /puttyImg\.src = "PUTTY_IMAGE_URL";/,
-        `puttyImg.src = "{{ section.settings.putty_image | image_url }}";`
-      );
+      // Replace const declarations with Liquid values using | json so no extra escaping is needed
+      const constReplacements = [
+        {
+          key: 'GAME_TITLE',
+          value: '{{ section.settings.game_title | default: "Mini Golf with Putty" | json }}',
+        },
+        {
+          key: 'GAME_SUBTITLE',
+          value: '{{ section.settings.game_subtitle | default: "Enter your email and win prizes!" | json }}',
+        },
+        {
+          key: 'EMAIL_PLACEHOLDER',
+          value: '{{ section.settings.email_placeholder | default: "you@domain.com" | json }}',
+        },
+        {
+          key: 'SUBMIT_BUTTON_TEXT',
+          value: '{{ section.settings.submit_button_text | default: "Let\'s Putt!" | json }}',
+        },
+        {
+          key: 'MARKETING_URL',
+          value: '{{ section.settings.marketing_url | json }}',
+        },
+        {
+          key: 'PUTTY_IMAGE_URL',
+          value: '{{ section.settings.putty_image | image_url | json }}',
+        },
+        {
+          key: 'PRIZE_1_NAME',
+          value: '{{ section.settings.prize_1_name | default: "Hole in One!" | json }}',
+        },
+        {
+          key: 'PRIZE_1_CODE',
+          value: '{{ section.settings.prize_1_code | default: "HOLEINONE" | json }}',
+        },
+        {
+          key: 'PRIZE_1_DESC',
+          value: '{{ section.settings.prize_1_desc | default: "Free Round" | json }}',
+        },
+        {
+          key: 'PRIZE_2_NAME',
+          value: '{{ section.settings.prize_2_name | default: "Eagle!" | json }}',
+        },
+        {
+          key: 'PRIZE_2_CODE',
+          value: '{{ section.settings.prize_2_code | default: "EAGLE2023" | json }}',
+        },
+        {
+          key: 'PRIZE_2_DESC',
+          value: '{{ section.settings.prize_2_desc | default: "Free Appetizer" | json }}',
+        },
+        {
+          key: 'PRIZE_3_NAME',
+          value: '{{ section.settings.prize_3_name | default: "Birdie!" | json }}',
+        },
+        {
+          key: 'PRIZE_3_CODE',
+          value: '{{ section.settings.prize_3_code | default: "BIRDIE10" | json }}',
+        },
+        {
+          key: 'PRIZE_3_DESC',
+          value: '{{ section.settings.prize_3_desc | default: "10% Off Your Order" | json }}',
+        },
+        {
+          key: 'PRIZE_4_NAME',
+          value: '{{ section.settings.prize_4_name | default: "Par" | json }}',
+        },
+        {
+          key: 'PRIZE_4_CODE',
+          value: '{{ section.settings.prize_4_code | default: "PAR5OFF" | json }}',
+        },
+        {
+          key: 'PRIZE_4_DESC',
+          value: '{{ section.settings.prize_4_desc | default: "5% Off Your Order" | json }}',
+        },
+        {
+          key: 'PRIZE_5_NAME',
+          value: '{{ section.settings.prize_5_name | default: "Bogey" | json }}',
+        },
+        {
+          key: 'PRIZE_5_CODE',
+          value: '{{ section.settings.prize_5_code | default: "BOGEY2" | json }}',
+        },
+        {
+          key: 'PRIZE_5_DESC',
+          value: '{{ section.settings.prize_5_desc | default: "$2 Off Your Order" | json }}',
+        },
+      ];
+
+      constReplacements.forEach(({ key, value }) => {
+        const regex = new RegExp(`const\\s+${key}\\s*=\\s*"${key}";`);
+        jsContent = jsContent.replace(regex, `const ${key} = ${value};`);
+      });
+
+      // Replace email service URL with Liquid template variable
+      // jsContent = jsContent.replace(
+      //   /\/\/ submitToEmailService\(email\);/g,
+      //   `// Submit to your email service
+      //   {% if section.settings.marketing_url != blank %}
+      //   fetch("{{ section.settings.marketing_url }}", {
+      //     method: "POST",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //     body: JSON.stringify({ email: email }),
+      //     mode: "no-cors"
+      //   }).catch(error => console.log("Email service error:", error));
+      //   {% endif %}`
+      // );
 
       // Replace prize placeholders with Liquid template variables
       jsContent = jsContent.replace(
         /{ name: "PRIZE_1_NAME", code: "PRIZE_1_CODE", desc: "PRIZE_1_DESC" }/g,
-        `{ name: "{{ section.settings.prize_1_name | default: 'Hole in One!' }}", code: "{{ section.settings.prize_1_code | default: 'HOLEINONE' }}", desc: "{{ section.settings.prize_1_desc | default: 'Free Round' }}" }`
+        `{ name: "{{ section.settings.prize_1_name | default: 'Hole in One!' }}", code: "{{ section.settings.prize_1_code | default: 'HOLEINONE' }}", desc: "{{ section.settings.prize_1_desc | default: 'Free Round' }}" }`,
       );
       jsContent = jsContent.replace(
         /{ name: "PRIZE_2_NAME", code: "PRIZE_2_CODE", desc: "PRIZE_2_DESC" }/g,
-        `{ name: "{{ section.settings.prize_2_name | default: 'Eagle!' }}", code: "{{ section.settings.prize_2_code | default: 'EAGLE2023' }}", desc: "{{ section.settings.prize_2_desc | default: 'Free Appetizer' }}" }`
+        `{ name: "{{ section.settings.prize_2_name | default: 'Eagle!' }}", code: "{{ section.settings.prize_2_code | default: 'EAGLE2023' }}", desc: "{{ section.settings.prize_2_desc | default: 'Free Appetizer' }}" }`,
       );
       jsContent = jsContent.replace(
         /{ name: "PRIZE_3_NAME", code: "PRIZE_3_CODE", desc: "PRIZE_3_DESC" }/g,
-        `{ name: "{{ section.settings.prize_3_name | default: 'Birdie!' }}", code: "{{ section.settings.prize_3_code | default: 'BIRDIE10' }}", desc: "{{ section.settings.prize_3_desc | default: '10% Off Your Order' }}" }`
+        `{ name: "{{ section.settings.prize_3_name | default: 'Birdie!' }}", code: "{{ section.settings.prize_3_code | default: 'BIRDIE10' }}", desc: "{{ section.settings.prize_3_desc | default: '10% Off Your Order' }}" }`,
       );
       jsContent = jsContent.replace(
         /{ name: "PRIZE_4_NAME", code: "PRIZE_4_CODE", desc: "PRIZE_4_DESC" }/g,
-        `{ name: "{{ section.settings.prize_4_name | default: 'Par' }}", code: "{{ section.settings.prize_4_code | default: 'PAR5OFF' }}", desc: "{{ section.settings.prize_4_desc | default: '5% Off Your Order' }}" }`
+        `{ name: "{{ section.settings.prize_4_name | default: 'Par' }}", code: "{{ section.settings.prize_4_code | default: 'PAR5OFF' }}", desc: "{{ section.settings.prize_4_desc | default: '5% Off Your Order' }}" }`,
       );
       jsContent = jsContent.replace(
         /{ name: "PRIZE_5_NAME", code: "PRIZE_5_CODE", desc: "PRIZE_5_DESC" }/g,
-        `{ name: "{{ section.settings.prize_5_name | default: 'Bogey' }}", code: "{{ section.settings.prize_5_code | default: 'BOGEY2' }}", desc: "{{ section.settings.prize_5_desc | default: '$2 Off Your Order' }}" }`
+        `{ name: "{{ section.settings.prize_5_name | default: 'Bogey' }}", code: "{{ section.settings.prize_5_code | default: 'BOGEY2' }}", desc: "{{ section.settings.prize_5_desc | default: '$2 Off Your Order' }}" }`,
       );
 
       // Add section ID namespacing for Shopify
-      const sectionId = "{{ section.id }}";
+      const sectionId = '{{ section.id }}';
 
       // Namespace all DOM element IDs
-      jsContent = jsContent.replace(
-        /getElementById\("([^"]+)"\)/g,
-        `getElementById("$1-${sectionId}")`
-      );
+      jsContent = jsContent.replace(/getElementById\("([^"]+)"\)/g, `getElementById("$1-${sectionId}")`);
 
-      // Namespace global functions
-      jsContent = jsContent.replace(
-        /window\.handleFormSubmit = function/g,
-        `window.handleFormSubmit${sectionId} = function`
-      );
-      jsContent = jsContent.replace(
-        /window\.startGame = function/g,
-        `window.startGame${sectionId} = function`
-      );
-      jsContent = jsContent.replace(
-        /window\.putt = function/g,
-        `window.putt${sectionId} = function`
-      );
-      jsContent = jsContent.replace(
-        /window\.reset = function/g,
-        `window.reset${sectionId} = function`
-      );
+      // Prefix global functions with GolfGame to avoid section.id in function names
+      jsContent = jsContent.replace(/window\.putt = function/g, `window.GolfGamePutt = function`);
+      jsContent = jsContent.replace(/window\.reset = function/g, `window.GolfGameReset = function`);
 
-      // Fix internal function calls to use namespaced versions
-      jsContent = jsContent.replace(
-        /startGame\(\);/g,
-        `startGame${sectionId}();`
-      );
+      // Fix internal function calls to use prefixed versions
+      jsContent = jsContent.replace(/\bstartGame\(\)/g, `GolfGameStartGame()`);
+      jsContent = jsContent.replace(/\bputt\(\)/g, `GolfGamePutt()`);
+      jsContent = jsContent.replace(/\breset\(\)/g, `GolfGameReset()`);
 
       liquidContent += `
 
@@ -297,7 +368,7 @@ ${jsContent}
     }
 
     // Add the Liquid schema
-    console.log("Adding Liquid schema...");
+    console.log('Adding Liquid schema...');
     liquidContent += `
 {% schema %}
 {
@@ -519,14 +590,14 @@ ${jsContent}
 {% endschema %}`;
 
     // Write the Liquid file
-    console.log("Writing Liquid file...");
-    fs.writeFileSync(LIQUID_OUTPUT, liquidContent, "utf8");
+    console.log('Writing Liquid file...');
+    fs.writeFileSync(LIQUID_OUTPUT, liquidContent, 'utf8');
 
-    console.log("✅ Successfully converted HTML to Liquid!");
+    console.log('✅ Successfully converted HTML to Liquid!');
     console.log(`📄 Input: ${HTML_FILE}`);
     console.log(`📄 Output: ${LIQUID_OUTPUT}`);
   } catch (error) {
-    console.error("❌ Error converting HTML to Liquid:", error.message);
+    console.error('❌ Error converting HTML to Liquid:', error.message);
     process.exit(1);
   }
 }
