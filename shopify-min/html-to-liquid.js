@@ -74,17 +74,29 @@ function convertHtmlToLiquid() {
   display: grid;
   grid-template-columns: subgrid;
   grid-column: 1 / -1;
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 0;
 }
 
 .mini-golf-container {
   grid-column: 2;
-  max-width: 100%;
+  width: 100%;
+  max-width: 800px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 400px;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.mini-golf-container * {
+  box-sizing: border-box;
+  max-width: 100%;
 }
 
 /* Full width adjustments */
@@ -94,10 +106,30 @@ function convertHtmlToLiquid() {
 }
 
 /* Mobile responsiveness */
-@media screen and (width < 750px) {
+@media screen and (max-width: 750px) {
+  .mini-golf-section {
+    padding: 0;
+  }
   .mini-golf-container {
     grid-column: 1 / -1;
     padding: 0 var(--padding-md, 16px);
+    width: 100%;
+  }
+  .mini-golf-container .container {
+    padding: 20px 10px;
+    width: 100%;
+  }
+  .mini-golf-container .prize-guide {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .mini-golf-container .canvas-container {
+    width: 100%;
+    overflow: hidden;
+  }
+  .mini-golf-container canvas {
+    max-width: 100%;
   }
 }
 
@@ -239,6 +271,10 @@ ${bodyContent}
           value: '{{ section.settings.putt_button_text | default: "PUTT!" | json }}',
         },
         {
+          key: "PUTT_DISABLED_BUTTON_TEXT",
+          value: '{{ section.settings.putt_disabled_button_text | default: "Enter email to play" | json }}',
+        },
+        {
           key: "PUTTY_X_OFFSET",
           value: "{{ section.settings.putty_x_offset | default: 25 | json }}",
         },
@@ -309,18 +345,6 @@ ${bodyContent}
         {
           key: "PRIZE_5_DESC",
           value: '{{ section.settings.prize_5_desc | default: "$2 Off Your Order" | json }}',
-        },
-        {
-          key: "METER_X",
-          value: "{{ section.settings.meter_x | default: 320 | json }}",
-        },
-        {
-          key: "METER_Y",
-          value: "{{ section.settings.meter_y | default: 20 | json }}",
-        },
-        {
-          key: "FLAG_TOP_Y",
-          value: "{{ section.settings.flag_top_y | default: 15 | json }}",
         },
       ];
 
@@ -475,37 +499,17 @@ ${jsContent}
     },
 
     {
-      "type": "range",
-      "id": "meter_x",
-      "label": "Meter X",
-      "min": 0,
-      "max": 700,
-      "step": 5,
-      "default": 320
-    },
-    {
-      "type": "range",
-      "id": "meter_y",
-      "label": "Meter Y",
-      "min": 0,
-      "max": 120,
-      "step": 2,
-      "default": 20
-    },
-    {
-      "type": "range",
-      "id": "flag_top_y",
-      "label": "Flag Top Y",
-      "min": 0,
-      "max": 50,
-      "step": 1,
-      "default": 15
-    },
-    {
       "type": "text",
       "id": "putt_button_text",
       "label": "Putt Button Text",
       "default": "PUTT!"
+    },
+    {
+      "type": "text",
+      "id": "putt_disabled_button_text",
+      "label": "Disabled Putt Button Text",
+      "default": "Enter email to play",
+      "info": "Text shown on the PUTT button before email is submitted"
     },
     {
       "type": "image_picker",

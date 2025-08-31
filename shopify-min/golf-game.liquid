@@ -10,17 +10,29 @@
   display: grid;
   grid-template-columns: subgrid;
   grid-column: 1 / -1;
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 0;
 }
 
 .mini-golf-container {
   grid-column: 2;
-  max-width: 100%;
+  width: 100%;
+  max-width: 800px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 400px;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.mini-golf-container * {
+  box-sizing: border-box;
+  max-width: 100%;
 }
 
 /* Full width adjustments */
@@ -30,10 +42,30 @@
 }
 
 /* Mobile responsiveness */
-@media screen and (width < 750px) {
+@media screen and (max-width: 750px) {
+  .mini-golf-section {
+    padding: 0;
+  }
   .mini-golf-container {
     grid-column: 1 / -1;
     padding: 0 var(--padding-md, 16px);
+    width: 100%;
+  }
+  .mini-golf-container .container {
+    padding: 20px 10px;
+    width: 100%;
+  }
+  .mini-golf-container .prize-guide {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .mini-golf-container .canvas-container {
+    width: 100%;
+    overflow: hidden;
+  }
+  .mini-golf-container canvas {
+    max-width: 100%;
   }
 }
 
@@ -49,6 +81,7 @@
       }
 
       .container {
+        width: 100%;
         max-width: 800px;
         margin: 0 auto;
         padding: 40px 20px;
@@ -56,6 +89,7 @@
         border-radius: 16px;
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         overflow: hidden;
+        box-sizing: border-box;
       }
       h1 {
         color: #02210a;
@@ -246,16 +280,16 @@
         font-size: 13px;
         font-weight: 800;
         margin-top: 4px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        white-space: wrap;
+        overflow: wrap;
+        word-wrap: break-word;
+        text-overflow: visible;
       }
       .prize-segment .prize-desc {
         font-size: 12px;
         opacity: 0.8;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        white-space: wrap;
+        overflow: visible;
       }
       .prize-segment.active {
         box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
@@ -463,13 +497,16 @@
         color: white;
         padding: 30px;
         border-radius: 16px;
-        margin: 20px 0;
+        margin: 20px auto;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        max-width: 100%;
+        width: 100%;
+        max-width: 400px;
         gap: 10px;
         flex-shrink: 0;
+        flex-grow: 1;
+        box-sizing: border-box;
       }
 
       .lose {
@@ -483,14 +520,17 @@
 
       .code {
         background: rgba(255, 255, 255, 0.2);
-        padding: 8px 16px;
-        border-radius: 6px;
+        padding: 12px 24px;
+        border-radius: 8px;
         font-family: monospace;
-        font-size: 1.2em;
+        font-size: 1.4em;
         font-weight: bold;
         letter-spacing: 2px;
-        margin: 0;
+        margin: 10px 0;
         border: 2px dashed rgba(255, 255, 255, 0.5);
+        min-width: 200px;
+        text-align: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       }
 
       /* Responsive design */
@@ -498,9 +538,11 @@
         .game-area {
           flex-direction: column;
           align-items: center;
+          width: 100%;
         }
 
         .game-info {
+          width: 100%;
           max-width: 100%;
           text-align: center;
         }
@@ -508,6 +550,7 @@
         .instructions {
           text-align: left;
           max-width: 350px;
+          width: 100%;
         }
 
         .putty-character {
@@ -515,19 +558,46 @@
           left: 10px;
           top: 2px;
         }
+
+        .canvas-container {
+          width: 100%;
+          overflow: hidden;
+        }
+
+        canvas {
+          max-width: 100%;
+          width: 100%;
+        }
+
+        .ui-row {
+          width: 100%;
+          max-width: 100%;
+          justify-content: center;
+          gap: 8px;
+        }
+
+        .power-meter {
+          max-width: 160px;
+          width: 50%;
+        }
       }
 
       @media (max-width: 480px) {
         .container {
           padding: 20px 10px;
+          width: 100%;
+          margin: 0;
         }
 
         .email-form {
           flex-direction: column;
           align-items: center;
+          width: 100%;
         }
 
         input[type="email"] {
+          width: 100%;
+          max-width: 280px;
           min-width: 200px;
           margin-bottom: 10px;
         }
@@ -535,30 +605,58 @@
         /* Compact headings and subtitle */
         h1 {
           margin: 8px 0 4px 0;
+          font-size: 24px;
         }
         p {
           margin: 6px 0 8px 0;
+          font-size: 16px;
         }
 
         /* Override inline spacing in email form */
         #email-form {
           margin-top: 10px !important;
           gap: 6px !important;
+          width: 100%;
         }
         #email-form input[type="email"] {
           padding: 8px 10px !important;
           font-size: 14px !important;
           min-width: 200px !important;
+          width: 100% !important;
+          max-width: 280px !important;
         }
         #email-form button {
           padding: 10px 14px !important;
           font-size: 14px !important;
+          width: 100% !important;
+          max-width: 280px !important;
         }
 
         .putty-character {
           height: 45px;
           left: 8px;
           top: 0px;
+        }
+
+        .prize-guide {
+          padding: 8px;
+          gap: 6px;
+        }
+
+        .prize-segment {
+          padding: 6px;
+        }
+
+        .prize {
+          margin: 20px auto;
+          padding: 20px;
+          width: calc(100% - 20px);
+          max-width: 400px;
+        }
+
+        .code {
+          font-size: 1em;
+          padding: 6px 12px;
         }
       }
     
@@ -639,28 +737,23 @@
           </div>
           <div id="prizeGuide-{{ section.id }}" class="prize-guide">
             <div class="prize-segment seg-1" data-shots="1">
-              <div class="shot-label">1 Shot</div>
-              <div class="prize-name" id="seg1Name-{{ section.id }}">{{ section.settings.prize_1_name | default: "Hole in One!" }}</div>
+              <div class="prize-name" id="seg1Name-{{ section.id }}">Free game!</div>
               <div class="prize-desc" id="seg1Desc-{{ section.id }}">{{ section.settings.prize_1_desc | default: "Free Round" }}</div>
             </div>
             <div class="prize-segment seg-2" data-shots="2">
-              <div class="shot-label">2 Shots</div>
               <div class="prize-name" id="seg2Name-{{ section.id }}">{{ section.settings.prize_2_name | default: "Eagle!" }}</div>
               <div class="prize-desc" id="seg2Desc-{{ section.id }}">{{ section.settings.prize_2_desc | default: "Free Appetizer" }}</div>
             </div>
             <div class="prize-segment seg-3" data-shots="3">
-              <div class="shot-label">3 Shots</div>
               <div class="prize-name" id="seg3Name-{{ section.id }}">{{ section.settings.prize_3_name | default: "Birdie!" }}</div>
               <div class="prize-desc" id="seg3Desc-{{ section.id }}">{{ section.settings.prize_3_desc | default: "10% Off Your Order" }}</div>
             </div>
             <div class="prize-segment seg-4" data-shots="4">
-              <div class="shot-label">4 Shots</div>
               <div class="prize-name" id="seg4Name-{{ section.id }}">{{ section.settings.prize_4_name | default: "Par" }}</div>
               <div class="prize-desc" id="seg4Desc-{{ section.id }}">{{ section.settings.prize_4_desc | default: "5% Off Your Order" }}</div>
             </div>
             <div class="prize-segment seg-5" data-shots="5">
-              <div class="shot-label">5 Shots</div>
-              <div class="prize-name" id="seg5Name-{{ section.id }}">{{ section.settings.prize_4_name | default: "Par" }}</div>
+              <div class="prize-name" id="seg5Name-{{ section.id }}">{{ section.settings.prize_5_name | default: "Bogey" }}</div>
               <div class="prize-desc" id="seg5Desc-{{ section.id }}">{{ section.settings.prize_5_desc | default: "$2 Off Your Order" }}</div>
             </div>
           </div>
@@ -730,13 +823,11 @@
       const MARKETING_URL = {{ section.settings.marketing_url | json }};
       const PUTTY_IMAGE_URL = {{ section.settings.putty_image | image_url | json }};
       const PUTT_BUTTON_TEXT = {{ section.settings.putt_button_text | default: "PUTT!" | json }};
-      // Lane start X is now computed dynamically based on container width
-      const METER_X = 320;
-      const METER_Y = 20;
+      const PUTT_DISABLED_BUTTON_TEXT = {{ section.settings.putt_disabled_button_text | default: "Enter email to play" | json }};
+      // Power meter and UI constants
       const METER_WIDTH = 160;
       const CANVAS_HEIGHT = 80;
       const UI_BAR_HEIGHT = 24;
-      const FLAG_TOP_Y = 15;
       const PRIZE_1_NAME = {{ section.settings.prize_1_name | default: "Hole in One!" | json }};
       const PRIZE_1_CODE = {{ section.settings.prize_1_code | default: "HOLEINONE" | json }};
       const PRIZE_1_DESC = {{ section.settings.prize_1_desc | default: "Free Round" | json }};
@@ -898,7 +989,7 @@
         if (!btn) return;
         if (state === "email") {
           btn.disabled = true;
-          btn.textContent = "Enter email to play";
+          btn.textContent = PUTT_DISABLED_BUTTON_TEXT;
           return;
         }
         const shouldEnable = state === "aiming";
@@ -1140,13 +1231,13 @@
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.moveTo(holeCenterX, 55);
-        ctx.lineTo(holeCenterX, FLAG_TOP_Y);
+        ctx.lineTo(holeCenterX, 15);
         ctx.stroke();
         ctx.fillStyle = "#EC3C28";
         ctx.beginPath();
-        ctx.moveTo(holeCenterX, FLAG_TOP_Y);
-        ctx.lineTo(holeCenterX + 20, FLAG_TOP_Y + 5);
-        ctx.lineTo(holeCenterX, FLAG_TOP_Y + 10);
+        ctx.moveTo(holeCenterX, 15);
+        ctx.lineTo(holeCenterX + 20, 20);
+        ctx.lineTo(holeCenterX, 25);
         ctx.fill();
 
         // Ball
@@ -1183,7 +1274,7 @@
           const initialBtn = document.getElementById("puttHtmlBtn-{{ section.id }}");
           if (initialBtn) {
             initialBtn.disabled = true;
-            initialBtn.textContent = "Enter email to play";
+            initialBtn.textContent = PUTT_DISABLED_BUTTON_TEXT;
           }
 
           // Initial draw to set canvas size
@@ -1318,37 +1409,17 @@
     },
 
     {
-      "type": "range",
-      "id": "meter_x",
-      "label": "Meter X",
-      "min": 0,
-      "max": 700,
-      "step": 5,
-      "default": 320
-    },
-    {
-      "type": "range",
-      "id": "meter_y",
-      "label": "Meter Y",
-      "min": 0,
-      "max": 120,
-      "step": 2,
-      "default": 20
-    },
-    {
-      "type": "range",
-      "id": "flag_top_y",
-      "label": "Flag Top Y",
-      "min": 0,
-      "max": 50,
-      "step": 1,
-      "default": 15
-    },
-    {
       "type": "text",
       "id": "putt_button_text",
       "label": "Putt Button Text",
       "default": "PUTT!"
+    },
+    {
+      "type": "text",
+      "id": "putt_disabled_button_text",
+      "label": "Disabled Putt Button Text",
+      "default": "Enter email to play",
+      "info": "Text shown on the PUTT button before email is submitted"
     },
     {
       "type": "image_picker",
