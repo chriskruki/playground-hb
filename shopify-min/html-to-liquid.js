@@ -235,6 +235,22 @@ ${bodyContent}
           value: "{{ section.settings.putty_image | image_url | json }}",
         },
         {
+          key: "PUTT_BUTTON_TEXT",
+          value: '{{ section.settings.putt_button_text | default: "PUTT!" | json }}',
+        },
+        {
+          key: "PUTTY_X_OFFSET",
+          value: "{{ section.settings.putty_x_offset | default: 25 | json }}",
+        },
+        {
+          key: "PUTTY_Y_OFFSET",
+          value: "{{ section.settings.putty_y_offset | default: -5 | json }}",
+        },
+        {
+          key: "LANE_START_X",
+          value: "{{ section.settings.lane_start_x | default: 100 | json }}",
+        },
+        {
           key: "PRIZE_1_NAME",
           value: '{{ section.settings.prize_1_name | default: "Hole in One!" | json }}',
         },
@@ -293,6 +309,18 @@ ${bodyContent}
         {
           key: "PRIZE_5_DESC",
           value: '{{ section.settings.prize_5_desc | default: "$2 Off Your Order" | json }}',
+        },
+        {
+          key: "METER_X",
+          value: "{{ section.settings.meter_x | default: 320 | json }}",
+        },
+        {
+          key: "METER_Y",
+          value: "{{ section.settings.meter_y | default: 20 | json }}",
+        },
+        {
+          key: "FLAG_TOP_Y",
+          value: "{{ section.settings.flag_top_y | default: 15 | json }}",
         },
       ];
 
@@ -444,6 +472,40 @@ ${jsContent}
     {
       "type": "header",
       "content": "Game Assets"
+    },
+
+    {
+      "type": "range",
+      "id": "meter_x",
+      "label": "Meter X",
+      "min": 0,
+      "max": 700,
+      "step": 5,
+      "default": 320
+    },
+    {
+      "type": "range",
+      "id": "meter_y",
+      "label": "Meter Y",
+      "min": 0,
+      "max": 120,
+      "step": 2,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "flag_top_y",
+      "label": "Flag Top Y",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "default": 15
+    },
+    {
+      "type": "text",
+      "id": "putt_button_text",
+      "label": "Putt Button Text",
+      "default": "PUTT!"
     },
     {
       "type": "image_picker",
