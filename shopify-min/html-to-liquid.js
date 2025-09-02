@@ -69,75 +69,7 @@ function convertHtmlToLiquid() {
       // This is more reliable than trying to parse individual selectors
 
       liquidContent += `<style>
-/* Theme integration styles */
-.mini-golf-section {
-  display: grid;
-  grid-template-columns: subgrid;
-  grid-column: 1 / -1;
-  width: 100%;
-  overflow: hidden;
-  box-sizing: border-box;
-  padding: 0;
-}
-
-.mini-golf-container {
-  grid-column: 2;
-  width: 100%;
-  max-width: 800px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 400px;
-  padding: 0 20px;
-  box-sizing: border-box;
-}
-
-.mini-golf-container * {
-  box-sizing: border-box;
-  max-width: 100%;
-  padding-top: 8px;
-}
-
-/* Full width adjustments */
-.section--full-width .mini-golf-container {
-  grid-column: 1 / -1;
-  padding: 0 var(--padding-lg, 20px);
-}
-
-/* Mobile responsiveness */
-@media screen and (max-width: 750px) {
-  .mini-golf-section {
-    padding: 0;
-  }
-  .mini-golf-container {
-    grid-column: 1 / -1;
-    padding: 0 var(--padding-md, 16px);
-    width: 100%;
-  }
-  .mini-golf-container .container {
-    padding: 20px 10px;
-    width: 100%;
-  }
-  .mini-golf-container .prize-guide {
-    width: 100%;
-    margin-left: 0;
-    margin-right: 0;
-  }
-  .mini-golf-container .canvas-container {
-    width: 100%;
-    overflow: hidden;
-  }
-  .mini-golf-container canvas {
-    max-width: 100%;
-  }
-}
-
-/* Game-specific styles wrapped to prevent theme conflicts */
-.mini-golf-container {
 ${css}
-}
 </style>
 
 `;
@@ -152,8 +84,7 @@ ${css}
       // Remove the inline <script>...</script> from body HTML; JS will be inlined separately later
       bodyContent = bodyContent.replace(/<script>[\s\S]*?<\/script>/, "");
 
-      // Remove the outer container div and replace with mini-golf-container
-      bodyContent = bodyContent.replace(/<div class="container">/, '<div class="mini-golf-container">');
+      // Keep the existing mini-golf-section and mini-golf-container structure
 
       // Add section ID suffixes to all IDs to prevent conflicts
       bodyContent = bodyContent.replace(/id="([^"]+)"/g, 'id="$1-{{ section.id }}"');

@@ -29,65 +29,114 @@
         box-sizing: border-box;
         gap: 5px;
       }
-      h1 {
+      .game-title {
         color: #02210a;
-        margin-bottom: 0;
+        margin: 0;
+        font-size: 32px;
+        font-weight: bold;
       }
-      p {
+
+      .game-subtitle {
         color: #420d00;
-        margin-bottom: 20px;
+        margin: 0;
+        font-size: 18px;
+        opacity: 0.9;
+      }
+
+      /* Email section styles */
+      .email-section {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        width: 100%;
+        max-width: 600px;
       }
 
       .email-form {
         display: flex;
         gap: 10px;
-        justify-content: center;
-        margin-bottom: 30px;
+        justify-content: space-between;
+        margin-top: 5px;
         flex-wrap: nowrap;
         width: 100%;
         max-width: 600px;
+        box-sizing: border-box;
       }
 
-      input[type="email"] {
+      .email-input {
         padding: 12px 16px;
-        font-size: 16px;
+        font-size: 12px;
         border: 1px solid #ccc;
         border-radius: 6px;
-        flex: 1;
+        flex: 7;
         min-width: 0;
-        width: 100%;
+        width: 70%;
+        font-family: "General Sans", sans-serif;
       }
 
-      button {
+      .email-submit {
+        flex: 3;
+        width: 30%;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      /* Base button styles */
+      .btn {
         padding: 12px 20px;
         font-size: 16px;
         border: none;
         border-radius: 6px;
         cursor: pointer;
         font-weight: 600;
+        font-family: "General Sans", sans-serif;
+        white-space: nowrap;
+        transition: opacity 0.2s ease;
       }
 
-      .email-btn {
+      .btn:disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+
+      /* Button variants */
+      .btn-primary {
         background: #923c07;
         color: white;
       }
 
-      .game-btn {
+      .btn-secondary {
         background: #02210a;
         color: #fff1d4;
-        margin: 0 5px;
       }
 
-      .putt-btn {
+      .btn-action {
         background: #ec3c28;
         color: white;
-        animation: pulse 1s infinite;
+      }
+
+      .btn-outline {
+        background: rgba(255, 255, 255, 0.2);
+        border: 2px solid white;
+        color: white;
+      }
+
+      /* Putt button specific */
+      .putt-btn {
         height: 24px;
         padding: 0 10px;
         line-height: 24px;
         font-size: 12px;
         border: 1px solid #333;
         border-radius: 4px;
+        animation: pulse 1s infinite;
+      }
+
+      .putt-btn:disabled {
+        background: #bdbdbd;
+        color: #eeeeee;
+        animation: none;
       }
 
       @keyframes pulse {
@@ -509,10 +558,9 @@
         color: #02210a;
       }
 
-      .prize {
+      /* Prize result styles */
+      .result-banner {
         display: none;
-        background: linear-gradient(135deg, #4caf50, #45a049);
-        color: white;
         padding: 30px;
         border-radius: 16px;
         margin: 20px auto;
@@ -522,25 +570,37 @@
         width: 100%;
         max-width: 400px;
         gap: 10px;
-        flex-shrink: 0;
-        flex-grow: 1;
+        color: white;
         box-sizing: border-box;
       }
 
-      h2 {
-        margin: 0;
+      .result-banner.win {
+        background: linear-gradient(135deg, #4caf50, #45a049);
       }
 
-      .lose {
-        display: none;
+      .result-banner.lose {
         background: linear-gradient(135deg, #f44336, #d32f2f);
-        color: white;
-        padding: 30px;
-        border-radius: 16px;
-        margin: 20px auto;
+      }
+
+      .result-title {
+        margin: 0;
+        font-size: 24px;
+        font-weight: bold;
+      }
+
+      .result-desc {
+        margin: 0;
+        font-size: 16px;
+        opacity: 0.9;
+      }
+
+      .result-code-container {
+        display: flex;
         flex-direction: column;
-        justify-content: center;
         align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin: 10px 0;
       }
 
       .code {
@@ -551,7 +611,6 @@
         font-size: 1.4em;
         font-weight: bold;
         letter-spacing: 2px;
-        margin: 10px 0;
         border: 2px dashed rgba(255, 255, 255, 0.5);
         min-width: 200px;
         text-align: center;
@@ -623,20 +682,20 @@
         }
 
         input[type="email"] {
-          width: calc(80% - 5px) !important;
+          width: calc(70% - 5px) !important;
           min-width: 0 !important;
           margin: 0;
           padding: 6px 8px !important;
           font-size: 12px !important;
-          flex: 4;
+          flex: 7;
         }
 
         .email-form button[type="submit"] {
-          width: 20% !important;
+          width: 30% !important;
           min-width: 0 !important;
           padding: 6px 8px !important;
           font-size: 12px !important;
-          flex: 1;
+          flex: 3;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -701,62 +760,15 @@
   </head>
   <body>
     <div class="container">
-      <h1 style="margin: 0">GAME_TITLE</h1>
-      <p style="margin: 0">GAME_SUBTITLE</p>
+      <h1 class="game-title">GAME_TITLE</h1>
+      <p class="game-subtitle">GAME_SUBTITLE</p>
 
       <!-- Email Form -->
-      <div id="emailSection" style="display: flex; flex-direction: column; gap: 5px">
+      <div id="emailSection" class="email-section">
         <!-- Email Signup Form for Mini Golf -->
-        <form
-          id="email-form"
-          style="
-            margin-top: 5px;
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-            flex-wrap: nowrap;
-            width: 100%;
-            max-width: 600px;
-            box-sizing: border-box;
-          "
-          onsubmit="window.GolfGameHandleFormSubmit(event)"
-        >
-          <input
-            type="email"
-            name="email"
-            id="email"
-            required
-            placeholder="EMAIL_PLACEHOLDER"
-            style="
-              padding: 12px 16px;
-              font-size: 12px;
-              border: 1px solid #ccc;
-              border-radius: 6px;
-              flex: 4;
-              min-width: 0;
-              font-family: 'General Sans', sans-serif;
-              width: 80%;
-            "
-          />
-          <button
-            type="submit"
-            style="
-              background-color: #923c07;
-              color: white;
-              padding: 12px 20px;
-              font-size: 12px;
-              border: none;
-              border-radius: 6px;
-              cursor: pointer;
-              white-space: nowrap;
-              font-family: 'General Sans', sans-serif;
-              flex: 1;
-              width: 20%;
-              min-width: 0;
-            "
-          >
-            SUBMIT_BUTTON_TEXT
-          </button>
+        <form id="email-form" class="email-form" onsubmit="window.GolfGameHandleFormSubmit(event)">
+          <input type="email" name="email" id="email" required placeholder="EMAIL_PLACEHOLDER" class="email-input" />
+          <button type="submit" class="btn btn-primary email-submit">SUBMIT_BUTTON_TEXT</button>
         </form>
       </div>
 
@@ -766,7 +778,7 @@
         <div class="game-area">
           <div class="canvas-container">
             <div id="uiRow" class="ui-row">
-              <button id="puttHtmlBtn" class="game-btn putt-btn">PUTT_BUTTON_TEXT</button>
+              <button id="puttHtmlBtn" class="btn btn-action putt-btn">PUTT_BUTTON_TEXT</button>
               <div id="powerMeter" class="power-meter"><div id="powerTick" class="power-tick"></div></div>
             </div>
             <canvas id="canvas" style="width: 600px; height: 80px" width="600" height="80"></canvas>
@@ -779,7 +791,7 @@
               <div class="prize-desc" id="seg1Desc">PRIZE_1_DESC</div>
             </div>
             <div class="prize-accordion">
-              <button class="prize-accordion-toggle" onclick="GolfGameTogglePrizes(this)">View all prizes</button>
+              <button class="btn prize-accordion-toggle" onclick="GolfGameTogglePrizes(this)">View all prizes</button>
               <div class="prize-accordion-content">
                 <div class="prize-segment seg-2" data-shots="2">
                   <div class="prize-name" id="seg2Name">PRIZE_2_NAME</div>
@@ -820,36 +832,24 @@
             </div>
           </div>
         </div>
-        <button id="puttBtn" class="game-btn putt-btn" onclick="GolfGamePutt()" style="display: none">🏌️ PUTT!</button>
+        <button id="puttBtn" class="btn btn-action putt-btn" onclick="GolfGamePutt()" style="display: none">
+          🏌️ PUTT!
+        </button>
       </div>
 
       <!-- Prize -->
-      <div id="prize" class="prize">
-        <h2 id="prizeTitle" style="margin: 0px">🎉 You Won!</h2>
-        <p id="prizeDesc" style="margin: 0">Amazing prize!</p>
-        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px">
-          Your Code: <span id="prizeCode" class="code">CODE123</span>
-        </div>
-        <button
-          class="game-btn"
-          onclick="GolfGameReset()"
-          style="background: rgba(255, 255, 255, 0.2); border: 2px solid white"
-        >
-          Play Again
-        </button>
+      <div id="prize" class="result-banner win">
+        <h2 id="prizeTitle" class="result-title">🎉 You Won!</h2>
+        <p id="prizeDesc" class="result-desc">Amazing prize!</p>
+        <div class="result-code-container">Your Code: <span id="prizeCode" class="code">CODE123</span></div>
+        <button class="btn btn-outline" onclick="GolfGameReset()">Play Again</button>
       </div>
 
       <!-- Lose -->
-      <div id="lose" class="lose">
-        <h2>Too many shots!</h2>
-        <p>You need to reach the hole in 5 shots or less to win a prize.</p>
-        <button
-          class="game-btn"
-          onclick="GolfGameReset()"
-          style="background: rgba(255, 255, 255, 0.2); border: 2px solid white"
-        >
-          🔄 Try Again
-        </button>
+      <div id="lose" class="result-banner lose">
+        <h2 class="result-title">Too many shots!</h2>
+        <p class="result-desc">You need to reach the hole in 5 shots or less to win a prize.</p>
+        <button class="btn btn-outline" onclick="GolfGameReset()">🔄 Try Again</button>
       </div>
     </div>
 
