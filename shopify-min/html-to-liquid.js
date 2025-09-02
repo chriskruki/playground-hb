@@ -97,6 +97,7 @@ function convertHtmlToLiquid() {
 .mini-golf-container * {
   box-sizing: border-box;
   max-width: 100%;
+  padding-top: 8px;
 }
 
 /* Full width adjustments */
@@ -408,10 +409,11 @@ ${jsContent}
       "content": "Game Content"
     },
     {
-      "type": "text",
+      "type": "textarea",
       "id": "aim_banner_text",
       "label": "Aim Banner Text",
-      "default": "Watch the power meter and click PUTT when ready!"
+      "default": "Watch the power meter and click PUTT when ready!",
+      "info": "You can use newlines to create multi-line instructions"
     },
     {
       "type": "text",

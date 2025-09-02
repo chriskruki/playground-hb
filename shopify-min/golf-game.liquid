@@ -33,6 +33,7 @@
 .mini-golf-container * {
   box-sizing: border-box;
   max-width: 100%;
+  padding-top: 8px;
 }
 
 /* Full width adjustments */
@@ -94,7 +95,7 @@
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         overflow: hidden;
         box-sizing: border-box;
-        gap: 2px;
+        gap: 5px;
       }
       h1 {
         color: #02210a;
@@ -110,7 +111,9 @@
         gap: 10px;
         justify-content: center;
         margin-bottom: 30px;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
+        width: 100%;
+        max-width: 600px;
       }
 
       input[type="email"] {
@@ -118,7 +121,9 @@
         font-size: 16px;
         border: 1px solid #ccc;
         border-radius: 6px;
-        min-width: 250px;
+        flex: 1;
+        min-width: 0;
+        width: 100%;
       }
 
       button {
@@ -181,7 +186,7 @@
         align-items: center;
         justify-content: center;
         gap: 5px;
-        margin: 20px 0;
+        margin-top: 5px;
       }
 
       .canvas-container {
@@ -225,6 +230,8 @@
         border-radius: 8px;
         font-weight: 600;
         text-align: center;
+        white-space: pre-line;
+        line-height: 1.4;
       }
 
       .instructions {
@@ -245,24 +252,35 @@
       /* Prize guide */
       .prize-guide {
         display: flex;
+        flex-direction: column;
         gap: 8px;
         padding: 10px;
         border-radius: 12px;
-        margin-top: 12px;
+        margin-top: 8px;
         background: linear-gradient(135deg, #ffedd5, #ffe4e0);
         border: 2px solid rgba(0, 0, 0, 0.1);
-        justify-content: space-between;
-        align-items: stretch;
         width: 100%;
         max-width: 600px;
         margin-left: auto;
         margin-right: auto;
         box-sizing: border-box;
       }
+
+      .prize-guide-header {
+        font-size: 14px;
+        font-weight: 600;
+        color: #1b1000;
+        margin: 0;
+        padding: 0;
+        opacity: 0.8;
+      }
+
       .prize-segment {
         flex: 1;
+        flex-direction: row;
+        flex-wrap: nowrap;
         min-width: 0;
-        max-width: calc(20% - 6.4px); /* 20% width minus gap */
+        width: 100%;
         padding: 8px;
         border-radius: 8px;
         text-align: center;
@@ -273,6 +291,60 @@
         position: relative;
         z-index: 1;
         box-sizing: border-box;
+      }
+
+      .prize-accordion {
+        width: 100%;
+      }
+
+      .prize-accordion-toggle {
+        width: 100%;
+        padding: 6px;
+        background: rgba(255, 255, 255, 0.4);
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        border-radius: 6px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        color: #1b1000;
+        font-size: 12px;
+        font-weight: 500;
+        transition: background 0.2s ease;
+      }
+
+      .prize-accordion-toggle:hover {
+        background: rgba(255, 255, 255, 0.6);
+      }
+
+      .prize-accordion-toggle::after {
+        content: "";
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border: solid #1b1000;
+        border-width: 0 1px 1px 0;
+        transform: rotate(45deg);
+        transition: transform 0.2s ease;
+        margin-top: -2px;
+        opacity: 0.6;
+      }
+
+      .prize-accordion-toggle.open::after {
+        transform: rotate(-135deg);
+        margin-top: 2px;
+      }
+
+      .prize-accordion-content {
+        display: none;
+        margin-top: 8px;
+      }
+
+      .prize-accordion-content.open {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
       }
       .prize-segment .shot-label {
         font-size: 12px;
@@ -297,11 +369,40 @@
       }
       .prize-segment.active {
         box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
-        background: #fff;
-        border-color: #ec3c28;
-        outline: 3px solid rgba(236, 60, 40, 0.2);
         position: relative;
+        transform: translateY(-1px);
+        border-color: rgba(0, 0, 0, 0.15);
       }
+      .prize-segment::before {
+        content: attr(data-shots) " shot";
+        position: absolute;
+        top: -8px;
+        left: -8px;
+        background: rgba(0, 0, 0, 0.5);
+        color: #fff;
+        font-weight: 600;
+        font-size: 10px;
+        padding: 2px 6px;
+        border-radius: 999px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        z-index: 2;
+      }
+
+      .prize-segment[data-shots="6"]::before {
+        content: "5+ shots";
+      }
+
+      .prize-segment[data-shots="1"]::before {
+        content: "1 shot";
+      }
+
+      .prize-segment[data-shots="2"]::before,
+      .prize-segment[data-shots="3"]::before,
+      .prize-segment[data-shots="4"]::before,
+      .prize-segment[data-shots="5"]::before {
+        content: attr(data-shots) " shots";
+      }
+
       .prize-segment.active::after {
         content: "NEXT";
         position: absolute;
@@ -317,100 +418,65 @@
         z-index: 3;
       }
 
-      /* Pulsing accent per segment when active */
-      @keyframes pulseGreen {
-        0% {
-          box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.45);
-        }
-        70% {
-          box-shadow: 0 0 0 10px rgba(22, 163, 74, 0);
-        }
-        100% {
-          box-shadow: 0 0 0 0 rgba(22, 163, 74, 0);
-        }
+      /* Keep original background colors for active state */
+      .seg-1.active {
+        background: linear-gradient(180deg, #dcfce7, #bbf7d0);
       }
-      @keyframes pulseBlue {
-        0% {
-          box-shadow: 0 0 0 0 rgba(2, 132, 199, 0.45);
-        }
-        70% {
-          box-shadow: 0 0 0 10px rgba(2, 132, 199, 0);
-        }
-        100% {
-          box-shadow: 0 0 0 0 rgba(2, 132, 199, 0);
-        }
+      .seg-2.active {
+        background: linear-gradient(180deg, #e0f2fe, #bae6fd);
       }
-      @keyframes pulsePurple {
-        0% {
-          box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.45);
-        }
-        70% {
-          box-shadow: 0 0 0 10px rgba(124, 58, 237, 0);
-        }
-        100% {
-          box-shadow: 0 0 0 0 rgba(124, 58, 237, 0);
-        }
+      .seg-3.active {
+        background: linear-gradient(180deg, #ede9fe, #ddd6fe);
       }
-      @keyframes pulseAmber {
-        0% {
-          box-shadow: 0 0 0 0 rgba(217, 119, 6, 0.45);
-        }
-        70% {
-          box-shadow: 0 0 0 10px rgba(217, 119, 6, 0);
-        }
-        100% {
-          box-shadow: 0 0 0 0 rgba(217, 119, 6, 0);
-        }
+      .seg-4.active {
+        background: linear-gradient(180deg, #fef3c7, #fde68a);
       }
-      @keyframes pulseRed {
-        0% {
-          box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.45);
-        }
-        70% {
-          box-shadow: 0 0 0 10px rgba(220, 38, 38, 0);
-        }
+      .seg-5.active {
+        background: linear-gradient(180deg, #fee2e2, #fecaca);
+      }
+
+      .seg-none {
+        background: linear-gradient(180deg, #f8f8f8, #f0f0f0);
+        color: #666;
+      }
+
+      .seg-none.active {
+        background: linear-gradient(180deg, #f8f8f8, #f0f0f0);
+      }
+
+      .seg-none.active::after {
+        content: "CURRENT";
+        background: #666;
+      }
+
+      /* Animation styles moved to subtleLift above */
+
+      /* Subtle lift animation for active segments */
+      @keyframes subtleLift {
+        0%,
         100% {
-          box-shadow: 0 0 0 0 rgba(220, 38, 38, 0);
+          transform: translateY(-1px);
+        }
+        50% {
+          transform: translateY(-2px);
         }
       }
 
-      .seg-1.active {
-        border-color: #16a34a;
-        outline-color: rgba(22, 163, 74, 0.25);
-        animation: pulseGreen 1.6s ease-out infinite;
-      }
-      .seg-2.active {
-        border-color: #0284c7;
-        outline-color: rgba(2, 132, 199, 0.25);
-        animation: pulseBlue 1.6s ease-out infinite;
-      }
-      .seg-3.active {
-        border-color: #7c3aed;
-        outline-color: rgba(124, 58, 237, 0.25);
-        animation: pulsePurple 1.6s ease-out infinite;
-      }
-      .seg-4.active {
-        border-color: #d97706;
-        outline-color: rgba(217, 119, 6, 0.25);
-        animation: pulseAmber 1.6s ease-out infinite;
-      }
-      .seg-5.active {
-        border-color: #dc2626;
-        outline-color: rgba(220, 38, 38, 0.25);
-        animation: pulseRed 1.6s ease-out infinite;
+      .prize-segment.active {
+        animation: subtleLift 2s ease-in-out infinite;
       }
 
       @media (max-width: 600px) {
         .prize-guide {
-          flex-direction: column;
           gap: 6px;
           padding: 8px;
           width: 100%;
         }
+        .prize-guide-header {
+          font-size: 13px;
+        }
         .prize-segment {
           padding: 6px;
-          max-width: 100%;
-          width: 100%;
         }
         .prize-segment .shot-label {
           font-size: 11px;
@@ -419,6 +485,22 @@
           font-size: 12px;
         }
         .prize-segment .prize-desc {
+          font-size: 11px;
+        }
+        .prize-segment::before {
+          font-size: 9px;
+          padding: 2px 4px;
+          top: -6px;
+          left: -6px;
+        }
+        .prize-segment.active::after {
+          font-size: 9px;
+          padding: 2px 4px;
+          top: -6px;
+          right: -6px;
+        }
+        .prize-accordion-toggle {
+          padding: 4px;
           font-size: 11px;
         }
       }
@@ -601,16 +683,31 @@
         }
 
         .email-form {
-          flex-direction: column;
-          align-items: center;
           width: 100%;
+          padding: 0;
+          box-sizing: border-box;
+          gap: 5px;
+          max-width: 100%;
         }
 
         input[type="email"] {
-          width: 100%;
-          max-width: 280px;
-          min-width: 200px;
-          margin-bottom: 10px;
+          width: calc(80% - 5px) !important;
+          min-width: 0 !important;
+          margin: 0;
+          padding: 6px 8px !important;
+          font-size: 12px !important;
+          flex: 4;
+        }
+
+        .email-form button[type="submit"] {
+          width: 20% !important;
+          min-width: 0 !important;
+          padding: 6px 8px !important;
+          font-size: 12px !important;
+          flex: 1;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
 
         /* Compact headings and subtitle */
@@ -626,21 +723,14 @@
         /* Override inline spacing in email form */
         #email-form {
           margin-top: 10px !important;
-          gap: 6px !important;
-          width: 100%;
-        }
-        #email-form input[type="email"] {
-          padding: 8px 10px !important;
-          font-size: 14px !important;
-          min-width: 200px !important;
+          gap: 5px !important;
           width: 100% !important;
-          max-width: 280px !important;
-        }
-        #email-form button {
-          padding: 10px 14px !important;
-          font-size: 14px !important;
-          width: 100% !important;
-          max-width: 280px !important;
+          max-width: 100% !important;
+          padding: 0 10px !important;
+          box-sizing: border-box !important;
+          display: flex !important;
+          flex-wrap: nowrap !important;
+          justify-content: space-between !important;
         }
 
         .putty-character {
@@ -656,6 +746,11 @@
 
         .prize-segment {
           padding: 6px;
+        }
+
+        .status {
+          font-size: 12px;
+          padding: 8px 16px;
         }
 
         .prize {
@@ -690,15 +785,24 @@
 >
 
     <div class="mini-golf-container">
-      <h1 style="margin: 4px">Play with Putty!</h1>
-      <p style="margin: 4px">Enter your email and win prizes!</p>
+      <h1 style="margin: 0">{{ section.settings.game_title | default: "Mini Golf with Putty" }}</h1>
+      <p style="margin: 0">{{ section.settings.game_subtitle | default: "Enter your email and win prizes!" }}</p>
 
       <!-- Email Form -->
-      <div id="emailSection-{{ section.id }}">
+      <div id="emailSection-{{ section.id }}" style="display: flex; flex-direction: column; gap: 5px">
         <!-- Email Signup Form for Mini Golf -->
         <form
           id="email-form-{{ section.id }}"
-          style="margin-top: 30px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap"
+          style="
+            margin-top: 5px;
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: nowrap;
+            width: 100%;
+            max-width: 600px;
+            box-sizing: border-box;
+          "
           onsubmit="window.GolfGameHandleFormSubmit(event)"
         >
           <input
@@ -709,11 +813,13 @@
             placeholder="{{ section.settings.email_placeholder | default: "you@domain.com" }}"
             style="
               padding: 12px 16px;
-              font-size: 16px;
+              font-size: 12px;
               border: 1px solid #ccc;
               border-radius: 6px;
-              min-width: 280px;
+              flex: 4;
+              min-width: 0;
               font-family: 'General Sans', sans-serif;
+              width: 80%;
             "
           />
           <button
@@ -722,11 +828,15 @@
               background-color: #923c07;
               color: white;
               padding: 12px 20px;
-              font-size: 16px;
+              font-size: 12px;
               border: none;
               border-radius: 6px;
               cursor: pointer;
+              white-space: nowrap;
               font-family: 'General Sans', sans-serif;
+              flex: 1;
+              width: 20%;
+              min-width: 0;
             "
           >
             {{ section.settings.submit_button_text | default: "Let's Putt!" }}
@@ -736,7 +846,7 @@
 
       <!-- Game -->
       <div id="game-{{ section.id }}">
-        <div id="status-{{ section.id }}" class="status aiming">Watch the power meter and click PUTT to shoot!</div>
+        <div id="status-{{ section.id }}" class="status aiming">{{ section.settings.aim_banner_text | default: "Watch the power meter and click PUTT when ready!" }}</div>
         <div class="game-area">
           <div class="canvas-container">
             <div id="uiRow-{{ section.id }}" class="ui-row">
@@ -747,25 +857,35 @@
             <!-- <img src="putty.png" alt="Putty" class="putty-character" /> -->
           </div>
           <div id="prizeGuide-{{ section.id }}" class="prize-guide">
+            <h3 class="prize-guide-header">Prizes</h3>
             <div class="prize-segment seg-1" data-shots="1">
-              <div class="prize-name" id="seg1Name-{{ section.id }}">Free game!</div>
+              <div class="prize-name" id="seg1Name-{{ section.id }}">{{ section.settings.prize_1_name | default: "Hole in One!" }}</div>
               <div class="prize-desc" id="seg1Desc-{{ section.id }}">{{ section.settings.prize_1_desc | default: "Free Round" }}</div>
             </div>
-            <div class="prize-segment seg-2" data-shots="2">
-              <div class="prize-name" id="seg2Name-{{ section.id }}">{{ section.settings.prize_2_name | default: "Eagle!" }}</div>
-              <div class="prize-desc" id="seg2Desc-{{ section.id }}">{{ section.settings.prize_2_desc | default: "Free Appetizer" }}</div>
-            </div>
-            <div class="prize-segment seg-3" data-shots="3">
-              <div class="prize-name" id="seg3Name-{{ section.id }}">{{ section.settings.prize_3_name | default: "Birdie!" }}</div>
-              <div class="prize-desc" id="seg3Desc-{{ section.id }}">{{ section.settings.prize_3_desc | default: "10% Off Your Order" }}</div>
-            </div>
-            <div class="prize-segment seg-4" data-shots="4">
-              <div class="prize-name" id="seg4Name-{{ section.id }}">{{ section.settings.prize_4_name | default: "Par" }}</div>
-              <div class="prize-desc" id="seg4Desc-{{ section.id }}">{{ section.settings.prize_4_desc | default: "5% Off Your Order" }}</div>
-            </div>
-            <div class="prize-segment seg-5" data-shots="5">
-              <div class="prize-name" id="seg5Name-{{ section.id }}">{{ section.settings.prize_5_name | default: "Bogey" }}</div>
-              <div class="prize-desc" id="seg5Desc-{{ section.id }}">{{ section.settings.prize_5_desc | default: "$2 Off Your Order" }}</div>
+            <div class="prize-accordion">
+              <button class="prize-accordion-toggle" onclick="GolfGameTogglePrizes(this)">View all prizes</button>
+              <div class="prize-accordion-content">
+                <div class="prize-segment seg-2" data-shots="2">
+                  <div class="prize-name" id="seg2Name-{{ section.id }}">{{ section.settings.prize_2_name | default: "Eagle!" }}</div>
+                  <div class="prize-desc" id="seg2Desc-{{ section.id }}">{{ section.settings.prize_2_desc | default: "Free Appetizer" }}</div>
+                </div>
+                <div class="prize-segment seg-3" data-shots="3">
+                  <div class="prize-name" id="seg3Name-{{ section.id }}">{{ section.settings.prize_3_name | default: "Birdie!" }}</div>
+                  <div class="prize-desc" id="seg3Desc-{{ section.id }}">{{ section.settings.prize_3_desc | default: "10% Off Your Order" }}</div>
+                </div>
+                <div class="prize-segment seg-4" data-shots="4">
+                  <div class="prize-name" id="seg4Name-{{ section.id }}">{{ section.settings.prize_4_name | default: "Par" }}</div>
+                  <div class="prize-desc" id="seg4Desc-{{ section.id }}">{{ section.settings.prize_4_desc | default: "5% Off Your Order" }}</div>
+                </div>
+                <div class="prize-segment seg-5" data-shots="5">
+                  <div class="prize-name" id="seg5Name-{{ section.id }}">{{ section.settings.prize_5_name | default: "Bogey" }}</div>
+                  <div class="prize-desc" id="seg5Desc-{{ section.id }}">{{ section.settings.prize_5_desc | default: "$2 Off Your Order" }}</div>
+                </div>
+                <div class="prize-segment seg-none" data-shots="6">
+                  <div class="prize-name">No Prize</div>
+                  <div class="prize-desc">Better luck next time!</div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -946,25 +1066,62 @@
         { name: PRIZE_5_NAME, code: PRIZE_5_CODE, desc: PRIZE_5_DESC },
       ];
 
+      window.GolfGameTogglePrizes = function (button) {
+        button.classList.toggle("open");
+        const content = button.nextElementSibling;
+        content.classList.toggle("open");
+      };
+
+      let lastDisplayedPrize = 1;
+
       function updatePrizeGuide() {
         const segments = document.querySelectorAll(".prize-segment");
-        segments.forEach((seg) => seg.classList.remove("active"));
-        // If we're shooting, don't update highlight yet
-        if (state === "shooting") return;
+        const accordion = document.querySelector(".prize-accordion-content");
+        const prizeGuide = document.querySelector(".prize-guide");
+        const header = prizeGuide.querySelector(".prize-guide-header");
 
-        // If won, highlight the achieved prize segment
-        if (state === "won") {
-          const achieved = Math.min(shots, 5);
-          const achievedEl = document.querySelector(`.prize-segment[data-shots="${achieved}"]`);
-          if (achievedEl) achievedEl.classList.add("active");
+        // First, move all segments to the accordion
+        segments.forEach((seg) => {
+          seg.classList.remove("active");
+          if (!accordion.contains(seg)) {
+            accordion.appendChild(seg);
+          }
+        });
+
+        // If we're shooting, maintain the last displayed prize
+        if (state === "shooting") {
+          const maintainPrize = document.querySelector(`.prize-segment[data-shots="${lastDisplayedPrize}"]`);
+          if (maintainPrize) {
+            maintainPrize.classList.add("active");
+            if (header) {
+              prizeGuide.insertBefore(maintainPrize, header.nextSibling);
+            }
+          }
           return;
         }
 
-        // Only show next potential prize if we haven't exceeded 5 shots
-        if (shots < 5) {
-          const next = shots + 1;
-          const active = document.querySelector(`.prize-segment[data-shots="${next}"]`);
-          if (active) active.classList.add("active");
+        // If won, show and highlight the achieved prize
+        if (state === "won") {
+          const achieved = Math.min(shots, 5);
+          const achievedEl = document.querySelector(`.prize-segment[data-shots="${achieved}"]`);
+          if (achievedEl) {
+            achievedEl.classList.add("active");
+            if (header) {
+              prizeGuide.insertBefore(achievedEl, header.nextSibling);
+            }
+          }
+          return;
+        }
+
+        // Update next prize display
+        const next = shots >= 5 ? 6 : shots + 1;
+        const nextEl = document.querySelector(`.prize-segment[data-shots="${next}"]`);
+        if (nextEl) {
+          nextEl.classList.add("active");
+          if (header) {
+            prizeGuide.insertBefore(nextEl, header.nextSibling);
+          }
+          lastDisplayedPrize = next;
         }
       }
 
@@ -1077,6 +1234,7 @@
         ballTarget = 0;
         ballAnimStart = 0;
         state = "email";
+        lastDisplayedPrize = 1;
 
         if (animId) cancelAnimationFrame(animId);
         if (ballAnimId) cancelAnimationFrame(ballAnimId);
@@ -1338,10 +1496,11 @@
       "content": "Game Content"
     },
     {
-      "type": "text",
+      "type": "textarea",
       "id": "aim_banner_text",
       "label": "Aim Banner Text",
-      "default": "Watch the power meter and click PUTT when ready!"
+      "default": "Watch the power meter and click PUTT when ready!",
+      "info": "You can use newlines to create multi-line instructions"
     },
     {
       "type": "text",
