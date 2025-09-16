@@ -146,12 +146,16 @@ ${css}
     when 'content-full-width'
       assign content_width = 'full-width'
   endcase
+
+  assign padding_top = section.settings.padding-block-start | default: 36
+  assign padding_bottom = section.settings.padding-block-end | default: 36
 %}
 
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
 <div
   class="mini-golf-section section section--{{ content_width }} spacing-style color-{{ section.settings.color_scheme }} relative"
-  style="{% render 'spacing-style', settings: section.settings %}"
+  style="padding-top: {{ padding_top }}px; padding-bottom: {{ padding_bottom }}px;"
+  id="golf-game"
 >
 ${bodyContent}
 </div>`;

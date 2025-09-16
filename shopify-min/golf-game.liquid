@@ -56,36 +56,31 @@
       .email-form {
         display: flex;
         gap: 10px;
-        justify-content: space-between;
         margin-top: 5px;
-        flex-wrap: nowrap;
         width: 100%;
         max-width: 600px;
-        box-sizing: border-box;
       }
 
       .email-input {
-        padding: 12px 16px;
-        font-size: 12px;
+        flex: 1;
+        min-width: 0;
+        padding: 0 16px;
+        height: 32px;
+        font-size: 16px;
         border: 1px solid #ccc;
         border-radius: 6px;
-        flex: 7;
-        min-width: 0;
-        width: 70%;
-        font-family: "General Sans", sans-serif;
+        box-sizing: border-box;
       }
 
       .email-submit {
-        flex: 3;
-        width: 30%;
-        min-width: 0;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        white-space: nowrap;
+        height: 32px;
       }
 
       /* Base button styles */
       .btn {
-        padding: 12px 20px;
+        padding: 0 20px;
+        height: 32px;
         font-size: 16px;
         border: none;
         border-radius: 6px;
@@ -508,11 +503,14 @@
         justify-content: center;
         gap: 8px;
         margin-bottom: 4px;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
+        width: fit-content;
+        margin-left: auto;
+        margin-right: auto;
       }
       .power-meter {
         position: relative;
-        width: 160px;
+        width: 140px;
         height: 24px;
         background: linear-gradient(90deg, #ffffff, #ec3c28);
         border: 1px solid #333;
@@ -526,6 +524,8 @@
         width: 4px;
         height: 100%;
         background: #000;
+        max-width: 100%;
+        transform: translateX(var(--tick-position, 0px));
       }
       .putt-btn:disabled {
         background: #bdbdbd;
@@ -655,15 +655,7 @@
         }
 
         .ui-row {
-          width: 100%;
-          max-width: 100%;
-          justify-content: center;
-          gap: 8px;
-        }
-
-        .power-meter {
-          max-width: 160px;
-          width: 50%;
+          gap: 6px;
         }
       }
 
@@ -682,24 +674,19 @@
           max-width: 100%;
         }
 
-        input[type="email"] {
-          width: calc(70% - 5px) !important;
-          min-width: 0 !important;
-          margin: 0;
-          padding: 6px 8px !important;
-          font-size: 12px !important;
-          flex: 7;
+        .email-form {
+          padding: 0 5px;
+          gap: 5px;
         }
 
-        .email-form button[type="submit"] {
-          width: 30% !important;
-          min-width: 0 !important;
-          padding: 6px 8px !important;
-          font-size: 12px !important;
-          flex: 3;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
+        .email-input {
+          padding: 0 12px;
+          font-size: 16px;
+        }
+
+        .email-submit {
+          padding: 0 16px;
+          font-size: 16px;
         }
 
         /* Compact headings and subtitle */
@@ -710,19 +697,6 @@
         p {
           margin: 6px 0 8px 0;
           font-size: 16px;
-        }
-
-        /* Override inline spacing in email form */
-        #email-form {
-          margin-top: 10px !important;
-          gap: 5px !important;
-          width: 100% !important;
-          max-width: 100% !important;
-          padding: 0 5px !important;
-          box-sizing: border-box !important;
-          display: flex !important;
-          flex-wrap: nowrap !important;
-          justify-content: space-between !important;
         }
 
         .putty-character {
@@ -767,12 +741,16 @@
     when 'content-full-width'
       assign content_width = 'full-width'
   endcase
+
+  assign padding_top = section.settings.padding-block-start | default: 36
+  assign padding_bottom = section.settings.padding-block-end | default: 36
 %}
 
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
 <div
   class="mini-golf-section section section--{{ content_width }} spacing-style color-{{ section.settings.color_scheme }} relative"
-  style="{% render 'spacing-style', settings: section.settings %}"
+  style="padding-top: {{ padding_top }}px; padding-bottom: {{ padding_bottom }}px;"
+  id="golf-game"
 >
 
     <div class="container">
@@ -888,7 +866,7 @@
       const PUTT_BUTTON_TEXT = {{ section.settings.putt_button_text | default: "PUTT!" | json }};
       const PUTT_DISABLED_BUTTON_TEXT = {{ section.settings.putt_disabled_button_text | default: "Enter email to play" | json }};
       // Power meter and UI constants
-      const METER_WIDTH = 160;
+      const METER_WIDTH = 140;
       const CANVAS_HEIGHT = 80;
       const UI_BAR_HEIGHT = 24;
       const PRIZE_1_NAME = {{ section.settings.prize_1_name | default: "Hole in One!" | json }};
@@ -1205,7 +1183,7 @@
 
           power = Math.round(1 + (powerTick / METER_WIDTH) * 9);
           if (powerTickEl) {
-            powerTickEl.style.left = `${powerTick}px`;
+            powerTickEl.style.setProperty("--tick-position", `${Math.min(METER_WIDTH - 4, powerTick)}px`);
           }
           draw();
           animId = requestAnimationFrame(animate);
