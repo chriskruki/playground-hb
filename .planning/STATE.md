@@ -10,27 +10,27 @@ See: .planning/PROJECT.md (updated 2026-02-24)
 ## Current Position
 
 Phase: 1 of 4 (Foundation)
-Plan: 0 of TBD in current phase
-Status: Ready to plan
-Last activity: 2026-02-24 — Roadmap created, phases derived from requirements
+Plan: 1 of TBD in current phase
+Status: In progress
+Last activity: 2026-02-24 — Plan 01-01 completed: Next.js scaffold + theming + brand assets
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [█░░░░░░░░░] 10%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 0
-- Average duration: —
-- Total execution time: —
+- Total plans completed: 1
+- Average duration: 8m
+- Total execution time: 8m
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| - | - | - | - |
+| 01-foundation | 1 | 8m | 8m |
 
 **Recent Trend:**
-- Last 5 plans: —
+- Last 5 plans: 8m
 - Trend: —
 
 *Updated after each plan completion*
@@ -46,6 +46,7 @@ Recent decisions affecting current work:
 - [Roadmap]: sessionStorage for game state (survives refresh, dies with tab close) — must be wired in Phase 1
 - [Roadmap]: Markdown files + gray-matter for hole content (build-time, no runtime fetches) — Phase 2
 - [Roadmap]: Admin password gate via env-var — simple client-side check, good enough for v1
+- [Phase 01-foundation]: Used Next.js 15.4.5 (not 16 — does not exist); logo.svg wraps logo.png as SVG image for swappability; framer-motion/zustand/lucide-react pre-installed for future plans
 
 ### Pending Todos
 
@@ -59,5 +60,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-24
-Stopped at: Roadmap created, ROADMAP.md and STATE.md written, REQUIREMENTS.md traceability updated
+Stopped at: Completed 01-foundation-01-01-PLAN.md
 Resume file: None

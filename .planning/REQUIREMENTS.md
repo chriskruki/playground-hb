@@ -50,13 +50,13 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Theming & Branding
 
-- [ ] **THEME-01**: App colors (primary, secondary, accent) are defined in a theme config file, not hardcoded
-- [ ] **THEME-02**: Logo is loaded from a swappable logo.svg asset
-- [ ] **THEME-03**: Theming integrates with Tailwind CSS variables for consistent styling
+- [x] **THEME-01**: App colors (primary, secondary, accent) are defined in a theme config file, not hardcoded
+- [x] **THEME-02**: Logo is loaded from a swappable logo.svg asset
+- [x] **THEME-03**: Theming integrates with Tailwind CSS variables for consistent styling
 
 ### Technical
 
-- [ ] **TECH-01**: App is mobile-first responsive with rough desktop support
+- [x] **TECH-01**: App is mobile-first responsive with rough desktop support
 - [ ] **TECH-02**: Game state persists across page refresh via sessionStorage (dies with tab close)
 - [ ] **TECH-03**: App uses phase-based state machine at single URL (no back-button state destruction)
 
@@ -127,10 +127,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RES-04 | Phase 3 | Pending |
 | ADM-01 | Phase 4 | Pending |
 | ADM-02 | Phase 4 | Pending |
-| THEME-01 | Phase 1 | Pending |
-| THEME-02 | Phase 1 | Pending |
-| THEME-03 | Phase 1 | Pending |
-| TECH-01 | Phase 1 | Pending |
+| THEME-01 | Phase 1 | Complete |
+| THEME-02 | Phase 1 | Complete |
+| THEME-03 | Phase 1 | Complete |
+| TECH-01 | Phase 1 | Complete |
 | TECH-02 | Phase 1 | Pending |
 | TECH-03 | Phase 1 | Pending |
 
