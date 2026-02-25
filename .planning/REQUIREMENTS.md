@@ -104,41 +104,41 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| LAND-01 | — | Pending |
-| LAND-02 | — | Pending |
-| SETUP-01 | — | Pending |
-| SETUP-02 | — | Pending |
-| SETUP-03 | — | Pending |
-| SETUP-04 | — | Pending |
-| SCORE-01 | — | Pending |
-| SCORE-02 | — | Pending |
-| SCORE-03 | — | Pending |
-| SCORE-04 | — | Pending |
-| SCORE-05 | — | Pending |
-| SCORE-06 | — | Pending |
-| SCORE-07 | — | Pending |
-| SCORE-08 | — | Pending |
-| HOLE-01 | — | Pending |
-| HOLE-02 | — | Pending |
-| HOLE-03 | — | Pending |
-| RES-01 | — | Pending |
-| RES-02 | — | Pending |
-| RES-03 | — | Pending |
-| RES-04 | — | Pending |
-| ADM-01 | — | Pending |
-| ADM-02 | — | Pending |
-| THEME-01 | — | Pending |
-| THEME-02 | — | Pending |
-| THEME-03 | — | Pending |
-| TECH-01 | — | Pending |
-| TECH-02 | — | Pending |
-| TECH-03 | — | Pending |
+| LAND-01 | Phase 2 | Pending |
+| LAND-02 | Phase 2 | Pending |
+| SETUP-01 | Phase 2 | Pending |
+| SETUP-02 | Phase 2 | Pending |
+| SETUP-03 | Phase 2 | Pending |
+| SETUP-04 | Phase 2 | Pending |
+| SCORE-01 | Phase 2 | Pending |
+| SCORE-02 | Phase 2 | Pending |
+| SCORE-03 | Phase 2 | Pending |
+| SCORE-04 | Phase 2 | Pending |
+| SCORE-05 | Phase 2 | Pending |
+| SCORE-06 | Phase 2 | Pending |
+| SCORE-07 | Phase 2 | Pending |
+| SCORE-08 | Phase 2 | Pending |
+| HOLE-01 | Phase 2 | Pending |
+| HOLE-02 | Phase 2 | Pending |
+| HOLE-03 | Phase 2 | Pending |
+| RES-01 | Phase 3 | Pending |
+| RES-02 | Phase 3 | Pending |
+| RES-03 | Phase 3 | Pending |
+| RES-04 | Phase 3 | Pending |
+| ADM-01 | Phase 4 | Pending |
+| ADM-02 | Phase 4 | Pending |
+| THEME-01 | Phase 1 | Pending |
+| THEME-02 | Phase 1 | Pending |
+| THEME-03 | Phase 1 | Pending |
+| TECH-01 | Phase 1 | Pending |
+| TECH-02 | Phase 1 | Pending |
+| TECH-03 | Phase 1 | Pending |
 
 **Coverage:**
 - v1 requirements: 29 total
-- Mapped to phases: 0
-- Unmapped: 29 ⚠️
+- Mapped to phases: 29
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-02-24*
-*Last updated: 2026-02-24 after initial definition*
+*Last updated: 2026-02-24 — traceability populated after roadmap creation*
