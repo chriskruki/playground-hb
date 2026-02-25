@@ -1,15 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { httpClient } from "@/lib/api/HttpClient";
+import { httpClient } from "../../../../lib/api/HttpClient";
 
 export async function POST(request: NextRequest) {
   try {
     const { ip } = await request.json();
 
     if (!ip) {
-      return NextResponse.json(
-        { error: "IP address is required" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "IP address is required" }, { status: 400 });
     }
 
     // Use a lighter endpoint for faster ping - just check if device responds
@@ -42,7 +39,7 @@ export async function POST(request: NextRequest) {
         error: "Failed to process ping request",
         message: error instanceof Error ? error.message : "Unknown error",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

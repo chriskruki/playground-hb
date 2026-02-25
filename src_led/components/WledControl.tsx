@@ -1,20 +1,14 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Slider } from "@/components/ui/slider";
+import { Button } from "./ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
+import { Slider } from "./ui/slider";
 import { Power, Wifi, WifiOff } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
-import { useLoggedApi } from "@/hooks/useLoggedApi";
-import { deviceConnectionManager } from "@/lib/api/DeviceConnectionManager";
-import { wledCache, type WledEffectsPalettes } from "@/lib/cache/WledCache";
+import { useLoggedApi } from "../hooks/useLoggedApi";
+import { deviceConnectionManager } from "../lib/api/DeviceConnectionManager";
+import { wledCache, type WledEffectsPalettes } from "../lib/cache/WledCache";
 
 interface WledDevice {
   id: string;
@@ -44,11 +38,7 @@ interface DeviceControlProps {
   isGlobalLoading?: boolean;
 }
 
-function DeviceControl({
-  device,
-  onDeviceUpdate,
-  isGlobalLoading = false,
-}: DeviceControlProps) {
+function DeviceControl({ device, onDeviceUpdate, isGlobalLoading = false }: DeviceControlProps) {
   const [state, setState] = useState<WledState>({ on: false, bri: 128 });
   const [presets, setPresets] = useState<WledPreset>({});
   const [loading, setLoading] = useState(true);
@@ -89,18 +79,13 @@ function DeviceControl({
     }
   }, [device.status, loadDeviceData]);
 
-  const controlDevice = async (
-    action: string,
-    data: Record<string, unknown>
-  ) => {
+  const controlDevice = async (action: string, data: Record<string, unknown>) => {
     const getDescription = () => {
       switch (action) {
         case "setOn":
           return `Turn ${data.on ? "on" : "off"}`;
         case "setBrightness":
-          return `Set brightness to ${Math.round(
-            ((data.brightness as number) / 255) * 100
-          )}%`;
+          return `Set brightness to ${Math.round(((data.brightness as number) / 255) * 100)}%`;
         case "setPreset":
           return `Apply preset ${data.presetId}`;
         default:
@@ -129,7 +114,7 @@ function DeviceControl({
           device: device.name,
           command: action,
           description: getDescription(),
-        }
+        },
       );
     } catch (error) {
       console.error(`Failed to ${action}:`, error);
@@ -168,9 +153,7 @@ function DeviceControl({
           }
 
           const result = await response.json();
-          const status: "online" | "offline" = result.success
-            ? "online"
-            : "offline";
+          const status: "online" | "offline" = result.success ? "online" : "offline";
           onDeviceUpdate({ ...device, status });
 
           if (status === "online") {
@@ -183,7 +166,7 @@ function DeviceControl({
           device: device.name,
           command: "ping",
           description: "Check device connectivity",
-        }
+        },
       );
     } catch (error) {
       console.error("Status check failed:", error);
@@ -204,12 +187,7 @@ function DeviceControl({
               )}
               {device.name}
             </CardTitle>
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={checkStatus}
-              disabled={device.status === "checking"}
-            >
+            <Button size="sm" variant="outline" onClick={checkStatus} disabled={device.status === "checking"}>
               {device.status === "checking" ? "Checking..." : "Check Status"}
             </Button>
           </div>
@@ -217,11 +195,7 @@ function DeviceControl({
         <CardContent>
           <div className="text-center text-gray-600">
             <div className="font-mono text-sm mb-2">{device.ip}</div>
-            <div>
-              {device.status === "offline"
-                ? "Device offline"
-                : "Checking connection..."}
-            </div>
+            <div>{device.status === "offline" ? "Device offline" : "Checking connection..."}</div>
           </div>
         </CardContent>
       </Card>
@@ -256,12 +230,7 @@ function DeviceControl({
         <CardContent>
           <div className="text-center text-red-600">
             <div>{error}</div>
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={loadDeviceData}
-              className="mt-2"
-            >
+            <Button size="sm" variant="outline" onClick={loadDeviceData} className="mt-2">
               Retry
             </Button>
           </div>
@@ -301,9 +270,7 @@ function DeviceControl({
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1">
               <span className="text-sm font-medium">Brightness</span>
-              <span className="text-sm text-gray-600">
-                {Math.round((state.bri / 255) * 100)}%
-              </span>
+              <span className="text-sm text-gray-600">{Math.round((state.bri / 255) * 100)}%</span>
             </div>
             <Slider
               value={[Math.round((state.bri / 255) * 100)]}
@@ -320,15 +287,10 @@ function DeviceControl({
         {/* Presets */}
         {Object.keys(presets).length > 0 ? (
           <div>
-            <h4 className="text-sm font-medium mb-2">
-              Presets ({Object.keys(presets).length})
-            </h4>
+            <h4 className="text-sm font-medium mb-2">Presets ({Object.keys(presets).length})</h4>
             <div className="grid grid-cols-2 gap-2">
               {Object.entries(presets)
-                .filter(
-                  ([id, preset]) =>
-                    id !== "0" && preset && typeof preset === "object"
-                ) // Filter out empty slot 0
+                .filter(([id, preset]) => id !== "0" && preset && typeof preset === "object") // Filter out empty slot 0
                 .map(([id, preset]) => (
                   <Button
                     key={id}
@@ -344,9 +306,7 @@ function DeviceControl({
             </div>
           </div>
         ) : (
-          <div className="text-xs text-gray-500 mt-2">
-            No presets found. Create presets in your WLED device first.
-          </div>
+          <div className="text-xs text-gray-500 mt-2">No presets found. Create presets in your WLED device first.</div>
         )}
       </CardContent>
     </Card>
@@ -358,10 +318,7 @@ interface WledControlProps {
   onDevicesUpdate: (devices: WledDevice[]) => void;
 }
 
-export default function WledControl({
-  devices,
-  onDevicesUpdate,
-}: WledControlProps) {
+export default function WledControl({ devices, onDevicesUpdate }: WledControlProps) {
   const [globalBrightness, setGlobalBrightnessState] = useState(50); // 0-100 scale
   const [globalPower, setGlobalPower] = useState(false);
   const [effectsPalettes, setEffectsPalettes] = useState<WledEffectsPalettes>({
@@ -421,7 +378,7 @@ export default function WledControl({
         console.error("Failed to load effects/palettes:", error);
       }
     },
-    [effectsPalettesLoaded]
+    [effectsPalettesLoaded],
   );
 
   // Load effects and palettes from the first online device - only once
@@ -432,24 +389,17 @@ export default function WledControl({
   }, [onlineDevices, loadEffectsPalettes, effectsPalettesLoaded]);
 
   const handleDeviceUpdate = (updatedDevice: WledDevice) => {
-    const updatedDevices = devices.map((d) =>
-      d.id === updatedDevice.id ? updatedDevice : d
-    );
+    const updatedDevices = devices.map((d) => (d.id === updatedDevice.id ? updatedDevice : d));
     onDevicesUpdate(updatedDevices);
   };
 
-  const controlAllDevices = async (
-    action: string,
-    data: Record<string, unknown>
-  ) => {
+  const controlAllDevices = async (action: string, data: Record<string, unknown>) => {
     const getDescription = () => {
       switch (action) {
         case "setOn":
           return `Turn all devices ${data.on ? "on" : "off"}`;
         case "setBrightness":
-          return `Set all devices brightness to ${Math.round(
-            ((data.brightness as number) / 255) * 100
-          )}%`;
+          return `Set all devices brightness to ${Math.round(((data.brightness as number) / 255) * 100)}%`;
         case "setEffect":
           return `Apply effect "${selectedEffect}" to all devices`;
         case "setState":
@@ -465,15 +415,11 @@ export default function WledControl({
         async () => {
           // Use device connection manager for optimized requests
           const promises = onlineDevices.map(async (device) => {
-            return deviceConnectionManager.queueRequest(
-              device.ip,
-              `/api/wled/${device.ip}`,
-              {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ action, ...data }),
-              }
-            );
+            return deviceConnectionManager.queueRequest(device.ip, `/api/wled/${device.ip}`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ action, ...data }),
+            });
           });
 
           const results = await Promise.all(promises);
@@ -482,7 +428,7 @@ export default function WledControl({
         {
           command: action,
           description: getDescription(),
-        }
+        },
       );
     } catch (error) {
       console.error("Failed to control all devices:", error);
@@ -552,9 +498,7 @@ export default function WledControl({
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
                   <span className="text-sm font-medium">Global Brightness</span>
-                  <span className="text-sm text-gray-600">
-                    {globalBrightness}%
-                  </span>
+                  <span className="text-sm text-gray-600">{globalBrightness}%</span>
                 </div>
                 <Slider
                   value={[globalBrightness]}
@@ -572,10 +516,7 @@ export default function WledControl({
               <div className="space-y-2">
                 <label className="text-sm font-medium">Effects</label>
                 <div className="flex gap-2">
-                  <Select
-                    value={selectedEffect}
-                    onValueChange={setSelectedEffect}
-                  >
+                  <Select value={selectedEffect} onValueChange={setSelectedEffect}>
                     <SelectTrigger className="flex-1">
                       <SelectValue placeholder="Select effect" />
                     </SelectTrigger>
@@ -587,11 +528,7 @@ export default function WledControl({
                       ))}
                     </SelectContent>
                   </Select>
-                  <Button
-                    onClick={applyGlobalEffect}
-                    disabled={!selectedEffect}
-                    size="sm"
-                  >
+                  <Button onClick={applyGlobalEffect} disabled={!selectedEffect} size="sm">
                     Apply
                   </Button>
                 </div>
@@ -600,10 +537,7 @@ export default function WledControl({
               <div className="space-y-2">
                 <label className="text-sm font-medium">Palettes</label>
                 <div className="flex gap-2">
-                  <Select
-                    value={selectedPalette}
-                    onValueChange={setSelectedPalette}
-                  >
+                  <Select value={selectedPalette} onValueChange={setSelectedPalette}>
                     <SelectTrigger className="flex-1">
                       <SelectValue placeholder="Select palette" />
                     </SelectTrigger>
@@ -615,11 +549,7 @@ export default function WledControl({
                       ))}
                     </SelectContent>
                   </Select>
-                  <Button
-                    onClick={applyGlobalPalette}
-                    disabled={!selectedPalette}
-                    size="sm"
-                  >
+                  <Button onClick={applyGlobalPalette} disabled={!selectedPalette} size="sm">
                     Apply
                   </Button>
                 </div>

@@ -1,21 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
-import { WledClient } from "@/lib/api/WledClient";
-import { httpClient } from "@/lib/api/HttpClient";
+import { WledClient } from "../../../../lib/api/WledClient";
+import { httpClient } from "../../../../lib/api/HttpClient";
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ ip: string }> }
-) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ ip: string }> }) {
   try {
     const { ip } = await params;
     const { searchParams } = new URL(request.url);
     const action = searchParams.get("action");
 
     if (!ip) {
-      return NextResponse.json(
-        { error: "IP address is required" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "IP address is required" }, { status: 400 });
     }
 
     const wledClient = new WledClient(`http://${ip}`);
@@ -54,10 +48,7 @@ export async function GET(
           return NextResponse.json(presets);
         } catch (error) {
           console.error("Failed to get presets:", error);
-          return NextResponse.json(
-            { error: "Failed to get presets" },
-            { status: 500 }
-          );
+          return NextResponse.json({ error: "Failed to get presets" }, { status: 500 });
         }
 
       default:
@@ -70,25 +61,19 @@ export async function GET(
         error: "Failed to communicate with WLED device",
         message: error instanceof Error ? error.message : "Unknown error",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 
-export async function POST(
-  request: NextRequest,
-  { params }: { params: Promise<{ ip: string }> }
-) {
+export async function POST(request: NextRequest, { params }: { params: Promise<{ ip: string }> }) {
   try {
     const { ip } = await params;
     const body = await request.json();
     const { action, ...data } = body;
 
     if (!ip) {
-      return NextResponse.json(
-        { error: "IP address is required" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "IP address is required" }, { status: 400 });
     }
 
     const wledClient = new WledClient(`http://${ip}`);
@@ -107,19 +92,11 @@ export async function POST(
         return NextResponse.json(brightnessState);
 
       case "setEffect":
-        const effectState = await wledClient.setEffect(
-          data.effectId,
-          data.segmentId
-        );
+        const effectState = await wledClient.setEffect(data.effectId, data.segmentId);
         return NextResponse.json(effectState);
 
       case "setColor":
-        const colorState = await wledClient.setColor(
-          data.r,
-          data.g,
-          data.b,
-          data.segmentId
-        );
+        const colorState = await wledClient.setColor(data.r, data.g, data.b, data.segmentId);
         return NextResponse.json(colorState);
 
       // Set preset by ID
@@ -131,10 +108,7 @@ export async function POST(
           return NextResponse.json(result);
         } catch (error) {
           console.error("Failed to set preset:", error);
-          return NextResponse.json(
-            { error: "Failed to set preset" },
-            { status: 500 }
-          );
+          return NextResponse.json({ error: "Failed to set preset" }, { status: 500 });
         }
 
       default:
@@ -147,7 +121,7 @@ export async function POST(
         error: "Failed to control WLED device",
         message: error instanceof Error ? error.message : "Unknown error",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { ApiTestDemo } from "@/components/ApiTestDemo";
+import { Button } from "../../components/ui/button";
+import { ApiTestDemo } from "../../components/ApiTestDemo";
 
 export default function DiagnosticsPage() {
   return (
@@ -9,9 +9,7 @@ export default function DiagnosticsPage() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-3xl font-bold">Diagnostics</h1>
-            <p className="text-gray-600 mt-2">
-              Test API connectivity and system status
-            </p>
+            <p className="text-gray-600 mt-2">Test API connectivity and system status</p>
           </div>
           <Link href="/">
             <Button variant="outline">← Back to Home</Button>

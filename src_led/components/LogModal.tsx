@@ -1,9 +1,9 @@
 "use client";
 
 import React from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useLog, LogEntry } from "@/contexts/LogContext";
+import { Button } from "./ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { useLog, LogEntry } from "../contexts/LogContext";
 import { X, Trash2, Terminal } from "lucide-react";
 
 function StatusDot({ status }: { status: LogEntry["status"] }) {
@@ -51,24 +51,14 @@ function LogEntryComponent({ log }: { log: LogEntry }) {
 
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 text-xs">
-          <span className="text-gray-600 font-mono text-xs">
-            {formatTime(log.timestamp)}
-          </span>
-          <span className={`font-medium text-xs ${getDeviceColor(log.device)}`}>
-            {log.device}
-          </span>
+          <span className="text-gray-600 font-mono text-xs">{formatTime(log.timestamp)}</span>
+          <span className={`font-medium text-xs ${getDeviceColor(log.device)}`}>{log.device}</span>
         </div>
-        <div
-          className="text-xs text-gray-700 mt-1 truncate"
-          title={log.description}
-        >
+        <div className="text-xs text-gray-700 mt-1 truncate" title={log.description}>
           {log.description}
         </div>
         {log.details && log.status === "error" && (
-          <div
-            className="text-xs text-red-700 mt-1 font-mono truncate"
-            title={log.details}
-          >
+          <div className="text-xs text-red-700 mt-1 font-mono truncate" title={log.details}>
             {log.details}
           </div>
         )}
@@ -92,12 +82,7 @@ export default function LogModal() {
               Log
             </CardTitle>
             <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={clearLogs}
-                disabled={logs.length === 0}
-              >
+              <Button variant="outline" size="sm" onClick={clearLogs} disabled={logs.length === 0}>
                 <Trash2 className="w-4 h-4 mr-2" />
                 Clear
               </Button>
@@ -110,9 +95,7 @@ export default function LogModal() {
 
         <CardContent className="flex-1 overflow-hidden p-0">
           {logs.length === 0 ? (
-            <div className="flex items-center justify-center h-32 text-gray-600">
-              No commands logged yet
-            </div>
+            <div className="flex items-center justify-center h-32 text-gray-600">No commands logged yet</div>
           ) : (
             <div className="overflow-y-auto h-full max-h-[50vh]">
               {logs.map((log) => (

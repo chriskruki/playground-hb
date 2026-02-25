@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { httpClient } from "@/lib/api/HttpClient";
-import { deviceConnectionManager } from "@/lib/api/DeviceConnectionManager";
-import { wledCache } from "@/lib/cache/WledCache";
+import { Button } from "./ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { httpClient } from "../lib/api/HttpClient";
+import { deviceConnectionManager } from "../lib/api/DeviceConnectionManager";
+import { wledCache } from "../lib/cache/WledCache";
 import { Activity, Wifi } from "lucide-react";
 
 export default function ConnectionMonitor() {
@@ -29,12 +29,7 @@ export default function ConnectionMonitor() {
   if (!isVisible) {
     return (
       <div className="fixed bottom-6 left-6 z-40">
-        <Button
-          onClick={() => setIsVisible(true)}
-          variant="outline"
-          size="sm"
-          className="shadow-lg"
-        >
+        <Button onClick={() => setIsVisible(true)} variant="outline" size="sm" className="shadow-lg">
           <Activity className="w-4 h-4 mr-2" />
           Monitor
         </Button>
@@ -51,11 +46,7 @@ export default function ConnectionMonitor() {
               <Wifi className="w-4 h-4" />
               Connection Monitor
             </CardTitle>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setIsVisible(false)}
-            >
+            <Button variant="outline" size="sm" onClick={() => setIsVisible(false)}>
               ×
             </Button>
           </div>
@@ -82,9 +73,7 @@ export default function ConnectionMonitor() {
 
           {/* Queue Stats */}
           <div>
-            <div className="font-semibold text-gray-700 mb-1">
-              Request Queues
-            </div>
+            <div className="font-semibold text-gray-700 mb-1">Request Queues</div>
             {Object.keys(queueStats).length === 0 ? (
               <div className="text-gray-500">No active queues</div>
             ) : (
@@ -94,9 +83,7 @@ export default function ConnectionMonitor() {
                   <div className="ml-2 grid grid-cols-2 gap-1 text-xs">
                     <div>Queue: {stats.queueLength}</div>
                     <div>Processing: {stats.processing ? "Yes" : "No"}</div>
-                    <div className="col-span-2">
-                      Last: {Math.round(stats.timeSinceLastRequest / 1000)}s ago
-                    </div>
+                    <div className="col-span-2">Last: {Math.round(stats.timeSinceLastRequest / 1000)}s ago</div>
                   </div>
                 </div>
               ))

@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback } from "react";
-import { useLog } from "@/contexts/LogContext";
+import { useLog } from "../contexts/LogContext";
 
 interface LoggedApiOptions {
   device: string;
@@ -13,10 +13,7 @@ export function useLoggedApi() {
   const { addLog, updateLogStatus } = useLog();
 
   const makeRequest = useCallback(
-    async <T>(
-      requestFn: () => Promise<T>,
-      options: LoggedApiOptions
-    ): Promise<T> => {
+    async <T>(requestFn: () => Promise<T>, options: LoggedApiOptions): Promise<T> => {
       const logId = addLog({
         device: options.device,
         command: options.command,
@@ -35,17 +32,14 @@ export function useLoggedApi() {
         throw error;
       }
     },
-    [addLog, updateLogStatus]
+    [addLog, updateLogStatus],
   );
 
   const makeGlobalRequest = useCallback(
-    async <T>(
-      requestFn: () => Promise<T>,
-      options: Omit<LoggedApiOptions, "device">
-    ): Promise<T> => {
+    async <T>(requestFn: () => Promise<T>, options: Omit<LoggedApiOptions, "device">): Promise<T> => {
       return makeRequest(requestFn, { ...options, device: "Global" });
     },
-    [makeRequest]
+    [makeRequest],
   );
 
   return { makeRequest, makeGlobalRequest };

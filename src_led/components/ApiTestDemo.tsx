@@ -1,15 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { createApiClients, testAllConnections } from "@/lib/api";
+import { Button } from "./ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
+import { createApiClients, testAllConnections } from "../lib/api";
 
 interface ConnectionResult {
   service: string;
@@ -18,9 +12,7 @@ interface ConnectionResult {
 }
 
 export function ApiTestDemo() {
-  const [connectionResults, setConnectionResults] = useState<
-    ConnectionResult[]
-  >([]);
+  const [connectionResults, setConnectionResults] = useState<ConnectionResult[]>([]);
   const [isTestingConnections, setIsTestingConnections] = useState(false);
   const [wledInfo, setWledInfo] = useState<any>(null);
   const [hassInfo, setHassInfo] = useState<any>(null);
@@ -85,19 +77,11 @@ export function ApiTestDemo() {
       <Card>
         <CardHeader>
           <CardTitle>API Connection Test</CardTitle>
-          <CardDescription>
-            Test connectivity to all configured API endpoints
-          </CardDescription>
+          <CardDescription>Test connectivity to all configured API endpoints</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <Button
-            onClick={handleTestConnections}
-            disabled={isTestingConnections}
-            className="w-full"
-          >
-            {isTestingConnections
-              ? "Testing Connections..."
-              : "Test All Connections"}
+          <Button onClick={handleTestConnections} disabled={isTestingConnections} className="w-full">
+            {isTestingConnections ? "Testing Connections..." : "Test All Connections"}
           </Button>
 
           {connectionResults.length > 0 && (
@@ -115,18 +99,14 @@ export function ApiTestDemo() {
                     <span className="font-medium">{result.service}</span>
                     <span
                       className={`px-2 py-1 rounded-full text-xs ${
-                        result.success
-                          ? "bg-green-100 text-green-800"
-                          : "bg-red-100 text-red-800"
+                        result.success ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
                       }`}
                     >
                       {result.success ? "Connected" : "Failed"}
                     </span>
                   </div>
                   {result.error && (
-                    <p className="text-sm mt-1 opacity-80">
-                      Error: {result.error.message || result.error}
-                    </p>
+                    <p className="text-sm mt-1 opacity-80">Error: {result.error.message || result.error}</p>
                   )}
                 </div>
               ))}

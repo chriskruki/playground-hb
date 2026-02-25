@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "../../components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
 import Link from "next/link";
 import { ArrowLeft, Plus, Trash2, Wifi } from "lucide-react";
-import { useLoggedApi } from "@/hooks/useLoggedApi";
+import { useLoggedApi } from "../../hooks/useLoggedApi";
 
 interface WledDevice {
   id: string;
@@ -75,7 +75,7 @@ export default function SettingsPage() {
           device: "Settings",
           command: "addDevice",
           description: `Add device "${device.name}" (${device.ip})`,
-        }
+        },
       );
     } catch (error) {
       console.error("Failed to save device:", error);
@@ -107,7 +107,7 @@ export default function SettingsPage() {
           device: "Settings",
           command: "deleteDevice",
           description: `Delete device "${deviceToDelete?.name || deviceId}"`,
-        }
+        },
       );
     } catch (error) {
       console.error("Failed to delete device:", error);
@@ -116,9 +116,7 @@ export default function SettingsPage() {
   };
 
   const pingDevice = async (device: WledDevice) => {
-    setDevices((prev) =>
-      prev.map((d) => (d.id === device.id ? { ...d, status: "checking" } : d))
-    );
+    setDevices((prev) => prev.map((d) => (d.id === device.id ? { ...d, status: "checking" } : d)));
 
     try {
       await makeRequest(
@@ -136,9 +134,7 @@ export default function SettingsPage() {
           const result = await response.json();
           const status = result.success ? "online" : "offline";
 
-          setDevices((prev) =>
-            prev.map((d) => (d.id === device.id ? { ...d, status } : d))
-          );
+          setDevices((prev) => prev.map((d) => (d.id === device.id ? { ...d, status } : d)));
 
           return result;
         },
@@ -146,13 +142,11 @@ export default function SettingsPage() {
           device: device.name,
           command: "ping",
           description: `Test connectivity for ${device.name} (${device.ip})`,
-        }
+        },
       );
     } catch (error) {
       console.error("Ping failed:", error);
-      setDevices((prev) =>
-        prev.map((d) => (d.id === device.id ? { ...d, status: "offline" } : d))
-      );
+      setDevices((prev) => prev.map((d) => (d.id === device.id ? { ...d, status: "offline" } : d)));
     }
   };
 
@@ -209,10 +203,7 @@ export default function SettingsPage() {
           <CardHeader>
             <div className="flex justify-between items-center">
               <CardTitle>WLED Devices</CardTitle>
-              <Button
-                onClick={() => setIsAddingDevice(true)}
-                disabled={isAddingDevice}
-              >
+              <Button onClick={() => setIsAddingDevice(true)} disabled={isAddingDevice}>
                 <Plus className="w-4 h-4 mr-2" />
                 Add Device
               </Button>
@@ -228,9 +219,7 @@ export default function SettingsPage() {
                     type="text"
                     placeholder="IP address (e.g., 192.168.1.100)"
                     value={newDevice.ip}
-                    onChange={(e) =>
-                      setNewDevice((prev) => ({ ...prev, ip: e.target.value }))
-                    }
+                    onChange={(e) => setNewDevice((prev) => ({ ...prev, ip: e.target.value }))}
                     className="px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                   <input
@@ -263,42 +252,24 @@ export default function SettingsPage() {
 
             {/* Devices Table */}
             {devices.length === 0 ? (
-              <div className="text-center py-8 text-gray-600">
-                No WLED devices configured. Add one to get started!
-              </div>
+              <div className="text-center py-8 text-gray-600">No WLED devices configured. Add one to get started!</div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full border-collapse border border-gray-300">
                   <thead>
                     <tr className="bg-gray-100">
-                      <th className="border border-gray-300 px-4 py-2 text-left">
-                        IP Address
-                      </th>
-                      <th className="border border-gray-300 px-4 py-2 text-left">
-                        Name
-                      </th>
-                      <th className="border border-gray-300 px-4 py-2 text-left">
-                        Status
-                      </th>
-                      <th className="border border-gray-300 px-4 py-2 text-center">
-                        Actions
-                      </th>
+                      <th className="border border-gray-300 px-4 py-2 text-left">IP Address</th>
+                      <th className="border border-gray-300 px-4 py-2 text-left">Name</th>
+                      <th className="border border-gray-300 px-4 py-2 text-left">Status</th>
+                      <th className="border border-gray-300 px-4 py-2 text-center">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                     {devices.map((device) => (
                       <tr key={device.id} className="hover:bg-gray-50">
-                        <td className="border border-gray-300 px-4 py-2 font-mono">
-                          {device.ip}
-                        </td>
-                        <td className="border border-gray-300 px-4 py-2 font-medium">
-                          {device.name}
-                        </td>
-                        <td
-                          className={`border border-gray-300 px-4 py-2 font-medium ${getStatusColor(
-                            device.status
-                          )}`}
-                        >
+                        <td className="border border-gray-300 px-4 py-2 font-mono">{device.ip}</td>
+                        <td className="border border-gray-300 px-4 py-2 font-medium">{device.name}</td>
+                        <td className={`border border-gray-300 px-4 py-2 font-medium ${getStatusColor(device.status)}`}>
                           {getStatusText(device.status)}
                         </td>
                         <td className="border border-gray-300 px-4 py-2">
@@ -311,11 +282,7 @@ export default function SettingsPage() {
                             >
                               <Wifi className="w-4 h-4" />
                             </Button>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => deleteDevice(device.id)}
-                            >
+                            <Button size="sm" variant="outline" onClick={() => deleteDevice(device.id)}>
                               <Trash2 className="w-4 h-4 text-red-600" />
                             </Button>
                           </div>

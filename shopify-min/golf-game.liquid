@@ -5,733 +5,731 @@
 {% endcomment %}
 
 <style>
-
-      body {
-        margin: 0;
-        padding: 20px;
-        background: #fff1d4;
-        font-family: Arial, sans-serif;
-        text-align: center;
-      }
-
-      .container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 40px 20px;
-        background: #fff1d4;
-        border-radius: 16px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
-        box-sizing: border-box;
-        gap: 5px;
-      }
-      .game-title {
-        color: #02210a;
-        margin: 0;
-        font-size: 32px;
-        font-weight: bold;
-      }
-
-      .game-subtitle {
-        color: #420d00;
-        margin: 0;
-        font-size: 18px;
-        opacity: 0.9;
-      }
-
-      /* Email section styles */
-      .email-section {
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-        width: 100%;
-        max-width: 600px;
-      }
-
-      .email-form {
-        display: flex;
-        gap: 10px;
-        margin-top: 5px;
-        width: 100%;
-        max-width: 600px;
-      }
-
-      .email-input {
-        flex: 1;
-        min-width: 0;
-        padding: 0 16px;
-        height: 32px;
-        font-size: 16px;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        box-sizing: border-box;
-      }
-
-      .email-submit {
-        white-space: nowrap;
-        height: 32px;
-      }
-
-      /* Base button styles */
-      .btn {
-        padding: 0 20px;
-        height: 32px;
-        font-size: 16px;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        font-weight: 600;
-        font-family: "General Sans", sans-serif;
-        white-space: nowrap;
-        transition: opacity 0.2s ease;
-      }
-
-      .btn:disabled {
-        cursor: not-allowed;
-        opacity: 0.7;
-      }
-
-      /* Button variants */
-      .btn-primary {
-        background: #923c07;
-        color: white;
-      }
-
-      .btn-secondary {
-        background: #02210a;
-        color: #fff1d4;
-      }
-
-      .btn-action {
-        background: #ec3c28;
-        color: white;
-      }
-
-      .btn-outline {
-        background: rgba(255, 255, 255, 0.2);
-        border: 2px solid white;
-        color: white;
-      }
-
-      /* Putt button specific */
-      .putt-btn {
-        height: 24px;
-        padding: 0 10px;
-        line-height: 24px;
-        font-size: 12px;
-        border: 1px solid #333;
-        border-radius: 4px;
-        animation: pulse 1s infinite;
-      }
-
-      .putt-btn:disabled {
-        background: #bdbdbd;
-        color: #eeeeee;
-        animation: none;
-      }
-
-      @keyframes pulse {
-        0%,
-        100% {
-          opacity: 1;
-        }
-        50% {
-          opacity: 0.7;
-        }
-      }
-
-      #game {
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.3s ease-in, visibility 0s linear 0.3s;
-      }
-
-      #game.visible {
-        opacity: 1;
-        visibility: visible;
-        transition: opacity 0.3s ease-in, visibility 0s linear;
-      }
-
-      .game-area {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 5px;
-        margin-top: 5px;
-      }
-
-      .canvas-container {
-        position: relative;
-        text-align: center;
-        overflow: hidden;
-        width: 100%;
-      }
-
-      canvas {
-        max-width: 600px;
-        width: 100%;
-        display: block;
-        margin: 0 auto;
-      }
-
-      .putty-character {
-        position: absolute;
-        left: 15px;
-        top: 2px;
-        height: 90px;
-        pointer-events: none;
-      }
-
-      .game-info {
-        max-width: 200px;
-        text-align: left;
-      }
-
-      .stats {
-        margin: 10px 0;
-        font-weight: bold;
-        color: #02210a;
-        text-align: center;
-        display: none;
-      }
-
-      .status {
-        margin: 15px 0;
-        padding: 12px 24px;
-        border-radius: 8px;
-        font-weight: 600;
-        text-align: center;
-        white-space: pre-line;
-        line-height: 1.4;
-      }
-
-      .instructions {
-        background: rgba(2, 33, 10, 0.05);
-        padding: 15px;
-        border-radius: 8px;
-        margin: 10px 0;
-        font-size: 14px;
-        line-height: 1.4;
-        color: #420d00;
-      }
-
-      .instructions h3 {
-        margin: 0 0 10px 0;
-        color: #02210a;
-        font-size: 16px;
-      }
-      /* Prize guide */
-      .prize-guide {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        padding: 10px;
-        border-radius: 12px;
-        margin-top: 8px;
-        background: linear-gradient(135deg, #ffedd5, #ffe4e0);
-        border: 2px solid rgba(0, 0, 0, 0.1);
-        width: 100%;
-        max-width: 600px;
-        margin-left: auto;
-        margin-right: auto;
-        box-sizing: border-box;
-      }
-
-      .prize-guide-header {
-        font-size: 14px;
-        font-weight: 600;
-        color: #1b1000;
-        margin: 0;
-        padding: 0;
-        opacity: 0.8;
-      }
-
-      .prize-segment {
-        flex: 1;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        min-width: 0;
-        width: 100%;
-        padding: 8px;
-        border-radius: 8px;
-        text-align: center;
-        color: #1b1000;
-        background: rgba(255, 255, 255, 0.6);
-        border: 1px solid rgba(0, 0, 0, 0.08);
-        transition: transform 120ms ease, box-shadow 120ms ease;
-        position: relative;
-        z-index: 1;
-        box-sizing: border-box;
-      }
-
-      .prize-accordion {
-        width: 100%;
-      }
-
-      .prize-accordion-toggle {
-        width: 100%;
-        padding: 6px;
-        background: rgba(255, 255, 255, 0.4);
-        border: 1px solid rgba(0, 0, 0, 0.08);
-        border-radius: 6px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 4px;
-        color: #1b1000;
-        font-size: 12px;
-        font-weight: 500;
-        transition: background 0.2s ease;
-      }
-
-      .prize-accordion-toggle:hover {
-        background: rgba(255, 255, 255, 0.6);
-      }
-
-      .prize-accordion-toggle::after {
-        content: "";
-        display: inline-block;
-        width: 6px;
-        height: 6px;
-        border: solid #1b1000;
-        border-width: 0 1px 1px 0;
-        transform: rotate(45deg);
-        transition: transform 0.2s ease;
-        margin-top: -2px;
-        opacity: 0.6;
-      }
-
-      .prize-accordion-toggle.open::after {
-        transform: rotate(-135deg);
-        margin-top: 2px;
-      }
-
-      .prize-accordion-content {
-        display: none;
-        margin-top: 8px;
-      }
-
-      .prize-accordion-content.open {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-      }
-      .prize-segment .shot-label {
-        font-size: 12px;
-        font-weight: 700;
-        letter-spacing: 0.3px;
-        opacity: 0.8;
-      }
-      .prize-segment .prize-name {
-        font-size: 13px;
-        font-weight: 800;
-        margin-top: 4px;
-        white-space: wrap;
-        overflow: wrap;
-        word-wrap: break-word;
-        text-overflow: visible;
-      }
-      .prize-segment .prize-desc {
-        font-size: 12px;
-        opacity: 0.8;
-        white-space: wrap;
-        overflow: visible;
-      }
-      .prize-segment.active {
-        box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
-        position: relative;
-        transform: translateY(-1px);
-        border-color: rgba(0, 0, 0, 0.15);
-      }
-      .prize-segment::before {
-        content: attr(data-shots) " shot";
-        position: absolute;
-        top: -8px;
-        left: -8px;
-        background: rgba(0, 0, 0, 0.5);
-        color: #fff;
-        font-weight: 600;
-        font-size: 10px;
-        padding: 2px 6px;
-        border-radius: 999px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-        z-index: 2;
-      }
-
-      .prize-segment[data-shots="6"]::before {
-        content: "5+ shots";
-      }
-
-      .prize-segment[data-shots="1"]::before {
-        content: "1 shot";
-      }
-
-      .prize-segment[data-shots="2"]::before,
-      .prize-segment[data-shots="3"]::before,
-      .prize-segment[data-shots="4"]::before,
-      .prize-segment[data-shots="5"]::before {
-        content: attr(data-shots) " shots";
-      }
-
-      .prize-segment.active::after {
-        content: "NEXT";
-        position: absolute;
-        top: -8px;
-        right: -8px;
-        background: #ec3c28;
-        color: #fff;
-        font-weight: 800;
-        font-size: 10px;
-        padding: 3px 6px;
-        border-radius: 999px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-        z-index: 3;
-      }
-
-      /* Keep original background colors for active state */
-      .seg-1.active {
-        background: linear-gradient(180deg, #dcfce7, #bbf7d0);
-      }
-      .seg-2.active {
-        background: linear-gradient(180deg, #e0f2fe, #bae6fd);
-      }
-      .seg-3.active {
-        background: linear-gradient(180deg, #ede9fe, #ddd6fe);
-      }
-      .seg-4.active {
-        background: linear-gradient(180deg, #fef3c7, #fde68a);
-      }
-      .seg-5.active {
-        background: linear-gradient(180deg, #fee2e2, #fecaca);
-      }
-
-      .seg-none {
-        background: linear-gradient(180deg, #f8f8f8, #f0f0f0);
-        color: #666;
-      }
-
-      .seg-none.active {
-        background: linear-gradient(180deg, #f8f8f8, #f0f0f0);
-      }
-
-      .seg-none.active::after {
-        content: "CURRENT";
-        background: #666;
-      }
-
-      /* Animation styles moved to subtleLift above */
-
-      /* Subtle lift animation for active segments */
-      @keyframes subtleLift {
-        0%,
-        100% {
-          transform: translateY(-1px);
-        }
-        50% {
-          transform: translateY(-2px);
-        }
-      }
-
-      .prize-segment.active {
-        animation: subtleLift 2s ease-in-out infinite;
-      }
-
-      @media (max-width: 600px) {
-        .prize-guide {
-          gap: 6px;
-          padding: 8px;
-          width: 100%;
-        }
-        .prize-guide-header {
-          font-size: 13px;
-        }
-        .prize-segment {
-          padding: 6px;
-        }
-        .prize-segment .shot-label {
-          font-size: 11px;
-        }
-        .prize-segment .prize-name {
-          font-size: 12px;
-        }
-        .prize-segment .prize-desc {
-          font-size: 11px;
-        }
-        .prize-segment::before {
-          font-size: 9px;
-          padding: 2px 4px;
-          top: -6px;
-          left: -6px;
-        }
-        .prize-segment.active::after {
-          font-size: 9px;
-          padding: 2px 4px;
-          top: -6px;
-          right: -6px;
-        }
-        .prize-accordion-toggle {
-          padding: 4px;
-          font-size: 11px;
-        }
-      }
-      .seg-1 {
-        background: linear-gradient(180deg, #dcfce7, #bbf7d0);
-      }
-      .seg-2 {
-        background: linear-gradient(180deg, #e0f2fe, #bae6fd);
-      }
-      .seg-3 {
-        background: linear-gradient(180deg, #ede9fe, #ddd6fe);
-      }
-      .seg-4 {
-        background: linear-gradient(180deg, #fef3c7, #fde68a);
-      }
-      .seg-5 {
-        background: linear-gradient(180deg, #fee2e2, #fecaca);
-      }
-      /* HTML UI above the canvas */
-      .ui-row {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        margin-bottom: 4px;
-        flex-wrap: nowrap;
-        width: fit-content;
-        margin-left: auto;
-        margin-right: auto;
-      }
-      .power-meter {
-        position: relative;
-        width: 140px;
-        height: 24px;
-        background: linear-gradient(90deg, #ffffff, #ec3c28);
-        border: 1px solid #333;
-        border-radius: 4px;
-        overflow: hidden;
-      }
-      .power-tick {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 4px;
-        height: 100%;
-        background: #000;
-        max-width: 100%;
-        transform: translateX(var(--tick-position, 0px));
-      }
-      .putt-btn:disabled {
-        background: #bdbdbd;
-        color: #eeeeee;
-        cursor: not-allowed;
-        animation: none;
-      }
-
-      .power-display {
-        text-align: center;
-        margin: 10px 0;
-        font-weight: bold;
-        color: #02210a;
-        font-size: 18px;
-      }
-
-      .status.ready {
-        background: rgba(2, 33, 10, 0.1);
-        color: #02210a;
-      }
-      .status.aiming {
-        background: rgba(2, 33, 10, 0.08);
-        color: #02210a;
-      }
-      .status.shooting {
-        background: rgba(2, 33, 10, 0.08);
-        color: #02210a;
-      }
-      .status.neutral {
-        background: rgba(2, 33, 10, 0.08);
-        color: #02210a;
-      }
-
-      /* Prize result styles */
-      .result-banner {
-        display: none;
-        padding: 30px;
-        border-radius: 16px;
-        margin: 20px auto;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        max-width: 400px;
-        gap: 10px;
-        color: white;
-        box-sizing: border-box;
-      }
-
-      .result-banner.win {
-        background: linear-gradient(135deg, #4caf50, #45a049);
-      }
-
-      .result-banner.lose {
-        background: linear-gradient(135deg, #f44336, #d32f2f);
-      }
-
-      .result-title {
-        margin: 0;
-        font-size: 24px;
-        font-weight: bold;
-      }
-
-      .result-desc {
-        margin: 0;
-        font-size: 16px;
-        opacity: 0.9;
-      }
-
-      .result-code-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        margin: 10px 0;
-      }
-
-      .code {
-        background: rgba(255, 255, 255, 0.2);
-        padding: 12px 24px;
-        border-radius: 8px;
-        font-family: monospace;
-        font-size: 1.4em;
-        font-weight: bold;
-        letter-spacing: 2px;
-        border: 2px dashed rgba(255, 255, 255, 0.5);
-        min-width: 200px;
-        text-align: center;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      }
-
-      /* Responsive design */
-      @media (max-width: 768px) {
-        .game-area {
-          flex-direction: column;
-          align-items: center;
-          width: 100%;
-        }
-
-        .game-info {
-          width: 100%;
-          max-width: 100%;
-          text-align: center;
-        }
-
-        .instructions {
-          text-align: left;
-          max-width: 350px;
-          width: 100%;
-        }
-
-        .putty-character {
-          height: 60px;
-          left: 10px;
-          top: 2px;
-        }
-
-        .canvas-container {
-          width: 100%;
-          overflow: hidden;
-        }
-
-        canvas {
-          max-width: 100%;
-          width: 100%;
-        }
-
-        .ui-row {
-          gap: 6px;
-        }
-      }
-
-      @media (max-width: 480px) {
-        .container {
-          padding: 20px 10px;
-          width: 100%;
-          margin: 0;
-        }
-
-        .email-form {
-          width: 100%;
-          padding: 0;
-          box-sizing: border-box;
-          gap: 5px;
-          max-width: 100%;
-        }
-
-        .email-form {
-          padding: 0 5px;
-          gap: 5px;
-        }
-
-        .email-input {
-          padding: 0 12px;
-          font-size: 16px;
-        }
-
-        .email-submit {
-          padding: 0 16px;
-          font-size: 16px;
-        }
-
-        /* Compact headings and subtitle */
-        h1 {
-          margin: 8px 0 4px 0;
-          font-size: 24px;
-        }
-        p {
-          margin: 6px 0 8px 0;
-          font-size: 16px;
-        }
-
-        .putty-character {
-          height: 45px;
-          left: 8px;
-          top: 0px;
-        }
-
-        .prize-guide {
-          padding: 8px;
-          gap: 6px;
-        }
-
-        .prize-segment {
-          padding: 6px;
-        }
-
-        .status {
-          font-size: 12px;
-          padding: 8px 16px;
-        }
-
-        .prize {
-          margin: 20px auto;
-          padding: 20px;
-          width: calc(100% - 20px);
-          max-width: 400px;
-        }
-
-        .code {
-          font-size: 1em;
-          padding: 6px 12px;
-        }
-      }
-    
+  body {
+    margin: 0;
+    padding: 20px;
+    background: #fff1d4;
+    font-family: Arial, sans-serif;
+    text-align: center;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    background: #fff1d4;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    box-sizing: border-box;
+    gap: 5px;
+  }
+  .game-title {
+    color: #02210a;
+    margin: 0;
+    font-size: 32px;
+    font-weight: bold;
+  }
+
+  .game-subtitle {
+    color: #420d00;
+    margin: 0;
+    font-size: 18px;
+    opacity: 0.9;
+  }
+
+  /* Email section styles */
+  .email-section {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 100%;
+    max-width: 600px;
+  }
+
+  .email-form {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+    width: 100%;
+    max-width: 600px;
+  }
+
+  .email-input {
+    flex: 1;
+    min-width: 0;
+    padding: 0 16px;
+    height: 32px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+  }
+
+  .email-submit {
+    white-space: nowrap;
+    height: 32px;
+  }
+
+  /* Base button styles */
+  .btn {
+    padding: 0 20px;
+    height: 32px;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-family: 'General Sans', sans-serif;
+    white-space: nowrap;
+    transition: opacity 0.2s ease;
+  }
+
+  .btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+
+  /* Button variants */
+  .btn-primary {
+    background: #923c07;
+    color: white;
+  }
+
+  .btn-secondary {
+    background: #02210a;
+    color: #fff1d4;
+  }
+
+  .btn-action {
+    background: #ec3c28;
+    color: white;
+  }
+
+  .btn-outline {
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid white;
+    color: white;
+  }
+
+  /* Putt button specific */
+  .putt-btn {
+    height: 24px;
+    padding: 0 10px;
+    line-height: 24px;
+    font-size: 12px;
+    border: 1px solid #333;
+    border-radius: 4px;
+    animation: pulse 1s infinite;
+  }
+
+  .putt-btn:disabled {
+    background: #bdbdbd;
+    color: #eeeeee;
+    animation: none;
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+
+  #game {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in, visibility 0s linear 0.3s;
+  }
+
+  #game.visible {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease-in, visibility 0s linear;
+  }
+
+  .game-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 5px;
+  }
+
+  .canvas-container {
+    position: relative;
+    text-align: center;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  canvas {
+    max-width: 600px;
+    width: 100%;
+    display: block;
+    margin: 0 auto;
+  }
+
+  .putty-character {
+    position: absolute;
+    left: 15px;
+    top: 2px;
+    height: 90px;
+    pointer-events: none;
+  }
+
+  .game-info {
+    max-width: 200px;
+    text-align: left;
+  }
+
+  .stats {
+    margin: 10px 0;
+    font-weight: bold;
+    color: #02210a;
+    text-align: center;
+    display: none;
+  }
+
+  .status {
+    margin: 15px 0;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-align: center;
+    white-space: pre-line;
+    line-height: 1.4;
+  }
+
+  .instructions {
+    background: rgba(2, 33, 10, 0.05);
+    padding: 15px;
+    border-radius: 8px;
+    margin: 10px 0;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #420d00;
+  }
+
+  .instructions h3 {
+    margin: 0 0 10px 0;
+    color: #02210a;
+    font-size: 16px;
+  }
+  /* Prize guide */
+  .prize-guide {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+    border-radius: 12px;
+    margin-top: 8px;
+    background: linear-gradient(135deg, #ffedd5, #ffe4e0);
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+  }
+
+  .prize-guide-header {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1b1000;
+    margin: 0;
+    padding: 0;
+    opacity: 0.8;
+  }
+
+  .prize-segment {
+    flex: 1;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    min-width: 0;
+    width: 100%;
+    padding: 8px;
+    border-radius: 8px;
+    text-align: center;
+    color: #1b1000;
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    transition: transform 120ms ease, box-shadow 120ms ease;
+    position: relative;
+    z-index: 1;
+    box-sizing: border-box;
+  }
+
+  .prize-accordion {
+    width: 100%;
+  }
+
+  .prize-accordion-toggle {
+    width: 100%;
+    padding: 6px;
+    background: rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    color: #1b1000;
+    font-size: 12px;
+    font-weight: 500;
+    transition: background 0.2s ease;
+  }
+
+  .prize-accordion-toggle:hover {
+    background: rgba(255, 255, 255, 0.6);
+  }
+
+  .prize-accordion-toggle::after {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border: solid #1b1000;
+    border-width: 0 1px 1px 0;
+    transform: rotate(45deg);
+    transition: transform 0.2s ease;
+    margin-top: -2px;
+    opacity: 0.6;
+  }
+
+  .prize-accordion-toggle.open::after {
+    transform: rotate(-135deg);
+    margin-top: 2px;
+  }
+
+  .prize-accordion-content {
+    display: none;
+    margin-top: 8px;
+  }
+
+  .prize-accordion-content.open {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .prize-segment .shot-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    opacity: 0.8;
+  }
+  .prize-segment .prize-name {
+    font-size: 13px;
+    font-weight: 800;
+    margin-top: 4px;
+    white-space: wrap;
+    overflow: wrap;
+    word-wrap: break-word;
+    text-overflow: visible;
+  }
+  .prize-segment .prize-desc {
+    font-size: 12px;
+    opacity: 0.8;
+    white-space: wrap;
+    overflow: visible;
+  }
+  .prize-segment.active {
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.18);
+    position: relative;
+    transform: translateY(-1px);
+    border-color: rgba(0, 0, 0, 0.15);
+  }
+  .prize-segment::before {
+    content: attr(data-shots) ' shot';
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    font-weight: 600;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 999px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    z-index: 2;
+  }
+
+  .prize-segment[data-shots='6']::before {
+    content: '5+ shots';
+  }
+
+  .prize-segment[data-shots='1']::before {
+    content: '1 shot';
+  }
+
+  .prize-segment[data-shots='2']::before,
+  .prize-segment[data-shots='3']::before,
+  .prize-segment[data-shots='4']::before,
+  .prize-segment[data-shots='5']::before {
+    content: attr(data-shots) ' shots';
+  }
+
+  .prize-segment.active::after {
+    content: 'NEXT';
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #ec3c28;
+    color: #fff;
+    font-weight: 800;
+    font-size: 10px;
+    padding: 3px 6px;
+    border-radius: 999px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    z-index: 3;
+  }
+
+  /* Keep original background colors for active state */
+  .seg-1.active {
+    background: linear-gradient(180deg, #dcfce7, #bbf7d0);
+  }
+  .seg-2.active {
+    background: linear-gradient(180deg, #e0f2fe, #bae6fd);
+  }
+  .seg-3.active {
+    background: linear-gradient(180deg, #ede9fe, #ddd6fe);
+  }
+  .seg-4.active {
+    background: linear-gradient(180deg, #fef3c7, #fde68a);
+  }
+  .seg-5.active {
+    background: linear-gradient(180deg, #fee2e2, #fecaca);
+  }
+
+  .seg-none {
+    background: linear-gradient(180deg, #f8f8f8, #f0f0f0);
+    color: #666;
+  }
+
+  .seg-none.active {
+    background: linear-gradient(180deg, #f8f8f8, #f0f0f0);
+  }
+
+  .seg-none.active::after {
+    content: 'CURRENT';
+    background: #666;
+  }
+
+  /* Animation styles moved to subtleLift above */
+
+  /* Subtle lift animation for active segments */
+  @keyframes subtleLift {
+    0%,
+    100% {
+      transform: translateY(-1px);
+    }
+    50% {
+      transform: translateY(-2px);
+    }
+  }
+
+  .prize-segment.active {
+    animation: subtleLift 2s ease-in-out infinite;
+  }
+
+  @media (max-width: 600px) {
+    .prize-guide {
+      gap: 6px;
+      padding: 8px;
+      width: 100%;
+    }
+    .prize-guide-header {
+      font-size: 13px;
+    }
+    .prize-segment {
+      padding: 6px;
+    }
+    .prize-segment .shot-label {
+      font-size: 11px;
+    }
+    .prize-segment .prize-name {
+      font-size: 12px;
+    }
+    .prize-segment .prize-desc {
+      font-size: 11px;
+    }
+    .prize-segment::before {
+      font-size: 9px;
+      padding: 2px 4px;
+      top: -6px;
+      left: -6px;
+    }
+    .prize-segment.active::after {
+      font-size: 9px;
+      padding: 2px 4px;
+      top: -6px;
+      right: -6px;
+    }
+    .prize-accordion-toggle {
+      padding: 4px;
+      font-size: 11px;
+    }
+  }
+  .seg-1 {
+    background: linear-gradient(180deg, #dcfce7, #bbf7d0);
+  }
+  .seg-2 {
+    background: linear-gradient(180deg, #e0f2fe, #bae6fd);
+  }
+  .seg-3 {
+    background: linear-gradient(180deg, #ede9fe, #ddd6fe);
+  }
+  .seg-4 {
+    background: linear-gradient(180deg, #fef3c7, #fde68a);
+  }
+  .seg-5 {
+    background: linear-gradient(180deg, #fee2e2, #fecaca);
+  }
+  /* HTML UI above the canvas */
+  .ui-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 4px;
+    flex-wrap: nowrap;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .power-meter {
+    position: relative;
+    width: 140px;
+    height: 24px;
+    background: linear-gradient(90deg, #ffffff, #ec3c28);
+    border: 1px solid #333;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .power-tick {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: #000;
+    max-width: 100%;
+    transform: translateX(var(--tick-position, 0px));
+  }
+  .putt-btn:disabled {
+    background: #bdbdbd;
+    color: #eeeeee;
+    cursor: not-allowed;
+    animation: none;
+  }
+
+  .power-display {
+    text-align: center;
+    margin: 10px 0;
+    font-weight: bold;
+    color: #02210a;
+    font-size: 18px;
+  }
+
+  .status.ready {
+    background: rgba(2, 33, 10, 0.1);
+    color: #02210a;
+  }
+  .status.aiming {
+    background: rgba(2, 33, 10, 0.08);
+    color: #02210a;
+  }
+  .status.shooting {
+    background: rgba(2, 33, 10, 0.08);
+    color: #02210a;
+  }
+  .status.neutral {
+    background: rgba(2, 33, 10, 0.08);
+    color: #02210a;
+  }
+
+  /* Prize result styles */
+  .result-banner {
+    display: none;
+    padding: 30px;
+    border-radius: 16px;
+    margin: 20px auto;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 400px;
+    gap: 10px;
+    color: white;
+    box-sizing: border-box;
+  }
+
+  .result-banner.win {
+    background: linear-gradient(135deg, #4caf50, #45a049);
+  }
+
+  .result-banner.lose {
+    background: linear-gradient(135deg, #f44336, #d32f2f);
+  }
+
+  .result-title {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  .result-desc {
+    margin: 0;
+    font-size: 16px;
+    opacity: 0.9;
+  }
+
+  .result-code-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 10px 0;
+  }
+
+  .code {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 1.4em;
+    font-weight: bold;
+    letter-spacing: 2px;
+    border: 2px dashed rgba(255, 255, 255, 0.5);
+    min-width: 200px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .game-area {
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    .game-info {
+      width: 100%;
+      max-width: 100%;
+      text-align: center;
+    }
+
+    .instructions {
+      text-align: left;
+      max-width: 350px;
+      width: 100%;
+    }
+
+    .putty-character {
+      height: 60px;
+      left: 10px;
+      top: 2px;
+    }
+
+    .canvas-container {
+      width: 100%;
+      overflow: hidden;
+    }
+
+    canvas {
+      max-width: 100%;
+      width: 100%;
+    }
+
+    .ui-row {
+      gap: 6px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .container {
+      padding: 20px 10px;
+      width: 100%;
+      margin: 0;
+    }
+
+    .email-form {
+      width: 100%;
+      padding: 0;
+      box-sizing: border-box;
+      gap: 5px;
+      max-width: 100%;
+    }
+
+    .email-form {
+      padding: 0 5px;
+      gap: 5px;
+    }
+
+    .email-input {
+      padding: 0 12px;
+      font-size: 16px;
+    }
+
+    .email-submit {
+      padding: 0 16px;
+      font-size: 16px;
+    }
+
+    /* Compact headings and subtitle */
+    h1 {
+      margin: 8px 0 4px 0;
+      font-size: 24px;
+    }
+    p {
+      margin: 6px 0 8px 0;
+      font-size: 16px;
+    }
+
+    .putty-character {
+      height: 45px;
+      left: 8px;
+      top: 0px;
+    }
+
+    .prize-guide {
+      padding: 8px;
+      gap: 6px;
+    }
+
+    .prize-segment {
+      padding: 6px;
+    }
+
+    .status {
+      font-size: 12px;
+      padding: 8px 16px;
+    }
+
+    .prize {
+      margin: 20px auto;
+      padding: 20px;
+      width: calc(100% - 20px);
+      max-width: 400px;
+    }
+
+    .code {
+      font-size: 1em;
+      padding: 6px 12px;
+    }
+  }
 </style>
 
 {% liquid
@@ -742,8 +740,8 @@
       assign content_width = 'full-width'
   endcase
 
-  assign padding_top = section.settings.padding-block-start | default: 36
-  assign padding_bottom = section.settings.padding-block-end | default: 36
+  assign padding_top = section.settings['padding-block-start'] | default: 36
+  assign padding_bottom = section.settings['padding-block-end'] | default: 36
 %}
 
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
@@ -752,647 +750,685 @@
   style="padding-top: {{ padding_top }}px; padding-bottom: {{ padding_bottom }}px;"
   id="golf-game"
 >
+  <div class="container">
+    <h1 class="game-title">{{ section.settings.game_title | default: 'Mini Golf with Putty' }}</h1>
+    <p class="game-subtitle">{{ section.settings.game_subtitle | default: 'Enter your email and win prizes!' }}</p>
 
-    <div class="container">
-      <h1 class="game-title">{{ section.settings.game_title | default: "Mini Golf with Putty" }}</h1>
-      <p class="game-subtitle">{{ section.settings.game_subtitle | default: "Enter your email and win prizes!" }}</p>
+    <!-- Email Form -->
+    <div id="emailSection-{{ section.id }}" class="email-section">
+      <!-- Email Signup Form for Mini Golf -->
+      <form id="email-form-{{ section.id }}" class="email-form" onsubmit="window.GolfGameHandleFormSubmit(event)">
+        <input
+          type="email"
+          name="email"
+          id="email-{{ section.id }}"
+          required
+          placeholder="{{ section.settings.email_placeholder | default: "you@domain.com" }}"
+          class="email-input"
+        >
+        <button type="submit" class="btn btn-primary email-submit">
+          {{ section.settings.submit_button_text | default: "Let's Putt!" }}
+        </button>
+      </form>
+    </div>
 
-      <!-- Email Form -->
-      <div id="emailSection-{{ section.id }}" class="email-section">
-        <!-- Email Signup Form for Mini Golf -->
-        <form id="email-form-{{ section.id }}" class="email-form" onsubmit="window.GolfGameHandleFormSubmit(event)">
-          <input type="email" name="email" id="email-{{ section.id }}" required placeholder="{{ section.settings.email_placeholder | default: "you@domain.com" }}" class="email-input" />
-          <button type="submit" class="btn btn-primary email-submit">{{ section.settings.submit_button_text | default: "Let's Putt!" }}</button>
-        </form>
+    <!-- Game -->
+    <div id="game-{{ section.id }}">
+      <div id="status-{{ section.id }}" class="status aiming">
+        {{ section.settings.aim_banner_text | default: 'Watch the power meter and click PUTT when ready!' }}
       </div>
-
-      <!-- Game -->
-      <div id="game-{{ section.id }}">
-        <div id="status-{{ section.id }}" class="status aiming">{{ section.settings.aim_banner_text | default: "Watch the power meter and click PUTT when ready!" }}</div>
-        <div class="game-area">
-          <div class="canvas-container">
-            <div id="uiRow-{{ section.id }}" class="ui-row">
-              <button id="puttHtmlBtn-{{ section.id }}" class="btn btn-action putt-btn">PUTT_BUTTON_TEXT</button>
-              <div id="powerMeter-{{ section.id }}" class="power-meter"><div id="powerTick-{{ section.id }}" class="power-tick"></div></div>
+      <div class="game-area">
+        <div class="canvas-container">
+          <div id="uiRow-{{ section.id }}" class="ui-row">
+            <button id="puttHtmlBtn-{{ section.id }}" class="btn btn-action putt-btn">PUTT_BUTTON_TEXT</button>
+            <div id="powerMeter-{{ section.id }}" class="power-meter">
+              <div id="powerTick-{{ section.id }}" class="power-tick"></div>
             </div>
-            <canvas id="canvas-{{ section.id }}" style="width: 600px; height: 80px" width="600" height="80"></canvas>
-            <!-- <img src="putty.png" alt="Putty" class="putty-character" /> -->
           </div>
-          <div id="prizeGuide-{{ section.id }}" class="prize-guide">
-            <h3 class="prize-guide-header">Prizes</h3>
-            <div class="prize-segment seg-1" data-shots="1">
-              <div class="prize-name" id="seg1Name-{{ section.id }}">{{ section.settings.prize_1_name | default: "Hole in One!" }}</div>
-              <div class="prize-desc" id="seg1Desc-{{ section.id }}">{{ section.settings.prize_1_desc | default: "Free Round" }}</div>
+          <canvas id="canvas-{{ section.id }}" style="width: 600px; height: 80px" width="600" height="80"></canvas>
+          <!-- <img src="putty.png" alt="Putty" class="putty-character" /> -->
+        </div>
+        <div id="prizeGuide-{{ section.id }}" class="prize-guide">
+          <h3 class="prize-guide-header">Prizes</h3>
+          <div class="prize-segment seg-1" data-shots="1">
+            <div class="prize-name" id="seg1Name-{{ section.id }}">
+              {{ section.settings.prize_1_name | default: 'Hole in One!' }}
             </div>
-            <div class="prize-accordion">
-              <button class="btn prize-accordion-toggle" onclick="GolfGameTogglePrizes(this)">View all prizes</button>
-              <div class="prize-accordion-content">
-                <div class="prize-segment seg-2" data-shots="2">
-                  <div class="prize-name" id="seg2Name-{{ section.id }}">{{ section.settings.prize_2_name | default: "Eagle!" }}</div>
-                  <div class="prize-desc" id="seg2Desc-{{ section.id }}">{{ section.settings.prize_2_desc | default: "Free Appetizer" }}</div>
+            <div class="prize-desc" id="seg1Desc-{{ section.id }}">
+              {{ section.settings.prize_1_desc | default: 'Free Round' }}
+            </div>
+          </div>
+          <div class="prize-accordion">
+            <button class="btn prize-accordion-toggle" onclick="GolfGameTogglePrizes(this)">View all prizes</button>
+            <div class="prize-accordion-content">
+              <div class="prize-segment seg-2" data-shots="2">
+                <div class="prize-name" id="seg2Name-{{ section.id }}">
+                  {{ section.settings.prize_2_name | default: 'Eagle!' }}
                 </div>
-                <div class="prize-segment seg-3" data-shots="3">
-                  <div class="prize-name" id="seg3Name-{{ section.id }}">{{ section.settings.prize_3_name | default: "Birdie!" }}</div>
-                  <div class="prize-desc" id="seg3Desc-{{ section.id }}">{{ section.settings.prize_3_desc | default: "10% Off Your Order" }}</div>
+                <div class="prize-desc" id="seg2Desc-{{ section.id }}">
+                  {{ section.settings.prize_2_desc | default: 'Free Appetizer' }}
                 </div>
-                <div class="prize-segment seg-4" data-shots="4">
-                  <div class="prize-name" id="seg4Name-{{ section.id }}">{{ section.settings.prize_4_name | default: "Par" }}</div>
-                  <div class="prize-desc" id="seg4Desc-{{ section.id }}">{{ section.settings.prize_4_desc | default: "5% Off Your Order" }}</div>
+              </div>
+              <div class="prize-segment seg-3" data-shots="3">
+                <div class="prize-name" id="seg3Name-{{ section.id }}">
+                  {{ section.settings.prize_3_name | default: 'Birdie!' }}
                 </div>
-                <div class="prize-segment seg-5" data-shots="5">
-                  <div class="prize-name" id="seg5Name-{{ section.id }}">{{ section.settings.prize_5_name | default: "Bogey" }}</div>
-                  <div class="prize-desc" id="seg5Desc-{{ section.id }}">{{ section.settings.prize_5_desc | default: "$2 Off Your Order" }}</div>
+                <div class="prize-desc" id="seg3Desc-{{ section.id }}">
+                  {{ section.settings.prize_3_desc | default: '10% Off Your Order' }}
                 </div>
-                <div class="prize-segment seg-none" data-shots="6">
-                  <div class="prize-name">No Prize</div>
-                  <div class="prize-desc">Better luck next time!</div>
+              </div>
+              <div class="prize-segment seg-4" data-shots="4">
+                <div class="prize-name" id="seg4Name-{{ section.id }}">
+                  {{ section.settings.prize_4_name | default: 'Par' }}
                 </div>
+                <div class="prize-desc" id="seg4Desc-{{ section.id }}">
+                  {{ section.settings.prize_4_desc | default: '5% Off Your Order' }}
+                </div>
+              </div>
+              <div class="prize-segment seg-5" data-shots="5">
+                <div class="prize-name" id="seg5Name-{{ section.id }}">
+                  {{ section.settings.prize_5_name | default: 'Bogey' }}
+                </div>
+                <div class="prize-desc" id="seg5Desc-{{ section.id }}">
+                  {{ section.settings.prize_5_desc | default: '$2 Off Your Order' }}
+                </div>
+              </div>
+              <div class="prize-segment seg-none" data-shots="6">
+                <div class="prize-name">No Prize</div>
+                <div class="prize-desc">Better luck next time!</div>
               </div>
             </div>
           </div>
+        </div>
 
-          <div class="game-info">
-            <!-- <div class="instructions">
+        <div class="game-info">
+          <!--
+            <div class="instructions">
               <h3>How to Play</h3>
               <p>🎯 Watch the power meter bounce</p>
               <p>⏱️ Click PUTT at the right moment</p>
               <p>🏌️ Reach exactly 10 units to win!</p>
               <p>⚠️ Don't overshoot or you lose</p>
-            </div> -->
-
-            <div class="stats">
-              <div><span id="shots-{{ section.id }}">Shots: 0</span></div>
-              <div><span id="distance-{{ section.id }}">Distance to go: 10</span></div>
             </div>
+          -->
+
+          <div class="stats">
+            <div><span id="shots-{{ section.id }}">Shots: 0</span></div>
+            <div><span id="distance-{{ section.id }}">Distance to go: 10</span></div>
           </div>
         </div>
-        <button id="puttBtn-{{ section.id }}" class="btn btn-action putt-btn" onclick="GolfGamePutt()" style="display: none">
-          🏌️ PUTT!
-        </button>
       </div>
-
-      <!-- Prize -->
-      <div id="prize-{{ section.id }}" class="result-banner win">
-        <h2 id="prizeTitle-{{ section.id }}" class="result-title">🎉 You Won!</h2>
-        <p id="prizeDesc-{{ section.id }}" class="result-desc">Amazing prize!</p>
-        <div class="result-code-container">Your Code: <span id="prizeCode-{{ section.id }}" class="code">CODE123</span></div>
-        <button class="btn btn-outline" onclick="GolfGameReset()">Play Again</button>
-      </div>
-
-      <!-- Lose -->
-      <div id="lose-{{ section.id }}" class="result-banner lose">
-        <h2 class="result-title">Too many shots!</h2>
-        <p class="result-desc">You need to reach the hole in 5 shots or less to win a prize.</p>
-        <button class="btn btn-outline" onclick="GolfGameReset()">🔄 Try Again</button>
-      </div>
+      <button
+        id="puttBtn-{{ section.id }}"
+        class="btn btn-action putt-btn"
+        onclick="GolfGamePutt()"
+        style="display: none"
+      >
+        🏌️ PUTT!
+      </button>
     </div>
 
-    
-  
+    <!-- Prize -->
+    <div id="prize-{{ section.id }}" class="result-banner win">
+      <h2 id="prizeTitle-{{ section.id }}" class="result-title">🎉 You Won!</h2>
+      <p id="prizeDesc-{{ section.id }}" class="result-desc">Amazing prize!</p>
+      <div class="result-code-container">
+        Your Code: <span id="prizeCode-{{ section.id }}" class="code">CODE123</span>
+      </div>
+      <button class="btn btn-outline" onclick="GolfGameReset()">Play Again</button>
+    </div>
+
+    <!-- Lose -->
+    <div id="lose-{{ section.id }}" class="result-banner lose">
+      <h2 class="result-title">Too many shots!</h2>
+      <p class="result-desc">You need to reach the hole in 5 shots or less to win a prize.</p>
+      <button class="btn btn-outline" onclick="GolfGameReset()">🔄 Try Again</button>
+    </div>
+  </div>
 </div>
 
 <script>
-  (function() {
-    const sectionId = "{{ section.id }}";
-    
+(function() {
+const sectionId = "{{ section.id }}";
 
-      const GAME_TITLE = {{ section.settings.game_title | default: "Mini Golf with Putty" | json }};
-      const GAME_SUBTITLE = {{ section.settings.game_subtitle | default: "Enter your email and win prizes!" | json }};
-      const EMAIL_PLACEHOLDER = {{ section.settings.email_placeholder | default: "you@domain.com" | json }};
-      const SUBMIT_BUTTON_TEXT = {{ section.settings.submit_button_text | default: "Let's Putt!" | json }};
-      const AIM_BANNER_TEXT = {{ section.settings.aim_banner_text | default: "Watch the power meter and click PUTT when ready!" | json }};
-      const MARKETING_URL = {{ section.settings.marketing_url | json }};
-      const PUTTY_IMAGE_URL = {{ section.settings.putty_image | image_url | json }};
-      const PUTT_BUTTON_TEXT = {{ section.settings.putt_button_text | default: "PUTT!" | json }};
-      const PUTT_DISABLED_BUTTON_TEXT = {{ section.settings.putt_disabled_button_text | default: "Enter email to play" | json }};
-      // Power meter and UI constants
-      const METER_WIDTH = 140;
-      const CANVAS_HEIGHT = 80;
-      const UI_BAR_HEIGHT = 24;
-      const PRIZE_1_NAME = {{ section.settings.prize_1_name | default: "Hole in One!" | json }};
-      const PRIZE_1_CODE = {{ section.settings.prize_1_code | default: "HOLEINONE" | json }};
-      const PRIZE_1_DESC = {{ section.settings.prize_1_desc | default: "Free Round" | json }};
-      const PRIZE_2_NAME = {{ section.settings.prize_2_name | default: "Eagle!" | json }};
-      const PRIZE_2_CODE = {{ section.settings.prize_2_code | default: "EAGLE2023" | json }};
-      const PRIZE_2_DESC = {{ section.settings.prize_2_desc | default: "Free Appetizer" | json }};
-      const PRIZE_3_NAME = {{ section.settings.prize_3_name | default: "Birdie!" | json }};
-      const PRIZE_3_CODE = {{ section.settings.prize_3_code | default: "BIRDIE10" | json }};
-      const PRIZE_3_DESC = {{ section.settings.prize_3_desc | default: "10% Off Your Order" | json }};
-      const PRIZE_4_NAME = {{ section.settings.prize_4_name | default: "Par" | json }};
-      const PRIZE_4_CODE = {{ section.settings.prize_4_code | default: "PAR5OFF" | json }};
-      const PRIZE_4_DESC = {{ section.settings.prize_4_desc | default: "5% Off Your Order" | json }};
-      const PRIZE_5_NAME = {{ section.settings.prize_5_name | default: "Bogey" | json }};
-      const PRIZE_5_CODE = {{ section.settings.prize_5_code | default: "BOGEY2" | json }};
-      const PRIZE_5_DESC = {{ section.settings.prize_5_desc | default: "$2 Off Your Order" | json }};
 
-      const PUTTY_X_OFFSET = 15;
-      const PUTTY_Y_OFFSET = -5;
+  const GAME_TITLE = {{ section.settings.game_title | default: "Mini Golf with Putty" | json }};
+  const GAME_SUBTITLE = {{ section.settings.game_subtitle | default: "Enter your email and win prizes!" | json }};
+  const EMAIL_PLACEHOLDER = {{ section.settings.email_placeholder | default: "you@domain.com" | json }};
+  const SUBMIT_BUTTON_TEXT = {{ section.settings.submit_button_text | default: "Let's Putt!" | json }};
+  const AIM_BANNER_TEXT = {{ section.settings.aim_banner_text | default: "Watch the power meter and click PUTT when ready!" | json }};
+  const MARKETING_URL = {{ section.settings.marketing_url | json }};
+  const PUTTY_IMAGE_URL = {{ section.settings.putty_image | image_url | json }};
+  const PUTT_BUTTON_TEXT = {{ section.settings.putt_button_text | default: "PUTT!" | json }};
+  const PUTT_DISABLED_BUTTON_TEXT = {{ section.settings.putt_disabled_button_text | default: "Enter email to play" | json }};
+  // Power meter and UI constants
+  const METER_WIDTH = 140;
+  const CANVAS_HEIGHT = 80;
+  const UI_BAR_HEIGHT = 24;
+  const PRIZE_1_NAME = {{ section.settings.prize_1_name | default: "Hole in One!" | json }};
+  const PRIZE_1_CODE = {{ section.settings.prize_1_code | default: "HOLEINONE" | json }};
+  const PRIZE_1_DESC = {{ section.settings.prize_1_desc | default: "Free Round" | json }};
+  const PRIZE_2_NAME = {{ section.settings.prize_2_name | default: "Eagle!" | json }};
+  const PRIZE_2_CODE = {{ section.settings.prize_2_code | default: "EAGLE2023" | json }};
+  const PRIZE_2_DESC = {{ section.settings.prize_2_desc | default: "Free Appetizer" | json }};
+  const PRIZE_3_NAME = {{ section.settings.prize_3_name | default: "Birdie!" | json }};
+  const PRIZE_3_CODE = {{ section.settings.prize_3_code | default: "BIRDIE10" | json }};
+  const PRIZE_3_DESC = {{ section.settings.prize_3_desc | default: "10% Off Your Order" | json }};
+  const PRIZE_4_NAME = {{ section.settings.prize_4_name | default: "Par" | json }};
+  const PRIZE_4_CODE = {{ section.settings.prize_4_code | default: "PAR5OFF" | json }};
+  const PRIZE_4_DESC = {{ section.settings.prize_4_desc | default: "5% Off Your Order" | json }};
+  const PRIZE_5_NAME = {{ section.settings.prize_5_name | default: "Bogey" | json }};
+  const PRIZE_5_CODE = {{ section.settings.prize_5_code | default: "BOGEY2" | json }};
+  const PRIZE_5_DESC = {{ section.settings.prize_5_desc | default: "$2 Off Your Order" | json }};
 
-      const TICK_SPEED = 2;
+  const PUTTY_X_OFFSET = 15;
+  const PUTTY_Y_OFFSET = -5;
 
-      // Game state
-      let shots = 0,
-        distance = 0,
-        target = 10;
-      let powerTick = 0,
-        tickDir = 1,
-        power = 1;
-      let animId = null,
-        ballAnimId = null;
-      let ballStart = 0,
-        ballTarget = 0,
-        ballAnimStart = 0;
-      let state = "email"; // email, ready, aiming, shooting, won, lost
+  const TICK_SPEED = 2;
 
-      // HTML UI refs
-      const powerMeterEl = document.getElementById("powerMeter-{{ section.id }}");
-      const powerTickEl = document.getElementById("powerTick-{{ section.id }}");
-      const puttHtmlBtn = document.getElementById("puttHtmlBtn-{{ section.id }}");
-      puttHtmlBtn.addEventListener("click", () => {
-        if (!puttHtmlBtn.disabled) {
-          GolfGamePutt();
-        }
-      });
+  // Game state
+  let shots = 0,
+    distance = 0,
+    target = 10;
+  let powerTick = 0,
+    tickDir = 1,
+    power = 1;
+  let animId = null,
+    ballAnimId = null;
+  let ballStart = 0,
+    ballTarget = 0,
+    ballAnimStart = 0;
+  let state = "email"; // email, ready, aiming, shooting, won, lost
 
-      // Game state and refs
-      let puttyLoaded = false;
-      const canvas = document.getElementById("canvas-{{ section.id }}");
-      const ctx = canvas.getContext("2d");
-      // HiDPI scaling for crisp rendering and responsive width
-      function setupHiDPI() {
-        const dpr = window.devicePixelRatio || 1;
-        const container = canvas.closest(".canvas-container");
-        const maxWidth = 600;
+  // HTML UI refs
+  const powerMeterEl = document.getElementById("powerMeter-{{ section.id }}");
+  const powerTickEl = document.getElementById("powerTick-{{ section.id }}");
+  const puttHtmlBtn = document.getElementById("puttHtmlBtn-{{ section.id }}");
+  puttHtmlBtn.addEventListener("click", () => {
+    if (!puttHtmlBtn.disabled) {
+      GolfGamePutt();
+    }
+  });
 
-        // Get container width, defaulting to max if not available
-        let containerWidth = maxWidth;
-        if (container) {
-          // Force a reflow to get accurate size
-          container.offsetHeight;
-          const rect = container.getBoundingClientRect();
-          containerWidth = Math.min(maxWidth, Math.max(320, rect.width));
-        }
+  // Game state and refs
+  let puttyLoaded = false;
+  const canvas = document.getElementById("canvas-{{ section.id }}");
+  const ctx = canvas.getContext("2d");
+  // HiDPI scaling for crisp rendering and responsive width
+  function setupHiDPI() {
+    const dpr = window.devicePixelRatio || 1;
+    const container = canvas.closest(".canvas-container");
+    const maxWidth = 600;
 
-        // Set display size (CSS pixels)
-        canvas.style.width = containerWidth + "px";
-        canvas.style.height = CANVAS_HEIGHT + "px";
+    // Get container width, defaulting to max if not available
+    let containerWidth = maxWidth;
+    if (container) {
+      // Force a reflow to get accurate size
+      container.offsetHeight;
+      const rect = container.getBoundingClientRect();
+      containerWidth = Math.min(maxWidth, Math.max(320, rect.width));
+    }
 
-        // Set actual size in memory (scaled for retina)
-        canvas.width = Math.floor(containerWidth * dpr);
-        canvas.height = Math.floor(CANVAS_HEIGHT * dpr);
+    // Set display size (CSS pixels)
+    canvas.style.width = containerWidth + "px";
+    canvas.style.height = CANVAS_HEIGHT + "px";
 
-        // Reset transform and set scale for retina
-        ctx.setTransform(1, 0, 0, 1, 0, 0);
-        ctx.scale(dpr, dpr);
+    // Set actual size in memory (scaled for retina)
+    canvas.width = Math.floor(containerWidth * dpr);
+    canvas.height = Math.floor(CANVAS_HEIGHT * dpr);
 
-        // Store the current width for draw() to use
-        canvas.dataset.currentWidth = containerWidth;
+    // Reset transform and set scale for retina
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.scale(dpr, dpr);
+
+    // Store the current width for draw() to use
+    canvas.dataset.currentWidth = containerWidth;
+  }
+  // Initial setup and resize handling
+  window.addEventListener("resize", () => {
+    setupHiDPI();
+    draw();
+  });
+
+  // Force a resize event to ensure initial sizing
+  window.dispatchEvent(new Event("resize"));
+
+  // Putty image
+  const puttyImg = new Image();
+  puttyImg.onload = () => {
+    puttyLoaded = true;
+    draw();
+  };
+  puttyImg.src = PUTTY_IMAGE_URL;
+
+  // No canvas button anymore; using HTML button
+
+  // Prize data
+  const prizes = [
+    { name: PRIZE_1_NAME, code: PRIZE_1_CODE, desc: PRIZE_1_DESC },
+    { name: PRIZE_2_NAME, code: PRIZE_2_CODE, desc: PRIZE_2_DESC },
+    { name: PRIZE_3_NAME, code: PRIZE_3_CODE, desc: PRIZE_3_DESC },
+    { name: PRIZE_4_NAME, code: PRIZE_4_CODE, desc: PRIZE_4_DESC },
+    { name: PRIZE_5_NAME, code: PRIZE_5_CODE, desc: PRIZE_5_DESC },
+  ];
+
+  window.GolfGameTogglePrizes = function (button) {
+    button.classList.toggle("open");
+    const content = button.nextElementSibling;
+    content.classList.toggle("open");
+  };
+
+  let lastDisplayedPrize = 1;
+
+  function updatePrizeGuide() {
+    const segments = document.querySelectorAll(".prize-segment");
+    const accordion = document.querySelector(".prize-accordion-content");
+    const prizeGuide = document.querySelector(".prize-guide");
+    const header = prizeGuide.querySelector(".prize-guide-header");
+
+    // First, move all segments to the accordion
+    segments.forEach((seg) => {
+      seg.classList.remove("active");
+      if (!accordion.contains(seg)) {
+        accordion.appendChild(seg);
       }
-      // Initial setup and resize handling
-      window.addEventListener("resize", () => {
-        setupHiDPI();
-        draw();
-      });
+    });
 
-      // Force a resize event to ensure initial sizing
-      window.dispatchEvent(new Event("resize"));
-
-      // Putty image
-      const puttyImg = new Image();
-      puttyImg.onload = () => {
-        puttyLoaded = true;
-        draw();
-      };
-      puttyImg.src = PUTTY_IMAGE_URL;
-
-      // No canvas button anymore; using HTML button
-
-      // Prize data
-      const prizes = [
-        { name: PRIZE_1_NAME, code: PRIZE_1_CODE, desc: PRIZE_1_DESC },
-        { name: PRIZE_2_NAME, code: PRIZE_2_CODE, desc: PRIZE_2_DESC },
-        { name: PRIZE_3_NAME, code: PRIZE_3_CODE, desc: PRIZE_3_DESC },
-        { name: PRIZE_4_NAME, code: PRIZE_4_CODE, desc: PRIZE_4_DESC },
-        { name: PRIZE_5_NAME, code: PRIZE_5_CODE, desc: PRIZE_5_DESC },
-      ];
-
-      window.GolfGameTogglePrizes = function (button) {
-        button.classList.toggle("open");
-        const content = button.nextElementSibling;
-        content.classList.toggle("open");
-      };
-
-      let lastDisplayedPrize = 1;
-
-      function updatePrizeGuide() {
-        const segments = document.querySelectorAll(".prize-segment");
-        const accordion = document.querySelector(".prize-accordion-content");
-        const prizeGuide = document.querySelector(".prize-guide");
-        const header = prizeGuide.querySelector(".prize-guide-header");
-
-        // First, move all segments to the accordion
-        segments.forEach((seg) => {
-          seg.classList.remove("active");
-          if (!accordion.contains(seg)) {
-            accordion.appendChild(seg);
-          }
-        });
-
-        // If we're shooting, maintain the last displayed prize
-        if (state === "shooting") {
-          const maintainPrize = document.querySelector(`.prize-segment[data-shots="${lastDisplayedPrize}"]`);
-          if (maintainPrize) {
-            maintainPrize.classList.add("active");
-            if (header) {
-              prizeGuide.insertBefore(maintainPrize, header.nextSibling);
-            }
-          }
-          return;
-        }
-
-        // If won, show and highlight the achieved prize
-        if (state === "won") {
-          const achieved = Math.min(shots, 5);
-          const achievedEl = document.querySelector(`.prize-segment[data-shots="${achieved}"]`);
-          if (achievedEl) {
-            achievedEl.classList.add("active");
-            if (header) {
-              prizeGuide.insertBefore(achievedEl, header.nextSibling);
-            }
-          }
-          return;
-        }
-
-        // Update next prize display
-        const next = shots >= 5 ? 6 : shots + 1;
-        const nextEl = document.querySelector(`.prize-segment[data-shots="${next}"]`);
-        if (nextEl) {
-          nextEl.classList.add("active");
-          if (header) {
-            prizeGuide.insertBefore(nextEl, header.nextSibling);
-          }
-          lastDisplayedPrize = next;
+    // If we're shooting, maintain the last displayed prize
+    if (state === "shooting") {
+      const maintainPrize = document.querySelector(`.prize-segment[data-shots="${lastDisplayedPrize}"]`);
+      if (maintainPrize) {
+        maintainPrize.classList.add("active");
+        if (header) {
+          prizeGuide.insertBefore(maintainPrize, header.nextSibling);
         }
       }
+      return;
+    }
 
-      // Handle form submission with preventDefault
-      window.GolfGameHandleFormSubmit = function (event) {
-        event.preventDefault();
-        event.stopPropagation();
-
-        const form = event.target;
-        const formData = new FormData(form);
-        const email = formData.get("email");
-
-        if (!email || !email.includes("@")) {
-          alert("Please enter a valid email address");
-          return;
+    // If won, show and highlight the achieved prize
+    if (state === "won") {
+      const achieved = Math.min(shots, 5);
+      const achievedEl = document.querySelector(`.prize-segment[data-shots="${achieved}"]`);
+      if (achievedEl) {
+        achievedEl.classList.add("active");
+        if (header) {
+          prizeGuide.insertBefore(achievedEl, header.nextSibling);
         }
-
-        if (MARKETING_URL) {
-          fetch(MARKETING_URL, {
-            method: "POST",
-            body: formData,
-            mode: "no-cors",
-          }).catch((error) => console.log("Email service error:", error));
-        } else {
-          console.log("No mail list configured, skipping.");
-        }
-
-        // Start the game immediately
-        GolfGameStartGame();
-      };
-
-      // Start game after email (called by form submission)
-      function syncPuttButton() {
-        const btn = document.getElementById("puttHtmlBtn-{{ section.id }}");
-        if (!btn) return;
-        if (state === "email") {
-          btn.disabled = true;
-          btn.textContent = PUTT_DISABLED_BUTTON_TEXT;
-          return;
-        }
-        const shouldEnable = state === "aiming";
-        btn.disabled = !shouldEnable;
-        btn.textContent = PUTT_BUTTON_TEXT;
       }
+      return;
+    }
 
-      window.GolfGameStartGame = function () {
-        showEmail(false);
-        showGame(true);
-        showAimBanner(true);
+    // Update next prize display
+    const next = shots >= 5 ? 6 : shots + 1;
+    const nextEl = document.querySelector(`.prize-segment[data-shots="${next}"]`);
+    if (nextEl) {
+      nextEl.classList.add("active");
+      if (header) {
+        prizeGuide.insertBefore(nextEl, header.nextSibling);
+      }
+      lastDisplayedPrize = next;
+    }
+  }
 
-        // Auto-start aiming instead of requiring button click
-        state = "aiming";
-        startAiming();
-        draw();
-        syncPuttButton();
-        // Do not pre-highlight during shooting; update happens after shot resolves
-      };
+  // Handle form submission with preventDefault
+  window.GolfGameHandleFormSubmit = function (event) {
+    event.preventDefault();
+    event.stopPropagation();
 
-      // Take shot
-      window.GolfGamePutt = function () {
-        if (state !== "aiming") return;
+    const form = event.target;
+    const formData = new FormData(form);
+    const email = formData.get("email");
 
-        cancelAnimationFrame(animId);
-        animId = null;
-        state = "shooting";
-        shots++;
+    if (!email || !email.includes("@")) {
+      alert("Please enter a valid email address");
+      return;
+    }
 
-        ballStart = distance;
-        ballTarget = distance + power;
-        ballAnimStart = performance.now();
+    if (MARKETING_URL) {
+      fetch(MARKETING_URL, {
+        method: "POST",
+        body: formData,
+        mode: "no-cors",
+      }).catch((error) => console.log("Email service error:", error));
+    } else {
+      console.log("No mail list configured, skipping.");
+    }
 
-        document.getElementById("status-{{ section.id }}").textContent = AIM_BANNER_TEXT;
-        document.getElementById("status-{{ section.id }}").className = "status neutral";
+    // Start the game immediately
+    GolfGameStartGame();
+  };
+
+  // Start game after email (called by form submission)
+  function syncPuttButton() {
+    const btn = document.getElementById("puttHtmlBtn-{{ section.id }}");
+    if (!btn) return;
+    if (state === "email") {
+      btn.disabled = true;
+      btn.textContent = PUTT_DISABLED_BUTTON_TEXT;
+      return;
+    }
+    const shouldEnable = state === "aiming";
+    btn.disabled = !shouldEnable;
+    btn.textContent = PUTT_BUTTON_TEXT;
+  }
+
+  window.GolfGameStartGame = function () {
+    showEmail(false);
+    showGame(true);
+    showAimBanner(true);
+
+    // Auto-start aiming instead of requiring button click
+    state = "aiming";
+    startAiming();
+    draw();
+    syncPuttButton();
+    // Do not pre-highlight during shooting; update happens after shot resolves
+  };
+
+  // Take shot
+  window.GolfGamePutt = function () {
+    if (state !== "aiming") return;
+
+    cancelAnimationFrame(animId);
+    animId = null;
+    state = "shooting";
+    shots++;
+
+    ballStart = distance;
+    ballTarget = distance + power;
+    ballAnimStart = performance.now();
+
+    document.getElementById("status-{{ section.id }}").textContent = AIM_BANNER_TEXT;
+    document.getElementById("status-{{ section.id }}").className = "status neutral";
+    updateStats();
+    if (typeof updatePrizeGuide === "function") updatePrizeGuide();
+    if (typeof syncPuttButton === "function") syncPuttButton();
+    syncPuttButton();
+
+    // Animate ball
+    function animateBall() {
+      const elapsed = performance.now() - ballAnimStart;
+      const progress = Math.min(elapsed / 1000, 1);
+
+      draw();
+
+      if (progress < 1) {
+        ballAnimId = requestAnimationFrame(animateBall);
+      } else {
+        // Finalize distance with bounce-back if overshot
+        const total = ballTarget;
+        const overshoot = total - target;
+        const finalDistance = overshoot > 0 ? Math.max(0, target - overshoot) : total;
+        distance = finalDistance;
         updateStats();
         if (typeof updatePrizeGuide === "function") updatePrizeGuide();
-        if (typeof syncPuttButton === "function") syncPuttButton();
-        syncPuttButton();
+        checkEnd();
+      }
+    }
+    animateBall();
+  };
 
-        // Animate ball
-        function animateBall() {
-          const elapsed = performance.now() - ballAnimStart;
-          const progress = Math.min(elapsed / 1000, 1);
+  // Reset game
+  window.GolfGameReset = function () {
+    shots = 0;
+    distance = 0;
+    power = 1;
+    powerTick = 0;
+    tickDir = 1;
+    ballStart = 0;
+    ballTarget = 0;
+    ballAnimStart = 0;
+    state = "email";
+    lastDisplayedPrize = 1;
 
-          draw();
+    if (animId) cancelAnimationFrame(animId);
+    if (ballAnimId) cancelAnimationFrame(ballAnimId);
+    animId = null;
+    ballAnimId = null;
 
-          if (progress < 1) {
-            ballAnimId = requestAnimationFrame(animateBall);
-          } else {
-            // Finalize distance with bounce-back if overshot
-            const total = ballTarget;
-            const overshoot = total - target;
-            const finalDistance = overshoot > 0 ? Math.max(0, target - overshoot) : total;
-            distance = finalDistance;
-            updateStats();
-            if (typeof updatePrizeGuide === "function") updatePrizeGuide();
-            checkEnd();
-          }
-        }
-        animateBall();
-      };
+    showPrizeBanner(false);
+    showLoseBanner(false);
+    GolfGameStartGame();
+    updateStats();
+    if (typeof updatePrizeGuide === "function") updatePrizeGuide();
+    if (typeof syncPuttButton === "function") syncPuttButton();
+  };
 
-      // Reset game
-      window.GolfGameReset = function () {
-        shots = 0;
-        distance = 0;
-        power = 1;
+  // Start aiming phase
+  function startAiming() {
+    // Ensure only one aim animation loop is running
+    if (animId) {
+      cancelAnimationFrame(animId);
+      animId = null;
+    }
+    // Start power meter animation
+    function animate() {
+      if (state !== "aiming" && state !== "email") return;
+
+      powerTick += TICK_SPEED * tickDir;
+      if (powerTick <= 0) {
         powerTick = 0;
         tickDir = 1;
-        ballStart = 0;
-        ballTarget = 0;
-        ballAnimStart = 0;
-        state = "email";
-        lastDisplayedPrize = 1;
-
-        if (animId) cancelAnimationFrame(animId);
-        if (ballAnimId) cancelAnimationFrame(ballAnimId);
-        animId = null;
-        ballAnimId = null;
-
-        showPrizeBanner(false);
-        showLoseBanner(false);
-        GolfGameStartGame();
-        updateStats();
-        if (typeof updatePrizeGuide === "function") updatePrizeGuide();
-        if (typeof syncPuttButton === "function") syncPuttButton();
-      };
-
-      // Start aiming phase
-      function startAiming() {
-        // Ensure only one aim animation loop is running
-        if (animId) {
-          cancelAnimationFrame(animId);
-          animId = null;
-        }
-        // Start power meter animation
-        function animate() {
-          if (state !== "aiming" && state !== "email") return;
-
-          powerTick += TICK_SPEED * tickDir;
-          if (powerTick <= 0) {
-            powerTick = 0;
-            tickDir = 1;
-          }
-          // meter width is METER_WIDTH, use that as max
-          if (powerTick >= METER_WIDTH) {
-            powerTick = METER_WIDTH;
-            tickDir = -1;
-          }
-
-          power = Math.round(1 + (powerTick / METER_WIDTH) * 9);
-          if (powerTickEl) {
-            powerTickEl.style.setProperty("--tick-position", `${Math.min(METER_WIDTH - 4, powerTick)}px`);
-          }
-          draw();
-          animId = requestAnimationFrame(animate);
-        }
-        animate();
+      }
+      // meter width is METER_WIDTH, use that as max
+      if (powerTick >= METER_WIDTH) {
+        powerTick = METER_WIDTH;
+        tickDir = -1;
       }
 
-      // Check win/lose
-      function checkEnd() {
-        if (distance === target) {
-          if (shots >= 6) {
-            // Too many shots - show lose screen
-            state = "lost";
-            showLoseBanner(true);
-            showGame(false, true);
-          } else {
-            // Win!
-            state = "won";
-            const prize = prizes[shots - 1] || prizes[4]; // shots is 1-based, array is 0-based
-            showPrizeBanner(true, prize);
-            // Hide game area on win
-            showGame(false, true); // true for win hide
-          }
-          if (typeof updatePrizeGuide === "function") updatePrizeGuide();
-        } else {
-          // Continue - auto-start aiming again
-          state = "aiming";
-          showAimBanner(true);
-          startAiming();
-          if (typeof updatePrizeGuide === "function") updatePrizeGuide();
-          syncPuttButton();
-        }
+      power = Math.round(1 + (powerTick / METER_WIDTH) * 9);
+      if (powerTickEl) {
+        powerTickEl.style.setProperty("--tick-position", `${Math.min(METER_WIDTH - 4, powerTick)}px`);
       }
+      draw();
+      animId = requestAnimationFrame(animate);
+    }
+    animate();
+  }
 
-      // Update stats display
-      function updateStats() {
-        document.getElementById("shots-{{ section.id }}").textContent = `Shots: ${shots}`;
-        document.getElementById("distance-{{ section.id }}").textContent = `Distance to go: ${target - distance}`;
-      }
-
-      function showEmail(show = true) {
-        document.getElementById("emailSection-{{ section.id }}").style.display = show ? "block" : "none";
-      }
-
-      function showGame(show = true, isWinHide = false) {
-        const game = document.getElementById("game-{{ section.id }}");
-        if (show) {
-          game.style.display = "block";
-          // Force reflow
-          game.offsetHeight;
-          game.classList.add("visible");
-        } else {
-          game.classList.remove("visible");
-          if (isWinHide) {
-            // After winning, hide immediately
-            game.style.display = "none";
-          }
-        }
-      }
-
-      function showStatusBanner(show = true, text, state) {
-        document.getElementById("status-{{ section.id }}").style.display = show ? "block" : "none";
-        if (show) {
-          document.getElementById("status-{{ section.id }}").textContent = text;
-          document.getElementById("status-{{ section.id }}").className = `status ${state}`;
-        }
-      }
-
-      function showAimBanner(show = true) {
-        showStatusBanner(show, AIM_BANNER_TEXT, "neutral");
-      }
-
-      function showPrizeBanner(show = true, prize = null) {
-        document.getElementById("prize-{{ section.id }}").style.display = show ? "flex" : "none";
-        if (prize) {
-          document.getElementById("prizeTitle-{{ section.id }}").textContent = `🎉 ${prize.name}`;
-          document.getElementById("prizeDesc-{{ section.id }}").textContent = prize.desc;
-          document.getElementById("prizeCode-{{ section.id }}").textContent = prize.code;
-        }
-      }
-
-      function showLoseBanner(show = true) {
-        document.getElementById("lose-{{ section.id }}").style.display = show ? "flex" : "none";
-      }
-
-      // Draw game
-      function draw() {
-        const dpr = window.devicePixelRatio || 1;
-
-        // Clear using logical (CSS) dimensions
-        ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
-
-        // Use stored width or fallback to style width
-        const cssWidth = parseFloat(canvas.dataset.currentWidth || canvas.style.width || "600");
-
-        // Compute current CSS width for responsive lane length
-
-        // Lane (golf course) - centered with 80% width
-        const laneWidth = cssWidth * 0.8; // 80% of container width
-        const laneStartX = (cssWidth - laneWidth) / 2; // center horizontally
-        const laneEndX = laneStartX + laneWidth;
-        const ballStartX = laneStartX + 80; // Start ball well to the right of Putty
-        ctx.fillStyle = "#314027";
-        ctx.fillRect(laneStartX, 40, laneWidth, 30);
-
-        // Putty character inside canvas, aligned bottom with grass (draw at native resolution for quality)
-        if (puttyLoaded) {
-          const grassBottom = 40 + 30;
-          const puttyHeight = 60; // Reduced to fit better in canvas
-          const puttyY = grassBottom - puttyHeight + PUTTY_Y_OFFSET;
-          // Ensure putty stands on the green near the start
-          const puttyX = laneStartX + PUTTY_X_OFFSET;
-          // Draw from source at intrinsic pixel dimensions, then scale with canvas transform for crispness
-          const aspect = puttyImg.width / puttyImg.height || 1;
-          const drawW = puttyHeight * aspect;
-          ctx.imageSmoothingEnabled = false;
-          ctx.drawImage(puttyImg, puttyX, puttyY, drawW, puttyHeight);
-          ctx.imageSmoothingEnabled = true;
-        }
-
-        // Hole (white fill, black border) positioned near lane end
-        const holeCenterX = laneEndX - 10;
-        ctx.fillStyle = "#ffffff";
-        ctx.beginPath();
-        ctx.arc(holeCenterX, 55, 6, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.strokeStyle = "#000000";
-        ctx.lineWidth = 2;
-        ctx.stroke();
-
-        // Flag
-        ctx.strokeStyle = "#000";
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(holeCenterX, 55);
-        ctx.lineTo(holeCenterX, 15);
-        ctx.stroke();
-        ctx.fillStyle = "#EC3C28";
-        ctx.beginPath();
-        ctx.moveTo(holeCenterX, 15);
-        ctx.lineTo(holeCenterX + 20, 20);
-        ctx.lineTo(holeCenterX, 25);
-        ctx.fill();
-
-        // Ball
-        let ballDist = distance;
-        if (state === "shooting" && ballAnimStart > 0) {
-          const elapsed = performance.now() - ballAnimStart;
-          const progress = Math.min(elapsed / 1000, 1);
-          const eased = 1 - Math.pow(1 - progress, 3);
-          const rawDist = ballStart + (ballTarget - ballStart) * eased;
-          ballDist = rawDist > target ? Math.max(0, target - (rawDist - target)) : rawDist;
-        }
-
-        // Map distance [0..target] to lane X range [laneStartX..holeCenterX]
-        const mappingWidth = Math.max(1, holeCenterX - laneStartX);
-        const ballX = ballStartX + (ballDist / target) * (mappingWidth - 80); // Adjust mapping to account for ball start
-        ctx.fillStyle = "#fff";
-        ctx.beginPath();
-        ctx.arc(ballX, 55, 6, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.strokeStyle = "#ccc";
-        ctx.lineWidth = 1;
-        ctx.stroke();
-
-        // Power meter and button are HTML elements now
-      }
-
-      // Initialize game after images and layout are ready
-      function initGame() {
-        function init() {
-          // Force initial sizing
-          setupHiDPI();
-
-          // Set initial button state
-          const initialBtn = document.getElementById("puttHtmlBtn-{{ section.id }}");
-          if (initialBtn) {
-            initialBtn.disabled = true;
-            initialBtn.textContent = PUTT_DISABLED_BUTTON_TEXT;
-          }
-
-          // Initial draw to set canvas size
-          draw();
-
-          // Wait for layout to settle, then show game
-          setTimeout(() => {
-            setupHiDPI();
-            draw();
-
-            // Show game elements with fade
-            showGame(true);
-            showAimBanner(false);
-            startAiming();
-            if (typeof updatePrizeGuide === "function") updatePrizeGuide();
-          }, 100);
-        }
-
-        // Wait for next frame to ensure DOM is ready
-        requestAnimationFrame(init);
-      }
-
-      // Wait for DOM content and images
-      if (document.readyState === "complete") {
-        initGame();
+  // Check win/lose
+  function checkEnd() {
+    if (distance === target) {
+      if (shots >= 6) {
+        // Too many shots - show lose screen
+        state = "lost";
+        showLoseBanner(true);
+        showGame(false, true);
       } else {
-        window.addEventListener("load", initGame);
+        // Win!
+        state = "won";
+        const prize = prizes[shots - 1] || prizes[4]; // shots is 1-based, array is 0-based
+        showPrizeBanner(true, prize);
+        // Hide game area on win
+        showGame(false, true); // true for win hide
       }
-    
-  })();
+      if (typeof updatePrizeGuide === "function") updatePrizeGuide();
+    } else {
+      // Continue - auto-start aiming again
+      state = "aiming";
+      showAimBanner(true);
+      startAiming();
+      if (typeof updatePrizeGuide === "function") updatePrizeGuide();
+      syncPuttButton();
+    }
+  }
+
+  // Update stats display
+  function updateStats() {
+    document.getElementById("shots-{{ section.id }}").textContent = `Shots: ${shots}`;
+    document.getElementById("distance-{{ section.id }}").textContent = `Distance to go: ${target - distance}`;
+  }
+
+  function showEmail(show = true) {
+    document.getElementById("emailSection-{{ section.id }}").style.display = show ? "block" : "none";
+  }
+
+  function showGame(show = true, isWinHide = false) {
+    const game = document.getElementById("game-{{ section.id }}");
+    if (show) {
+      game.style.display = "block";
+      // Force reflow
+      game.offsetHeight;
+      game.classList.add("visible");
+    } else {
+      game.classList.remove("visible");
+      if (isWinHide) {
+        // After winning, hide immediately
+        game.style.display = "none";
+      }
+    }
+  }
+
+  function showStatusBanner(show = true, text, state) {
+    document.getElementById("status-{{ section.id }}").style.display = show ? "block" : "none";
+    if (show) {
+      document.getElementById("status-{{ section.id }}").textContent = text;
+      document.getElementById("status-{{ section.id }}").className = `status ${state}`;
+    }
+  }
+
+  function showAimBanner(show = true) {
+    showStatusBanner(show, AIM_BANNER_TEXT, "neutral");
+  }
+
+  function showPrizeBanner(show = true, prize = null) {
+    document.getElementById("prize-{{ section.id }}").style.display = show ? "flex" : "none";
+    if (prize) {
+      document.getElementById("prizeTitle-{{ section.id }}").textContent = `🎉 ${prize.name}`;
+      document.getElementById("prizeDesc-{{ section.id }}").textContent = prize.desc;
+      document.getElementById("prizeCode-{{ section.id }}").textContent = prize.code;
+    }
+  }
+
+  function showLoseBanner(show = true) {
+    document.getElementById("lose-{{ section.id }}").style.display = show ? "flex" : "none";
+  }
+
+  // Draw game
+  function draw() {
+    const dpr = window.devicePixelRatio || 1;
+
+    // Clear using logical (CSS) dimensions
+    ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
+
+    // Use stored width or fallback to style width
+    const cssWidth = parseFloat(canvas.dataset.currentWidth || canvas.style.width || "600");
+
+    // Compute current CSS width for responsive lane length
+
+    // Lane (golf course) - centered with 80% width
+    const laneWidth = cssWidth * 0.8; // 80% of container width
+    const laneStartX = (cssWidth - laneWidth) / 2; // center horizontally
+    const laneEndX = laneStartX + laneWidth;
+    const ballStartX = laneStartX + 80; // Start ball well to the right of Putty
+    ctx.fillStyle = "#314027";
+    ctx.fillRect(laneStartX, 40, laneWidth, 30);
+
+    // Putty character inside canvas, aligned bottom with grass (draw at native resolution for quality)
+    if (puttyLoaded) {
+      const grassBottom = 40 + 30;
+      const puttyHeight = 60; // Reduced to fit better in canvas
+      const puttyY = grassBottom - puttyHeight + PUTTY_Y_OFFSET;
+      // Ensure putty stands on the green near the start
+      const puttyX = laneStartX + PUTTY_X_OFFSET;
+      // Draw from source at intrinsic pixel dimensions, then scale with canvas transform for crispness
+      const aspect = puttyImg.width / puttyImg.height || 1;
+      const drawW = puttyHeight * aspect;
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(puttyImg, puttyX, puttyY, drawW, puttyHeight);
+      ctx.imageSmoothingEnabled = true;
+    }
+
+    // Hole (white fill, black border) positioned near lane end
+    const holeCenterX = laneEndX - 10;
+    ctx.fillStyle = "#ffffff";
+    ctx.beginPath();
+    ctx.arc(holeCenterX, 55, 6, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = "#000000";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // Flag
+    ctx.strokeStyle = "#000";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(holeCenterX, 55);
+    ctx.lineTo(holeCenterX, 15);
+    ctx.stroke();
+    ctx.fillStyle = "#EC3C28";
+    ctx.beginPath();
+    ctx.moveTo(holeCenterX, 15);
+    ctx.lineTo(holeCenterX + 20, 20);
+    ctx.lineTo(holeCenterX, 25);
+    ctx.fill();
+
+    // Ball
+    let ballDist = distance;
+    if (state === "shooting" && ballAnimStart > 0) {
+      const elapsed = performance.now() - ballAnimStart;
+      const progress = Math.min(elapsed / 1000, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const rawDist = ballStart + (ballTarget - ballStart) * eased;
+      ballDist = rawDist > target ? Math.max(0, target - (rawDist - target)) : rawDist;
+    }
+
+    // Map distance [0..target] to lane X range [laneStartX..holeCenterX]
+    const mappingWidth = Math.max(1, holeCenterX - laneStartX);
+    const ballX = ballStartX + (ballDist / target) * (mappingWidth - 80); // Adjust mapping to account for ball start
+    ctx.fillStyle = "#fff";
+    ctx.beginPath();
+    ctx.arc(ballX, 55, 6, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = "#ccc";
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // Power meter and button are HTML elements now
+  }
+
+  // Initialize game after images and layout are ready
+  function initGame() {
+    function init() {
+      // Force initial sizing
+      setupHiDPI();
+
+      // Set initial button state
+      const initialBtn = document.getElementById("puttHtmlBtn-{{ section.id }}");
+      if (initialBtn) {
+        initialBtn.disabled = true;
+        initialBtn.textContent = PUTT_DISABLED_BUTTON_TEXT;
+      }
+
+      // Initial draw to set canvas size
+      draw();
+
+      // Wait for layout to settle, then show game
+      setTimeout(() => {
+        setupHiDPI();
+        draw();
+
+        // Show game elements with fade
+        showGame(true);
+        showAimBanner(false);
+        startAiming();
+        if (typeof updatePrizeGuide === "function") updatePrizeGuide();
+      }, 100);
+    }
+
+    // Wait for next frame to ensure DOM is ready
+    requestAnimationFrame(init);
+  }
+
+  // Wait for DOM content and images
+  if (document.readyState === "complete") {
+    initGame();
+  } else {
+    window.addEventListener("load", initGame);
+  }
+
+})();
 </script>
 
 {% schema %}
