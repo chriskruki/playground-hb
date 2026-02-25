@@ -57,8 +57,8 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Technical
 
 - [x] **TECH-01**: App is mobile-first responsive with rough desktop support
-- [ ] **TECH-02**: Game state persists across page refresh via sessionStorage (dies with tab close)
-- [ ] **TECH-03**: App uses phase-based state machine at single URL (no back-button state destruction)
+- [x] **TECH-02**: Game state persists across page refresh via sessionStorage (dies with tab close)
+- [x] **TECH-03**: App uses phase-based state machine at single URL (no back-button state destruction)
 
 ## v2 Requirements
 
@@ -131,8 +131,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | THEME-02 | Phase 1 | Complete |
 | THEME-03 | Phase 1 | Complete |
 | TECH-01 | Phase 1 | Complete |
-| TECH-02 | Phase 1 | Pending |
-| TECH-03 | Phase 1 | Pending |
+| TECH-02 | Phase 1 | Complete |
+| TECH-03 | Phase 1 | Complete |
 
 **Coverage:**
 - v1 requirements: 29 total

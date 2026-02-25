@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-02-24)
 ## Current Position
 
 Phase: 1 of 4 (Foundation)
-Plan: 1 of TBD in current phase
+Plan: 2 of TBD in current phase
 Status: In progress
-Last activity: 2026-02-24 — Plan 01-01 completed: Next.js scaffold + theming + brand assets
+Last activity: 2026-02-24 — Plan 01-02 completed: Zustand state machine + sessionStorage + back-button interception
 
-Progress: [█░░░░░░░░░] 10%
+Progress: [██░░░░░░░░] 20%
 
 ## Performance Metrics
 
@@ -34,6 +34,7 @@ Progress: [█░░░░░░░░░] 10%
 - Trend: —
 
 *Updated after each plan completion*
+| Phase 01-foundation P02 | 12 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -47,6 +48,7 @@ Recent decisions affecting current work:
 - [Roadmap]: Markdown files + gray-matter for hole content (build-time, no runtime fetches) — Phase 2
 - [Roadmap]: Admin password gate via env-var — simple client-side check, good enough for v1
 - [Phase 01-foundation]: Used Next.js 15.4.5 (not 16 — does not exist); logo.svg wraps logo.png as SVG image for swappability; framer-motion/zustand/lucide-react pre-installed for future plans
+- [Phase 01-foundation]: Zustand subscribe pattern (not persist middleware) for sessionStorage sync — simpler, explicit control
 
 ### Pending Todos
 
@@ -60,6 +62,6 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-24
-Stopped at: Phase 1 execution — Wave 1 complete (01-01 scaffold+theming), Wave 2 pending (01-02 state machine+sessionStorage)
-Resume file: .planning/phases/01-foundation/01-02-PLAN.md
+Stopped at: Completed 01-02-PLAN.md — Phase 1 Wave 2 complete (state machine + sessionStorage + back-button)
+Resume file: Next plan in phase 01-foundation
 Resume command: /gsd:execute-phase 1
