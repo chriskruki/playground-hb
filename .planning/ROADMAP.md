@@ -29,7 +29,11 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. App colors can be changed by editing a single theme config file with no other code changes required
   4. Logo can be swapped by replacing logo.svg with no code changes
   5. App renders correctly on a 390px wide mobile screen (iPhone-class) and doesn't break on desktop
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — Scaffold Next.js project with Tailwind v4 theming, brand assets, and mobile-first app shell
+- [ ] 01-02-PLAN.md — Zustand state machine with sessionStorage persistence and back-button interception
 
 ### Phase 2: Game Flow
 **Goal**: Players can complete a full game from QR scan through all 9 holes with scores, par tracking, and hole-specific content
@@ -67,11 +71,11 @@ Decimal phases appear between their surrounding integers in numeric order.
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3, with Phase 4 executable after Phase 1 (no dependency on 2 or 3)
+Phases execute in numeric order: 1 -> 2 -> 3, with Phase 4 executable after Phase 1 (no dependency on 2 or 3)
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 0/TBD | Not started | - |
+| 1. Foundation | 0/2 | Planning complete | - |
 | 2. Game Flow | 0/TBD | Not started | - |
 | 3. Results and Celebration | 0/TBD | Not started | - |
 | 4. Admin | 0/TBD | Not started | - |
