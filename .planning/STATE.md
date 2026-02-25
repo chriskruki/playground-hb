@@ -60,5 +60,6 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-24
-Stopped at: Completed 01-foundation-01-01-PLAN.md
-Resume file: None
+Stopped at: Phase 1 execution — Wave 1 complete (01-01 scaffold+theming), Wave 2 pending (01-02 state machine+sessionStorage)
+Resume file: .planning/phases/01-foundation/01-02-PLAN.md
+Resume command: /gsd:execute-phase 1
