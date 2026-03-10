@@ -21,18 +21,18 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Scoring
 
-- [ ] **SCORE-01**: User sees one hole at a time with hole name and number (e.g., "Hole 1: Pay-Lay your bets")
-- [ ] **SCORE-02**: User can enter scores for all players on the current hole before advancing
-- [ ] **SCORE-03**: User enters scores via +/- increment buttons with par as default starting value
-- [ ] **SCORE-04**: User sees par value displayed for the current hole
-- [ ] **SCORE-05**: User sees over/under par indicator per player (color-coded: green under, red over)
-- [ ] **SCORE-06**: User sees running total strokes per player during play
-- [ ] **SCORE-07**: User sees hole progress indicator (e.g., "Hole 4 / 9")
-- [ ] **SCORE-08**: User experiences smooth animated transitions between holes via Framer Motion
+- [x] **SCORE-01**: User sees one hole at a time with hole name and number (e.g., "Hole 1: Pay-Lay your bets")
+- [x] **SCORE-02**: User can enter scores for all players on the current hole before advancing
+- [x] **SCORE-03**: User enters scores via +/- increment buttons with par as default starting value
+- [x] **SCORE-04**: User sees par value displayed for the current hole
+- [x] **SCORE-05**: User sees over/under par indicator per player (color-coded: green under, red over)
+- [x] **SCORE-06**: User sees running total strokes per player during play
+- [x] **SCORE-07**: User sees hole progress indicator (e.g., "Hole 4 / 9")
+- [x] **SCORE-08**: User experiences smooth animated transitions between holes via Framer Motion
 
 ### Hole Content
 
-- [ ] **HOLE-01**: User sees hole-specific content (name, illustration placeholder, instructions) on each hole's scoring page
+- [x] **HOLE-01**: User sees hole-specific content (name, illustration placeholder, instructions) on each hole's scoring page
 - [ ] **HOLE-02**: Hole content is rendered from per-hole markdown files that are easily editable
 - [ ] **HOLE-03**: All 9 holes have placeholder content with correct hole names
 
@@ -110,15 +110,15 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SETUP-02 | Phase 2 | Pending |
 | SETUP-03 | Phase 2 | Pending |
 | SETUP-04 | Phase 2 | Pending |
-| SCORE-01 | Phase 2 | Pending |
-| SCORE-02 | Phase 2 | Pending |
-| SCORE-03 | Phase 2 | Pending |
-| SCORE-04 | Phase 2 | Pending |
-| SCORE-05 | Phase 2 | Pending |
-| SCORE-06 | Phase 2 | Pending |
-| SCORE-07 | Phase 2 | Pending |
-| SCORE-08 | Phase 2 | Pending |
-| HOLE-01 | Phase 2 | Pending |
+| SCORE-01 | Phase 2 | Complete |
+| SCORE-02 | Phase 2 | Complete |
+| SCORE-03 | Phase 2 | Complete |
+| SCORE-04 | Phase 2 | Complete |
+| SCORE-05 | Phase 2 | Complete |
+| SCORE-06 | Phase 2 | Complete |
+| SCORE-07 | Phase 2 | Complete |
+| SCORE-08 | Phase 2 | Complete |
+| HOLE-01 | Phase 2 | Complete |
 | HOLE-02 | Phase 2 | Pending |
 | HOLE-03 | Phase 2 | Pending |
 | RES-01 | Phase 3 | Pending |

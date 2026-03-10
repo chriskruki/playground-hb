@@ -1,3 +1,19 @@
+---
+gsd_state_version: 1.0
+milestone: v1.0
+milestone_name: milestone
+status: executing
+stopped_at: Completed 02-02-PLAN.md
+last_updated: "2026-03-10T23:50:48.870Z"
+last_activity: "2026-02-24 — Plan 01-02 completed: Zustand state machine + sessionStorage + back-button interception"
+progress:
+  total_phases: 4
+  completed_phases: 2
+  total_plans: 4
+  completed_plans: 4
+  percent: 75
+---
+
 # Project State
 
 ## Project Reference
@@ -14,7 +30,7 @@ Plan: 2 of TBD in current phase
 Status: In progress
 Last activity: 2026-02-24 — Plan 01-02 completed: Zustand state machine + sessionStorage + back-button interception
 
-Progress: [██░░░░░░░░] 20%
+Progress: [████████░░] 75%
 
 ## Performance Metrics
 
@@ -35,6 +51,7 @@ Progress: [██░░░░░░░░] 20%
 
 *Updated after each plan completion*
 | Phase 01-foundation P02 | 12 | 2 tasks | 3 files |
+| Phase 02-game-flow P02 | 2m | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -49,6 +66,8 @@ Recent decisions affecting current work:
 - [Roadmap]: Admin password gate via env-var — simple client-side check, good enough for v1
 - [Phase 01-foundation]: Used Next.js 15.4.5 (not 16 — does not exist); logo.svg wraps logo.png as SVG image for swappability; framer-motion/zustand/lucide-react pre-installed for future plans
 - [Phase 01-foundation]: Zustand subscribe pattern (not persist middleware) for sessionStorage sync — simpler, explicit control
+- [Phase 02-game-flow]: Running total treats unvisited holes as par to prevent NaN and give accurate projection
+- [Phase 02-game-flow]: Auto-fill missing scores with par on hole advance to prevent score data gaps
 
 ### Pending Todos
 
@@ -61,7 +80,7 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-24
-Stopped at: Completed 01-02-PLAN.md — Phase 1 Wave 2 complete (state machine + sessionStorage + back-button)
-Resume file: Next plan in phase 01-foundation
+Last session: 2026-03-10T23:50:48.867Z
+Stopped at: Completed 02-02-PLAN.md
+Resume file: None
 Resume command: /gsd:execute-phase 1
