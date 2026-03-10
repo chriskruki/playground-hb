@@ -45,7 +45,11 @@ Plans:
   3. User sees one hole at a time with hole name, number, instructions, and illustration placeholder — content sourced from markdown files
   4. User enters scores via +/- buttons (defaulting to par), sees par value, over/under indicator in color, and running total per player throughout all 9 holes
   5. User sees hole progress indicator and animated transitions between holes
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 02-01-PLAN.md — Hole content data layer, branded landing screen, and animated player setup
+- [ ] 02-02-PLAN.md — Scoring screen with +/- inputs, par tracking, running totals, and hole transitions
 
 ### Phase 3: Results and Celebration
 **Goal**: Players see a satisfying final rankings screen that celebrates the winner and lets them start again
@@ -76,6 +80,6 @@ Phases execute in numeric order: 1 -> 2 -> 3, with Phase 4 executable after Phas
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 2/2 | Complete    | 2026-02-25 |
-| 2. Game Flow | 0/TBD | Not started | - |
+| 2. Game Flow | 0/2 | Not started | - |
 | 3. Results and Celebration | 0/TBD | Not started | - |
 | 4. Admin | 0/TBD | Not started | - |
