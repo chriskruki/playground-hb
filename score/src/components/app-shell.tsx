@@ -8,49 +8,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LandingScreen } from "@/components/landing-screen";
 import { SetupScreen } from "@/components/setup-screen";
+import { ScoringScreen } from "@/components/scoring-screen";
 import type { HoleData } from "@/lib/holes";
 
 interface AppShellProps {
   holesData: HoleData[];
-}
-
-function ScoringScreen({ holesData }: { holesData: HoleData[] }) {
-  const { currentHole, nextHole, goToResults } = useGameStore((s) => ({
-    currentHole: s.currentHole,
-    nextHole: s.nextHole,
-    goToResults: s.goToResults,
-  }));
-
-  const hole = holesData[currentHole - 1];
-
-  return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle className="text-center text-2xl">
-          {hole ? `Hole ${hole.number}: ${hole.name}` : `Hole ${currentHole}`}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="flex flex-col items-center gap-4">
-        {hole && (
-          <p className="text-muted-foreground text-sm text-center">
-            Par {hole.par} &mdash; {hole.instructions}
-          </p>
-        )}
-        <p className="text-muted-foreground text-sm text-center">
-          Hole {currentHole} of 9
-        </p>
-        {currentHole < 9 ? (
-          <Button onClick={nextHole} className="w-full">
-            Next Hole
-          </Button>
-        ) : (
-          <Button onClick={goToResults} className="w-full">
-            View Results
-          </Button>
-        )}
-      </CardContent>
-    </Card>
-  );
 }
 
 function ResultsScreen() {
