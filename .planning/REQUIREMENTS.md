@@ -38,10 +38,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Results
 
-- [ ] **RES-01**: User sees final rankings sorted by total strokes (lowest wins) after completing all 9 holes
-- [ ] **RES-02**: User sees each player's total score and over/under par for the round
-- [ ] **RES-03**: Winner is highlighted with a celebration animation (Framer Motion)
-- [ ] **RES-04**: User can start a new game from the results screen
+- [x] **RES-01**: User sees final rankings sorted by total strokes (lowest wins) after completing all 9 holes
+- [x] **RES-02**: User sees each player's total score and over/under par for the round
+- [x] **RES-03**: Winner is highlighted with a celebration animation (Framer Motion)
+- [x] **RES-04**: User can start a new game from the results screen
 
 ### Admin
 
@@ -121,10 +121,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | HOLE-01 | Phase 2 | Complete |
 | HOLE-02 | Phase 2 | Pending |
 | HOLE-03 | Phase 2 | Pending |
-| RES-01 | Phase 3 | Pending |
-| RES-02 | Phase 3 | Pending |
-| RES-03 | Phase 3 | Pending |
-| RES-04 | Phase 3 | Pending |
+| RES-01 | Phase 3 | Complete |
+| RES-02 | Phase 3 | Complete |
+| RES-03 | Phase 3 | Complete |
+| RES-04 | Phase 3 | Complete |
 | ADM-01 | Phase 4 | Pending |
 | ADM-02 | Phase 4 | Pending |
 | THEME-01 | Phase 1 | Complete |
