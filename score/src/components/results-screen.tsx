@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Trophy } from "lucide-react";
 import { useGameStore } from "@/lib/game-store";
+import { useShallow } from "zustand/react/shallow";
 import { Button } from "@/components/ui/button";
 import type { HoleData } from "@/lib/holes";
 
@@ -125,11 +126,11 @@ function ConfettiParticles() {
 }
 
 export function ResultsScreen({ holesData }: { holesData: HoleData[] }) {
-  const { players, scores, goToLanding } = useGameStore((s) => ({
+  const { players, scores, goToLanding } = useGameStore(useShallow((s) => ({
     players: s.players,
     scores: s.scores,
     goToLanding: s.goToLanding,
-  }));
+  })));
 
   const { rankings, coursePar } = computeRankings(players, scores, holesData);
 

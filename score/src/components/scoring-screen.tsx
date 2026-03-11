@@ -4,6 +4,7 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Flag } from "lucide-react";
 import { useGameStore } from "@/lib/game-store";
+import { useShallow } from "zustand/react/shallow";
 import { Button } from "@/components/ui/button";
 import { HoleProgress } from "@/components/hole-progress";
 import { PlayerScoreRow } from "@/components/player-score-row";
@@ -19,7 +20,7 @@ const slideTransition = { duration: 0.25, ease: "easeInOut" as const };
 
 export function ScoringScreen({ holesData }: { holesData: HoleData[] }) {
   const { currentHole, players, scores, setScore, nextHole, prevHole, goToResults } =
-    useGameStore((s) => ({
+    useGameStore(useShallow((s) => ({
       currentHole: s.currentHole,
       players: s.players,
       scores: s.scores,
@@ -27,7 +28,7 @@ export function ScoringScreen({ holesData }: { holesData: HoleData[] }) {
       nextHole: s.nextHole,
       prevHole: s.prevHole,
       goToResults: s.goToResults,
-    }));
+    })));
 
   const [direction, setDirection] = useState<1 | -1>(1);
 
