@@ -60,7 +60,10 @@ Plans:
   2. Each player's total strokes and over/under par for the round are displayed
   3. The winner is highlighted with an animated celebration (Framer Motion)
   4. User can tap "Play Again" to return to the landing screen and start a new game
-**Plans**: TBD
+**Plans**: 1 plan
+
+Plans:
+- [ ] 03-01-PLAN.md — ResultsScreen component with rankings, winner celebration animation, and Play Again
 
 ### Phase 4: Admin
 **Goal**: Venue staff can configure par values for all 9 holes without developer involvement, and the values are protected from casual discovery
@@ -81,5 +84,5 @@ Phases execute in numeric order: 1 -> 2 -> 3, with Phase 4 executable after Phas
 |-------|----------------|--------|-----------|
 | 1. Foundation | 2/2 | Complete    | 2026-02-25 |
 | 2. Game Flow | 0/2 | Not started | - |
-| 3. Results and Celebration | 0/TBD | Not started | - |
+| 3. Results and Celebration | 0/1 | Not started | - |
 | 4. Admin | 0/TBD | Not started | - |
