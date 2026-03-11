@@ -45,8 +45,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Admin
 
-- [ ] **ADM-01**: Admin can access /admin page to configure par values for each of the 9 holes
-- [ ] **ADM-02**: Par values set in admin persist in browser storage and are used during gameplay
+- [x] **ADM-01**: Admin can access /admin page to configure par values for each of the 9 holes
+- [x] **ADM-02**: Par values set in admin persist in browser storage and are used during gameplay
 
 ### Theming & Branding
 
@@ -125,8 +125,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RES-02 | Phase 3 | Complete |
 | RES-03 | Phase 3 | Complete |
 | RES-04 | Phase 3 | Complete |
-| ADM-01 | Phase 4 | Pending |
-| ADM-02 | Phase 4 | Pending |
+| ADM-01 | Phase 4 | Complete |
+| ADM-02 | Phase 4 | Complete |
 | THEME-01 | Phase 1 | Complete |
 | THEME-02 | Phase 1 | Complete |
 | THEME-03 | Phase 1 | Complete |
