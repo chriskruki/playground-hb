@@ -73,7 +73,10 @@ Plans:
   1. Navigating to /admin prompts for a password before showing any configuration
   2. Admin can set par values for each of the 9 holes and save them
   3. Par values set in admin are used in the game scoring flow on the same device without any code change
-**Plans**: TBD
+**Plans**: 1 plan
+
+Plans:
+- [ ] 04-01-PLAN.md — Admin page with password gate, par config form, localStorage persistence, and game flow integration
 
 ## Progress
 
@@ -85,4 +88,4 @@ Phases execute in numeric order: 1 -> 2 -> 3, with Phase 4 executable after Phas
 | 1. Foundation | 2/2 | Complete    | 2026-02-25 |
 | 2. Game Flow | 0/2 | Not started | - |
 | 3. Results and Celebration | 1/1 | Complete   | 2026-03-11 |
-| 4. Admin | 0/TBD | Not started | - |
+| 4. Admin | 0/1 | Not started | - |
