@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Logo } from "@/components/logo";
 import { useGameStore } from "@/lib/game-store";
@@ -8,6 +8,7 @@ import { LandingScreen } from "@/components/landing-screen";
 import { SetupScreen } from "@/components/setup-screen";
 import { ScoringScreen } from "@/components/scoring-screen";
 import { ResultsScreen } from "@/components/results-screen";
+import { applyParOverrides } from "@/lib/par-overrides";
 import type { HoleData } from "@/lib/holes";
 
 interface AppShellProps {
@@ -17,11 +18,17 @@ interface AppShellProps {
 export function AppShell({ holesData }: AppShellProps) {
   const phase = useGameStore((s) => s.phase);
   const hydrated = useGameStore((s) => s.hydrated);
+  const [effectiveHoles, setEffectiveHoles] = useState(holesData);
 
   // Hydrate from sessionStorage on mount
   useEffect(() => {
     useGameStore.getState().hydrate();
   }, []);
+
+  // Apply par overrides from localStorage (client-side only, after mount)
+  useEffect(() => {
+    setEffectiveHoles(applyParOverrides(holesData));
+  }, [holesData]);
 
   // Back-button interception
   useEffect(() => {
@@ -68,9 +75,11 @@ export function AppShell({ holesData }: AppShellProps) {
               {phase === "landing" && <LandingScreen />}
               {phase === "setup" && <SetupScreen />}
               {phase === "scoring" && (
-                <ScoringScreen holesData={holesData} />
+                <ScoringScreen holesData={effectiveHoles} />
               )}
-              {phase === "results" && <ResultsScreen holesData={holesData} />}
+              {phase === "results" && (
+                <ResultsScreen holesData={effectiveHoles} />
+              )}
             </motion.div>
           </AnimatePresence>
         )}
