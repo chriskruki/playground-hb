@@ -4,34 +4,14 @@ import { useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Logo } from "@/components/logo";
 import { useGameStore } from "@/lib/game-store";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LandingScreen } from "@/components/landing-screen";
 import { SetupScreen } from "@/components/setup-screen";
 import { ScoringScreen } from "@/components/scoring-screen";
+import { ResultsScreen } from "@/components/results-screen";
 import type { HoleData } from "@/lib/holes";
 
 interface AppShellProps {
   holesData: HoleData[];
-}
-
-function ResultsScreen() {
-  const goToLanding = useGameStore((s) => s.goToLanding);
-  return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle className="text-center text-2xl">Results</CardTitle>
-      </CardHeader>
-      <CardContent className="flex flex-col items-center gap-4">
-        <p className="text-muted-foreground text-sm text-center">
-          Game complete!
-        </p>
-        <Button onClick={goToLanding} className="w-full">
-          Play Again
-        </Button>
-      </CardContent>
-    </Card>
-  );
 }
 
 export function AppShell({ holesData }: AppShellProps) {
@@ -90,7 +70,7 @@ export function AppShell({ holesData }: AppShellProps) {
               {phase === "scoring" && (
                 <ScoringScreen holesData={holesData} />
               )}
-              {phase === "results" && <ResultsScreen />}
+              {phase === "results" && <ResultsScreen holesData={holesData} />}
             </motion.div>
           </AnimatePresence>
         )}
