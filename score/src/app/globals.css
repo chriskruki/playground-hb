@@ -23,37 +23,47 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  --color-score-under: var(--score-under);
+  --color-score-over: var(--score-over);
+  --color-score-even: var(--score-even);
+  --color-celebrate: var(--celebrate);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --radius-playful: var(--radius-playful);
 }
 
 :root {
   --radius: 0.625rem;
-  /* BG Yellow: #FFF2D4 — matches theme.ts background */
-  --background: #FFF2D4;
-  --foreground: oklch(0.145 0 0);
-  /* Cards stay white */
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  /* Primary Green: #34654A — matches theme.ts primary */
-  --primary: #34654A;
-  --primary-foreground: oklch(0.98 0 0);
-  /* Secondary/Accent Yellow: #DCAF56 — matches theme.ts secondary */
-  --secondary: #DCAF56;
-  --secondary-foreground: oklch(0.1 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: #DCAF56;
-  --accent-foreground: oklch(0.1 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.85 0.02 85);
-  --input: oklch(0.95 0.02 85);
-  /* Ring/focus: #34654A — matches theme.ts ring */
-  --ring: #34654A;
+  --radius-playful: 1.25rem;
+  /* Brand colors from playgroundhb.com */
+  --background: #fff8e8;       /* pg-cream */
+  --foreground: #02210a;       /* pg dark green-black */
+  --card: #ffffff;
+  --card-foreground: #02210a;
+  --popover: #ffffff;
+  --popover-foreground: #02210a;
+  --primary: #1f4f38;          /* pg-green */
+  --primary-foreground: #fff8e8;
+  --secondary: #e9b949;        /* pg-mustard */
+  --secondary-foreground: #02210a;
+  --muted: #f5f5f0;
+  --muted-foreground: #666660;
+  --accent: #e9b949;           /* pg-mustard */
+  --accent-foreground: #02210a;
+  --destructive: #ec3c28;      /* pg action red */
+  --border: #e6e6e0;
+  --input: #f5f5f0;
+  --ring: #1f4f38;             /* pg-green */
+  /* Scorecard semantics */
+  --score-under: #15803d;      /* under par — vivid turf green */
+  --score-over: #dc2626;       /* over par — clear red */
+  --score-even: #666660;       /* even — muted */
+  --celebrate: #e9b949;        /* celebration accent (mustard) */
+  /* Playful surfaces */
+  --shadow-card: 0 1px 2px rgba(2, 33, 10, 0.04), 0 6px 16px -8px rgba(2, 33, 10, 0.12);
+  --shadow-pop: 0 8px 30px -8px rgba(31, 79, 56, 0.35);
 }
 
 @layer base {
@@ -62,7 +72,18 @@
   }
   body {
     @apply bg-background text-foreground;
+    /* Faint turf wash — cream base preserved, greens/mustard whisper underneath */
+    background-image:
+      radial-gradient(115% 85% at 50% -10%, rgba(31, 79, 56, 0.06), transparent 60%),
+      radial-gradient(80% 60% at 100% 100%, rgba(233, 185, 73, 0.07), transparent 55%);
+    background-attachment: fixed;
   }
+}
+
+/* Chunky playful card surface */
+.card-playful {
+  border-radius: var(--radius-playful);
+  box-shadow: var(--shadow-card);
 }
 
 /* Prevent zoom on input focus for iOS */
@@ -71,5 +92,20 @@
   textarea,
   select {
     font-size: 16px !important;
+  }
+}
+
+/* Respect reduced-motion: kill decorative transforms + confetti */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .celebration-only {
+    display: none !important;
   }
 }

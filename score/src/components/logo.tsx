@@ -8,7 +8,7 @@ export function Logo({ className }: LogoProps) {
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      src="/logo.svg"
+      src="/logo.png"
       alt="Playground HB"
       className={cn("h-10 w-auto", className)}
     />

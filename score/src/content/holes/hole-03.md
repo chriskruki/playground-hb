@@ -1,6 +1,7 @@
 ---
-name: "Loop de Loop"
-par: 4
+name: "Drop Zone"
+par: 2
 illustration: "/illustrations/hole-03.svg"
 ---
-Send it up the loop with enough speed to make it around. Too slow and it rolls back!
+
+Launch your ball up and into the plinko zone. Then loop your way to victory!

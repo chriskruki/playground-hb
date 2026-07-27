@@ -1,6 +1,7 @@
 ---
-name: "The Volcano"
-par: 3
+name: "Whirl in One!"
+par: 2
 illustration: "/illustrations/hole-04.svg"
 ---
-Aim straight for the crater. The ball drops through to the other side!
+
+Take a whirl through the ferris wheel if you dare.

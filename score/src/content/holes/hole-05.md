@@ -1,6 +1,7 @@
 ---
-name: "Pirate's Cove"
+name: "Quarter Pipe, Full Send"
 par: 4
 illustration: "/illustrations/hole-05.svg"
 ---
-Navigate around the ship and through the cave. Watch for the curve at the end!
+
+Send your ball into

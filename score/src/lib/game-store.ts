@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { loadGameState, saveGameState, clearGameState } from "./storage";
+import { TOTAL_HOLES } from "./config";
 
 export type GamePhase = "landing" | "setup" | "scoring" | "results";
 
@@ -20,19 +21,27 @@ interface GameState {
   goToScoring: () => void;
   goToResults: () => void;
   goToLanding: () => void;
+  backToSetup: () => void;
+  backToLanding: () => void;
 
   // Scoring actions
   setScore: (playerId: string, hole: number, score: number) => void;
   nextHole: () => void;
   prevHole: () => void;
+  goToHole: (hole: number) => void;
 
   // Player actions
+  setPlayerCount: (count: number) => void;
   addPlayer: (name: string) => void;
   removePlayer: (id: string) => void;
   updatePlayerName: (id: string, name: string) => void;
 
   // Hydration
   hydrate: () => void;
+}
+
+function createPlayerId(): string {
+  return `player-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
 }
 
 let hydrated = false;
@@ -49,7 +58,7 @@ export const useGameStore = create<GameState>((set, get) => ({
         console.warn("[game-store] goToSetup called from non-landing phase");
         return;
       }
-      set({ phase: "setup" });
+      set({ phase: "setup", players: [] });
     },
 
     goToScoring() {
@@ -87,6 +96,15 @@ export const useGameStore = create<GameState>((set, get) => ({
       set({ phase: "landing", players: [], currentHole: 1, scores: {} });
     },
 
+    backToSetup() {
+      set({ phase: "setup" });
+    },
+
+    backToLanding() {
+      clearGameState();
+      set({ phase: "landing", players: [], currentHole: 1, scores: {} });
+    },
+
     setScore(playerId, hole, score) {
       const scores = { ...get().scores };
       const playerScores = [...(scores[playerId] ?? [])];
@@ -97,7 +115,7 @@ export const useGameStore = create<GameState>((set, get) => ({
 
     nextHole() {
       const { currentHole } = get();
-      if (currentHole < 9) set({ currentHole: currentHole + 1 });
+      if (currentHole < TOTAL_HOLES) set({ currentHole: currentHole + 1 });
     },
 
     prevHole() {
@@ -105,8 +123,20 @@ export const useGameStore = create<GameState>((set, get) => ({
       if (currentHole > 1) set({ currentHole: currentHole - 1 });
     },
 
+    goToHole(hole) {
+      if (hole >= 1 && hole <= TOTAL_HOLES) set({ currentHole: hole });
+    },
+
+    setPlayerCount(count) {
+      const players = Array.from({ length: count }, () => ({
+        id: createPlayerId(),
+        name: "",
+      }));
+      set({ players });
+    },
+
     addPlayer(name) {
-      const id = `player-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+      const id = createPlayerId();
       set({ players: [...get().players, { id, name }] });
     },
 

@@ -1,35 +1,35 @@
 /**
  * Theme Configuration — Single Source of Truth for Brand Colors
  *
- * This is the ONE file to edit to change app colors.
+ * Derived from https://playgroundhb.com/ brand palette.
  * After editing, update the matching CSS custom properties in src/app/globals.css.
- *
- * Colors are defined here for:
- * - Documentation and discoverability
- * - Programmatic use in components that need color values (e.g., canvas, charts)
- * - Type-safe access to brand values
  */
 
 export const themeColors = {
-  background: "#FFF2D4", // warm yellow
-  foreground: "oklch(0.145 0 0)",
-  card: "oklch(1 0 0)", // white
-  cardForeground: "oklch(0.145 0 0)",
-  popover: "oklch(1 0 0)",
-  popoverForeground: "oklch(0.145 0 0)",
-  primary: "#34654A", // forest green
-  primaryForeground: "oklch(0.98 0 0)",
-  secondary: "#DCAF56", // golden yellow
-  secondaryForeground: "oklch(0.1 0 0)",
-  accent: "#DCAF56",
-  accentForeground: "oklch(0.1 0 0)",
-  muted: "oklch(0.97 0 0)",
-  mutedForeground: "oklch(0.556 0 0)",
-  destructive: "oklch(0.577 0.245 27.325)",
-  border: "oklch(0.85 0.02 85)",
-  input: "oklch(0.95 0.02 85)",
-  ring: "#34654A",
+  background: "#fff8e8",       // pg-cream
+  foreground: "#02210a",       // pg dark green-black
+  card: "#ffffff",
+  cardForeground: "#02210a",
+  popover: "#ffffff",
+  popoverForeground: "#02210a",
+  primary: "#1f4f38",          // pg-green
+  primaryForeground: "#fff8e8",
+  secondary: "#e9b949",        // pg-mustard
+  secondaryForeground: "#02210a",
+  accent: "#e9b949",           // pg-mustard
+  accentForeground: "#02210a",
+  muted: "#f5f5f0",
+  mutedForeground: "#666660",
+  destructive: "#ec3c28",      // pg action red
+  border: "#e6e6e0",
+  input: "#f5f5f0",
+  ring: "#1f4f38",             // pg-green
+  scoreUnder: "#15803d",       // under par — vivid turf green
+  scoreOver: "#dc2626",        // over par — clear red
+  scoreEven: "#666660",        // even par — muted
+  celebrate: "#e9b949",        // celebration accent (mustard)
   radius: "0.625rem",
+  radiusPlayful: "1.25rem",
 } as const;
 
 export type ThemeColors = typeof themeColors;
