@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useEffect } from "react";
+import type { PointerEvent as ReactPointerEvent } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -25,6 +26,60 @@ export function HoleProgress({
   onEndGame: () => void;
 }) {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const dragRef = useRef<{
+    pointerId: number;
+    startX: number;
+    startHole: number;
+    stepPx: number;
+    moved: boolean;
+  } | null>(null);
+
+  function measureStepPx(container: HTMLElement): number {
+    const centers = Array.from(container.querySelectorAll<HTMLElement>("[data-hole]")).map(
+      (el) => {
+        const r = el.getBoundingClientRect();
+        return r.left + r.width / 2;
+      },
+    );
+    if (centers.length < 2) return 44;
+    let sum = 0;
+    for (let i = 1; i < centers.length; i++) sum += centers[i] - centers[i - 1];
+    return sum / (centers.length - 1);
+  }
+
+  function handlePointerDown(e: ReactPointerEvent<HTMLDivElement>) {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    const container = scrollRef.current;
+    if (!container) return;
+    dragRef.current = {
+      pointerId: e.pointerId,
+      startX: e.clientX,
+      startHole: current,
+      stepPx: measureStepPx(container),
+      moved: false,
+    };
+  }
+
+  function handlePointerMove(e: ReactPointerEvent<HTMLDivElement>) {
+    const drag = dragRef.current;
+    if (!drag || e.pointerId !== drag.pointerId) return;
+    const delta = e.clientX - drag.startX;
+    if (!drag.moved) {
+      if (Math.abs(delta) < 6) return;
+      drag.moved = true;
+      scrollRef.current?.setPointerCapture(e.pointerId);
+    }
+    const steps = Math.round(-delta / drag.stepPx);
+    const target = Math.min(total, Math.max(1, drag.startHole + steps));
+    if (target !== current) onGoToHole(target);
+  }
+
+  function endDrag(e: ReactPointerEvent<HTMLDivElement>) {
+    const drag = dragRef.current;
+    if (!drag || e.pointerId !== drag.pointerId) return;
+    if (drag.moved) scrollRef.current?.releasePointerCapture(e.pointerId);
+    dragRef.current = null;
+  }
 
   useEffect(() => {
     const container = scrollRef.current;
@@ -47,7 +102,15 @@ export function HoleProgress({
           <ChevronLeft className="size-6" strokeWidth={2.5} />
         </button>
 
-        <div ref={scrollRef} className="relative flex-1 overflow-hidden">
+        <div
+          ref={scrollRef}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={endDrag}
+          onPointerCancel={endDrag}
+          style={{ touchAction: "pan-y" }}
+          className="relative flex-1 cursor-grab touch-pan-y select-none overflow-hidden active:cursor-grabbing"
+        >
           <div className="flex items-center justify-center gap-4">
             {Array.from({ length: total }, (_, i) => {
               const hole = i + 1;
@@ -56,6 +119,7 @@ export function HoleProgress({
               return (
                 <button
                   key={hole}
+                  data-hole={hole}
                   data-active={isCurrent}
                   onClick={() => onGoToHole(hole)}
                   aria-label={`Go to hole ${hole}`}

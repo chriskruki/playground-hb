@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { ExternalLink } from "lucide-react";
 import { Logo } from "@/components/logo";
+import { NavMenu } from "@/components/nav-menu";
 import { useGameStore } from "@/lib/game-store";
 import { useShallow } from "zustand/react/shallow";
 import { LandingScreen } from "@/components/landing-screen";
@@ -62,40 +62,13 @@ export function AppShell({ holesData }: AppShellProps) {
     <div className="min-h-screen bg-background">
       {/* Sticky header */}
       <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-sm">
-        <div className="mx-auto flex max-w-md items-center px-4 py-3">
-          {showNav ? (
-            <>
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={backToLanding}
-                  className="text-sm font-semibold text-primary transition-colors hover:text-primary/80"
-                >
-                  New Game
-                </button>
-                <span className="text-border">|</span>
-                <button
-                  onClick={backToSetup}
-                  className="text-sm font-semibold text-primary transition-colors hover:text-primary/80"
-                >
-                  Edit Players
-                </button>
-              </div>
-              <div className="flex-1 flex justify-center">
-                <Logo />
-              </div>
-              <a
-                href="https://playgroundhb.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1 text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
-              >
-                Learn More
-                <ExternalLink className="size-3.5" />
-              </a>
-            </>
-          ) : (
-            <div className="flex-1 flex justify-center">
-              <Logo />
+        <div className="relative mx-auto flex max-w-md items-center px-4 py-3">
+          <div className="flex flex-1 justify-center">
+            <Logo />
+          </div>
+          {showNav && (
+            <div className="absolute left-2">
+              <NavMenu onNewGame={backToLanding} onEditPlayers={backToSetup} />
             </div>
           )}
         </div>

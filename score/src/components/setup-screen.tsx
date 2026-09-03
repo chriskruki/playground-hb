@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronRight, Plus, Trash2 } from "lucide-react";
 import { useGameStore } from "@/lib/game-store";
@@ -67,22 +67,7 @@ function PlayerNamesStep() {
   const updatePlayerName = useGameStore((s) => s.updatePlayerName);
   const goToScoring = useGameStore((s) => s.goToScoring);
 
-  const lastAddedRef = useRef<string | null>(null);
-  const inputRefs = useRef<Record<string, HTMLInputElement | null>>({});
-
   const canStart = players.length > 0 && players.every((p) => p.name.trim().length > 0);
-
-  useEffect(() => {
-    if (players.length > 0) {
-      const firstEmpty = players.find((p) => p.name === "");
-      if (firstEmpty && firstEmpty.id !== lastAddedRef.current) {
-        lastAddedRef.current = firstEmpty.id;
-        requestAnimationFrame(() => {
-          inputRefs.current[firstEmpty.id]?.focus();
-        });
-      }
-    }
-  }, [players]);
 
   return (
     <div className="flex flex-col gap-6">
@@ -108,9 +93,6 @@ function PlayerNamesStep() {
                   {index + 1}
                 </span>
                 <Input
-                  ref={(el) => {
-                    inputRefs.current[player.id] = el;
-                  }}
                   value={player.name}
                   onChange={(e) => updatePlayerName(player.id, e.target.value)}
                   placeholder="Player name"

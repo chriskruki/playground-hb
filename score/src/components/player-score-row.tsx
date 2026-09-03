@@ -27,11 +27,13 @@ export function PlayerScoreRow({
 }: PlayerScoreRowProps) {
   const diff = score - par;
   const parIndicator =
-    diff > 0
-      ? { text: `+${diff}`, className: "bg-score-over/10 text-score-over" }
-      : diff < 0
-        ? { text: `${diff}`, className: "bg-score-under/10 text-score-under" }
-        : { text: "Even", className: "bg-muted text-score-even" };
+    score === 0
+      ? { text: "–", className: "bg-muted text-muted-foreground" }
+      : diff > 0
+        ? { text: `+${diff}`, className: "bg-score-over/10 text-score-over" }
+        : diff < 0
+          ? { text: `${diff}`, className: "bg-score-under/10 text-score-under" }
+          : { text: "Even", className: "bg-muted text-score-even" };
 
   const isAce = score === 1;
   const accent = playerAccent(index);

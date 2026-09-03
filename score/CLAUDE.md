@@ -45,8 +45,8 @@ Playful & vibrant "putt-putt scoreboard" that works for kids and grandparents al
 
 ## Rules & invariants (don't regress these)
 
-- **Untouched holes count as par**, min **1** stroke per hole (`MIN_SCORE`/`MAX_SCORE` in `src/lib/config.ts`).
-  Running total and results must both treat an unset hole as par — keep them consistent.
+- **Untouched holes count as 0** strokes (`MIN_SCORE` is `0`; `MAX_SCORE` in `src/lib/config.ts`).
+  Running total and results must both treat an unset hole as 0 — keep them consistent.
 - **`/admin` par form seeds from the true markdown pars** via `loadHoles()`, never from a hardcoded
   default array (that mismatch used to silently corrupt real pars).
 - **Admin auth is server-side**: `src/app/api/admin/login/route.ts` checks the **server-only**

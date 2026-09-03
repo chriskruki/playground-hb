@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Flag } from "lucide-react";
+import { ChevronRight, Flag } from "lucide-react";
 import { useGameStore } from "@/lib/game-store";
 import { useShallow } from "zustand/react/shallow";
 import { HoleProgress } from "@/components/hole-progress";
 import { PlayerScoreRow } from "@/components/player-score-row";
 import type { HoleData } from "@/lib/holes";
 import { MAX_SCORE, TOTAL_HOLES } from "@/lib/config";
-import { slideHorizontal, slideTransition } from "@/lib/motion";
+import { slideHorizontal, slideTransition, tapSoft } from "@/lib/motion";
 
 export function ScoringScreen({ holesData }: { holesData: HoleData[] }) {
   const {
@@ -38,16 +38,18 @@ export function ScoringScreen({ holesData }: { holesData: HoleData[] }) {
 
   const hole = holesData[currentHole - 1];
   const isLastHole = currentHole >= TOTAL_HOLES;
+  const allScored =
+    players.length > 0 && players.every((p) => (scores[p.id]?.[currentHole - 1] ?? 0) > 0);
 
-  /** Untouched holes count as par, keeping the running total honest. */
+  /** Untouched holes count as 0 strokes until a score is recorded. */
   function getScore(playerId: string): number {
-    return scores[playerId]?.[currentHole - 1] ?? hole.par;
+    return scores[playerId]?.[currentHole - 1] ?? 0;
   }
 
   function getTotalStrokes(playerId: string): number {
     let total = 0;
     for (let i = 0; i < holesData.length; i++) {
-      total += scores[playerId]?.[i] ?? holesData[i].par;
+      total += scores[playerId]?.[i] ?? 0;
     }
     return total;
   }
@@ -81,17 +83,18 @@ export function ScoringScreen({ holesData }: { holesData: HoleData[] }) {
         onEndGame={goToResults}
       />
 
-      <AnimatePresence mode="wait" custom={direction}>
-        <motion.div
-          key={currentHole}
-          custom={direction}
-          variants={slideHorizontal}
-          initial="enter"
-          animate="center"
-          exit="exit"
-          transition={slideTransition}
-          className="flex flex-col gap-4"
-        >
+      <div className="overflow-x-clip">
+        <AnimatePresence mode="wait" custom={direction}>
+          <motion.div
+            key={currentHole}
+            custom={direction}
+            variants={slideHorizontal}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={slideTransition}
+            className="flex flex-col gap-4"
+          >
           {/* Hole marker + name */}
           <div className="flex flex-col items-center gap-2">
             <div className="flex items-center gap-2 rounded-full bg-primary px-3 py-1 text-primary-foreground shadow-[var(--shadow-card)]">
@@ -132,6 +135,24 @@ export function ScoringScreen({ holesData }: { holesData: HoleData[] }) {
             ))}
           </div>
 
+          <AnimatePresence initial={false}>
+            {!isLastHole && allScored && (
+              <motion.button
+                key="next-hole"
+                onClick={handleNext}
+                whileTap={tapSoft}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="flex w-full items-center justify-center rounded-[var(--radius-playful)] bg-primary py-4 text-lg font-extrabold text-primary-foreground shadow-[var(--shadow-pop)] transition-colors hover:bg-primary/90"
+              >
+                Next Hole
+                <ChevronRight className="ml-1 size-5" strokeWidth={2.5} />
+              </motion.button>
+            )}
+          </AnimatePresence>
+
           {isLastHole && (
             <button
               onClick={goToResults}
@@ -140,8 +161,9 @@ export function ScoringScreen({ holesData }: { holesData: HoleData[] }) {
               See Results
             </button>
           )}
-        </motion.div>
-      </AnimatePresence>
+          </motion.div>
+        </AnimatePresence>
+      </div>
     </div>
   );
 }

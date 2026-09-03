@@ -20,6 +20,7 @@ interface GameState {
   goToSetup: () => void;
   goToScoring: () => void;
   goToResults: () => void;
+  editScores: () => void;
   goToLanding: () => void;
   backToSetup: () => void;
   backToLanding: () => void;
@@ -85,6 +86,14 @@ export const useGameStore = create<GameState>((set, get) => ({
         return;
       }
       set({ phase: "results" });
+    },
+
+    editScores() {
+      if (get().phase !== "results") {
+        console.warn("[game-store] editScores called from non-results phase");
+        return;
+      }
+      set({ phase: "scoring" });
     },
 
     goToLanding() {

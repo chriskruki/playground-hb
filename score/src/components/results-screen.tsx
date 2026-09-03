@@ -30,7 +30,7 @@ function computeRankings(
     .map((player, index) => {
       let totalStrokes = 0;
       for (let i = 0; i < holesData.length; i++) {
-        totalStrokes += scores[player.id]?.[i] ?? holesData[i].par;
+        totalStrokes += scores[player.id]?.[i] ?? 0;
       }
       return {
         ...player,
@@ -144,11 +144,12 @@ function MascotCheer() {
 }
 
 export function ResultsScreen({ holesData }: { holesData: HoleData[] }) {
-  const { players, scores, goToLanding } = useGameStore(
+  const { players, scores, goToLanding, editScores } = useGameStore(
     useShallow((s) => ({
       players: s.players,
       scores: s.scores,
       goToLanding: s.goToLanding,
+      editScores: s.editScores,
     })),
   );
 
@@ -220,13 +221,21 @@ export function ResultsScreen({ holesData }: { holesData: HoleData[] }) {
         })}
       </motion.div>
 
-      <motion.button
-        onClick={goToLanding}
-        whileTap={tapSoft}
-        className="w-full rounded-[var(--radius-playful)] bg-primary py-4 text-lg font-extrabold text-primary-foreground shadow-[var(--shadow-pop)] transition-colors hover:bg-primary/90"
-      >
-        Play Again
-      </motion.button>
+      <div className="flex flex-col gap-2">
+        <motion.button
+          onClick={goToLanding}
+          whileTap={tapSoft}
+          className="w-full rounded-[var(--radius-playful)] bg-primary py-4 text-lg font-extrabold text-primary-foreground shadow-[var(--shadow-pop)] transition-colors hover:bg-primary/90"
+        >
+          Play Again
+        </motion.button>
+        <button
+          onClick={editScores}
+          className="w-full rounded-[var(--radius-playful)] py-2.5 text-sm font-semibold text-muted-foreground/70 transition-colors hover:text-foreground"
+        >
+          Edit Scores
+        </button>
+      </div>
     </div>
   );
 }
