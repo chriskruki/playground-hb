@@ -1,8 +1,5 @@
 import { test, expect } from "@playwright/test";
 
-// Course par from src/content/holes/*.md = 3+3+2+2+4+3+4+3+5
-const COURSE_PAR = 29;
-
 async function startGame(page: import("@playwright/test").Page) {
   await page.goto("/");
   await page.evaluate(() => {
@@ -30,9 +27,9 @@ test.describe("Full game flow", () => {
     await expect(page.locator('input[value="Bob"]')).toBeVisible();
     await page.getByRole("button", { name: /start scoring/i }).click();
 
-    // Untouched holes count as par: totals start at course par for everyone.
+    // Untouched holes count as 0: totals start at 0 for everyone.
     await expect(page.getByText(/Hole 1\b/)).toBeVisible();
-    await expect(page.getByText(`Total ${COURSE_PAR}`).first()).toBeVisible();
+    await expect(page.getByText("Total 0").first()).toBeVisible();
 
     for (let hole = 1; hole <= 9; hole++) {
       await expect(page.getByText(new RegExp(`Hole ${hole}\\b`))).toBeVisible();
@@ -56,17 +53,21 @@ test.describe("Full game flow", () => {
     await expect(page.getByRole("button", { name: "Start Game" })).toBeVisible();
   });
 
-  test("scoring starts at par and won't go below one stroke", async ({ page }) => {
+  test("scoring starts at zero and won't go below zero", async ({ page }) => {
     await startGame(page);
     await pickPlayers(page, ["Solo"]);
     await page.getByRole("button", { name: /start scoring/i }).click();
 
-    // Hole 1 is par 3 → opens showing par, decrement floors at 1.
-    await expect(page.getByText("Even").first()).toBeVisible();
+    // Untouched hole opens at 0 (shown as "–"); decrement is floored there.
     const decrease = page.getByRole("button", { name: "Decrease score" }).first();
-    await decrease.click(); // 3 → 2
+    await expect(decrease).toBeDisabled(); // can't go below 0
+    const increase = page.getByRole("button", { name: "Increase score" }).first();
+    await increase.click(); // 0 → 1
+    await expect(decrease).toBeEnabled();
+    await increase.click(); // 1 → 2
     await decrease.click(); // 2 → 1
-    await expect(decrease).toBeDisabled(); // can't go below 1
+    await decrease.click(); // 1 → 0
+    await expect(decrease).toBeDisabled();
   });
 
   test("cannot start scoring until every name is filled", async ({ page }) => {
