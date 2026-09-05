@@ -17,13 +17,21 @@ State is **device-local only** (session/localStorage); there is no backend excep
 Single-URL **phase state machine** (no per-screen routes, so the hardware back button never
 destroys game state — `app-shell.tsx` intercepts `popstate`). Phases: `landing → setup → scoring → results`.
 
-- **`src/components/app-shell.tsx`** — orchestrator: sticky header/nav, hydration from sessionStorage,
-  par-override application, back-button guard, and a keyed fade-in that swaps the four phase screens.
+- **`src/components/app-shell.tsx`** — orchestrator: sticky header (centered logo + top-left hamburger
+  `nav-menu` during scoring), hydration from sessionStorage, par-override application, back-button guard,
+  and a keyed fade-in that swaps the four phase screens.
+- **`src/components/nav-menu.tsx`** — self-contained hamburger dropdown (no Radix): New Game, Edit Players,
+  Learn More. Opens left-aligned, closes on item select / outside pointerdown / Escape.
 - **`landing-screen` → `setup-screen`** (pick count → name players) **→ `scoring-screen`** (the core loop:
-  `hole-progress` scoreboard selector + one `player-score-row` per player, each with a `score-input` stepper)
-  **→ `results-screen`** (rankings, trophy/medals, confetti, count-up, Play Again).
+  `hole-progress` scoreboard selector + one `player-score-row` per player, each with a `score-input` stepper;
+  a green **Next Hole** button appears once every player has a score entered) **→ `results-screen`**
+  (rankings, trophy/medals, confetti, count-up, **Play Again** + a quiet **Edit Scores** back to scoring).
+  - `hole-progress` supports **drag-to-scrub**: pointer drag on the number strip maps drag distance to an
+    absolute target hole (measures per-hole spacing at drag start), so holding and sweeping crosses multiple
+    holes. A 6px threshold distinguishes tap-to-jump from drag; `touch-action: pan-y` keeps vertical scroll.
 - **`src/lib/game-store.ts`** — the zustand store. Shape: `phase`, `players[]`, `currentHole`,
   `scores: Record<playerId, number[]>` (index = hole − 1). Auto-persists to sessionStorage after hydration.
+  `editScores()` returns results→scoring **without** resetting scores/currentHole (unlike `goToScoring`).
 - **`src/content/holes/hole-0N.md`** — 9 holes; frontmatter `name`, `par`, `illustration` (unused),
   markdown body = `instructions`. Loaded server-side by `src/lib/holes.ts` (`loadHoles()` / `holes`).
   Instructions may contain trusted inline HTML and are rendered via `dangerouslySetInnerHTML`.
@@ -56,6 +64,11 @@ Playful & vibrant "putt-putt scoreboard" that works for kids and grandparents al
 - **Phase swaps use keyed fade-in, not `AnimatePresence mode="wait"`** at the app-shell level — the
   wait-for-exit variant deadlocks on the scoring screen's nested AnimatePresence/`layoutId` and silently
   breaks the scoring→results transition.
+- **The scoring slide is wrapped in `overflow-x-clip`** — the hole-to-hole `slideHorizontal` variant moves
+  cards ±280px offscreen, which otherwise scrolls/resizes the mobile viewport. Use `clip`, not `hidden`
+  (`overflow-x: hidden` forces the vertical axis into a scroll container and traps the layout animation).
+- **`<body>` carries `suppressHydrationWarning`** (`layout.tsx`) — browser extensions inject attributes on
+  `<body>` before hydration; this suppresses only that element's own-attribute mismatch, not its subtree.
 
 ## Commands
 
