@@ -64,7 +64,15 @@ export function AppShell({ holesData }: AppShellProps) {
       <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-sm">
         <div className="relative mx-auto flex max-w-md items-center px-4 py-3">
           <div className="flex flex-1 justify-center">
-            <Logo />
+            <a
+              href="https://playgroundhb.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Playground HB home"
+              className="transition-opacity hover:opacity-80"
+            >
+              <Logo />
+            </a>
           </div>
           {showNav && (
             <div className="absolute left-2">
