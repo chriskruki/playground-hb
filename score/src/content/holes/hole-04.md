@@ -1,5 +1,5 @@
 ---
-name: "Whirl in One!"
+name: "Cart Path"
 par: 2
 illustration: "/illustrations/hole-04.svg"
 ---
