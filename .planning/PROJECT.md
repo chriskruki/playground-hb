@@ -47,7 +47,6 @@ Players can effortlessly score their mini golf round hole-by-hole with a beautif
 ## Context
 
 - **Playground HB** is a mini golf venue in Huntington Beach building this app for their customers
-- Existing prototype in `score_proto/` folder — functional but needs a cleaner experience and fresh build
 - Physical instruction posters exist at each hole but players often ignore them — in-app instructions solve this
 - QR code at front desk is the primary entry point
 - The course has 9 holes, each with a unique theme/name:
@@ -60,7 +59,7 @@ Players can effortlessly score their mini golf round hole-by-hole with a beautif
   7. "Titled Logic"
   8. "Tap it in"
   9. "Pier pressure"
-- Folders `led/` and `shopify-min/` in the repo are unrelated to this project
+- Folder `shopify-min/` in the repo is unrelated to this project
 
 ## Constraints
 
